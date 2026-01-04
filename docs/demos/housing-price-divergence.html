@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Housing Market Divergence - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-blue-600 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm mb-2">housing</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Housing Market Divergence</h1>
+      <p class="text-lg text-gray-600">The great divide: Helsinki apartment prices rising while other regions stagnate or decline</p>
+      <p class="text-gray-500 mt-1">Asuntomarkkinoiden eriytyminen - Suuri jakautuminen: Helsingin asuntohinnat nousevat, muualla stagnaatio tai lasku</p>
+    </header>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Compare apartment price trends in Helsinki vs rest of Finland over the last 15 years"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Call
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">query_table({
+  tableId: "statfin_ashi_pxt_13mv.px",
+  selections: [
+    { variable: "Vuosineljännes", filter: "item", values: ["2010Q4", "2012Q4", "2014Q4", /* ... 10 values */] },
+    { variable: "Alue", filter: "item", values: ["091", "pks", "msu"] },
+    { variable: "Talotyyppi", filter: "item", values: ["3"] },
+    { variable: "Huoneluku", filter: "item", values: ["00"] },
+    { variable: "Tiedot", filter: "item", values: ["keskihinta_aritm"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Chart -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Visualization
+      </h2>
+      <div class="chart-container">
+        <canvas id="chart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Data (25 of 30 rows)
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vuosineljännes</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Alue</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Talotyyppi</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Huoneluku</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tiedot</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">value</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2010Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Pääkaupunkiseutu (PKS)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">3607</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2010Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Koko maa ilman pääkaupunkiseutua</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1640</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2010Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Helsinki</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">3861</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2012Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Pääkaupunkiseutu (PKS)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">3927</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2012Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Koko maa ilman pääkaupunkiseutua</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1727</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2012Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Helsinki</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">4213</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2014Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Pääkaupunkiseutu (PKS)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">4052</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2014Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Koko maa ilman pääkaupunkiseutua</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1753</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2014Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Helsinki</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">4368</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2016Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Pääkaupunkiseutu (PKS)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">4084</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2016Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Koko maa ilman pääkaupunkiseutua</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1798</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2016Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Helsinki</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">4600</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2018Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Pääkaupunkiseutu (PKS)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">4427</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2018Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Koko maa ilman pääkaupunkiseutua</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1862</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2018Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Helsinki</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">5051</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2020Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Pääkaupunkiseutu (PKS)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">4868</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2020Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Koko maa ilman pääkaupunkiseutua</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1923</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2020Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Helsinki</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">5601</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2021Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Pääkaupunkiseutu (PKS)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">5149</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2021Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Koko maa ilman pääkaupunkiseutua</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2001</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2021Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Helsinki</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">5930</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2022Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Pääkaupunkiseutu (PKS)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">4862</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2022Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Koko maa ilman pääkaupunkiseutua</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1903</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2022Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Helsinki</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">5525</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2023Q4</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Pääkaupunkiseutu (PKS)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kerrostalot</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Neliöhinta (EUR/m2)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">4671</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_ashi_pxt_13mv.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Total Rows</dt>
+          <dd>30</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Tilastokeskus, osakeasuntojen hinnat</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Updated</dt>
+          <dd>2025-10-28T06:00:00Z</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+  <script>
+    hljs.highlightAll();
+    const ctx = document.getElementById('chart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ["2010Q4","2012Q4","2014Q4","2016Q4","2018Q4","2020Q4","2021Q4","2022Q4","2023Q4","2024Q4"],
+        datasets: [{"label":"Pääkaupunkiseutu (PKS)","data":[3607,3927,4052,4084,4427,4868,5149,4862,4671,4581],"borderColor":"rgb(59, 130, 246)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"Koko maa ilman pääkaupunkiseutua","data":[1640,1727,1753,1798,1862,1923,2001,1903,1920,1939],"borderColor":"rgb(239, 68, 68)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"Helsinki","data":[3861,4213,4368,4600,5051,5601,5930,5525,5342,5219],"borderColor":"rgb(34, 197, 94)","backgroundColor":"transparent","fill":false,"tension":0.1}]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true, position: 'top' },
+          title: { display: true, text: 'Housing Market Divergence' }
+        },
+        scales: {
+          y: { beginAtZero: false }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

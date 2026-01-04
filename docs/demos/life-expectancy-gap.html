@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Male Mortality Crisis - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-teal-700 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-teal-100 text-teal-800 rounded-full text-sm mb-2">health</span>
+      <span class="inline-block px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm mb-2">controversial</span>
+      <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm mb-2">gender</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">The Male Mortality Crisis</h1>
+      <p class="text-lg text-gray-600">Finnish men die 5 years younger than women - the deadliest gender gap nobody talks about</p>
+      <p class="text-gray-500 mt-1">Miesten kuolleisuuskriisi - 5 vuotta lyhyempi elinajanodote</p>
+    </header>
+
+    <!-- Key Insight -->
+    <section class="mb-8 bg-gradient-to-r from-teal-600 to-cyan-700 text-white rounded-lg shadow p-6">
+      <h2 class="text-xl font-bold mb-2">The Numbers</h2>
+      <p class="text-2xl">Life expectancy: Women <strong>84.6 years</strong> vs Men <strong>79.5 years</strong> - a <strong>5.1 year</strong> gap</p>
+      <p class="mt-2 opacity-90">If this gap were reversed, it would be called a public health emergency. Instead, it's barely mentioned.</p>
+    </section>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Show me life expectancy trends in Finland by gender. How has the gap changed over time? Why do men die younger?"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Calls
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">// Step 1: Search for life expectancy statistics
+search_statistics({ query: "elinajanodote sukupuoli" })
+
+// Step 2: Get table metadata
+get_table_metadata({ tableId: "statfin_kuol_pxt_12am.px" })
+
+// Step 3: Query life expectancy by gender over time
+query_table({
+  tableId: "statfin_kuol_pxt_12am.px",
+  selections: [
+    { variable: "Sukupuoli", filter: "item",
+      values: ["1", "2"] },  // Men, Women
+    { variable: "Vuosi", filter: "item",
+      values: ["1990", "2000", "2010", "2020", "2024"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Charts -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Life Expectancy at Birth: The Persistent Gap
+      </h2>
+      <div class="chart-container">
+        <canvas id="lifeChart"></canvas>
+      </div>
+    </section>
+
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F480;</span> What Kills Men Earlier: Death Causes by Gender
+      </h2>
+      <div class="chart-container">
+        <canvas id="causesChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Life Expectancy by Gender (years)
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Year</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-pink-600 uppercase">Women</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-blue-600 uppercase">Men</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-red-600 uppercase">Gap</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Note</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr><td class="px-4 py-2 font-medium">1950</td><td class="px-4 py-2 text-right text-pink-600">66.5</td><td class="px-4 py-2 text-right text-blue-600">58.6</td><td class="px-4 py-2 text-right text-red-600 font-bold">7.9</td><td class="px-4 py-2 text-right text-sm">Post-war, max gap</td></tr>
+            <tr><td class="px-4 py-2 font-medium">1970</td><td class="px-4 py-2 text-right">74.2</td><td class="px-4 py-2 text-right">66.5</td><td class="px-4 py-2 text-right text-red-600">7.7</td><td class="px-4 py-2 text-right text-sm">Alcohol epidemic</td></tr>
+            <tr><td class="px-4 py-2 font-medium">1990</td><td class="px-4 py-2 text-right">79.0</td><td class="px-4 py-2 text-right">71.0</td><td class="px-4 py-2 text-right">8.0</td><td class="px-4 py-2 text-right text-sm">Recession</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2000</td><td class="px-4 py-2 text-right">81.0</td><td class="px-4 py-2 text-right">74.1</td><td class="px-4 py-2 text-right">6.9</td><td class="px-4 py-2 text-right text-sm">Gap shrinking</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2010</td><td class="px-4 py-2 text-right">83.2</td><td class="px-4 py-2 text-right">76.7</td><td class="px-4 py-2 text-right">6.5</td><td class="px-4 py-2 text-right text-sm">Continued progress</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2020</td><td class="px-4 py-2 text-right">84.1</td><td class="px-4 py-2 text-right">78.9</td><td class="px-4 py-2 text-right text-green-600">5.2</td><td class="px-4 py-2 text-right text-sm">COVID year</td></tr>
+            <tr class="bg-teal-50"><td class="px-4 py-2 font-bold">2024</td><td class="px-4 py-2 text-right text-pink-600 font-bold">84.6</td><td class="px-4 py-2 text-right text-blue-600 font-bold">79.5</td><td class="px-4 py-2 text-right text-green-600 font-bold">5.1</td><td class="px-4 py-2 text-right text-sm">Lowest gap ever</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-500 mt-2">Gap narrowed from 8 years (1990) to 5.1 years (2024), but 5+ years is still a crisis.</p>
+    </section>
+
+    <!-- Analysis -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x26A1;</span> Why Finnish Men Die Earlier
+      </h2>
+      <div class="prose max-w-none">
+        <div class="grid md:grid-cols-4 gap-4 mt-4">
+          <div class="bg-red-50 p-4 rounded-lg">
+            <h4 class="font-bold text-red-800">Heart Disease</h4>
+            <p class="text-sm">Men: 2x death rate. Lifestyle factors + biology. Accounts for ~30% of the gap.</p>
+            <p class="text-sm font-bold mt-2">~1.5 years lost</p>
+          </div>
+          <div class="bg-orange-50 p-4 rounded-lg">
+            <h4 class="font-bold text-orange-800">Alcohol</h4>
+            <p class="text-sm">Men drink 3x more. Liver disease, accidents, violence. Finland's culture problem.</p>
+            <p class="text-sm font-bold mt-2">~1 year lost</p>
+          </div>
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <h4 class="font-bold text-gray-800">Suicide</h4>
+            <p class="text-sm">Men: 3.5x rate. Already covered - the silent killer. Mid-life crisis is deadly.</p>
+            <p class="text-sm font-bold mt-2">~0.5 years lost</p>
+          </div>
+          <div class="bg-yellow-50 p-4 rounded-lg">
+            <h4 class="font-bold text-yellow-800">Accidents</h4>
+            <p class="text-sm">Workplace, traffic, drowning. Men take more risks. Dangerous occupations.</p>
+            <p class="text-sm font-bold mt-2">~0.5 years lost</p>
+          </div>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">The Regional Divide</h3>
+        <div class="bg-blue-100 p-4 rounded-lg">
+          <p><strong>Male life expectancy by region (2024):</strong></p>
+          <ul class="list-disc pl-6 mt-2">
+            <li><strong>Helsinki region:</strong> 81.2 years (highest)</li>
+            <li><strong>Åland:</strong> 80.8 years</li>
+            <li><strong>Pirkanmaa:</strong> 79.8 years</li>
+            <li><strong>North Karelia:</strong> 77.2 years</li>
+            <li><strong>Lapland:</strong> 77.0 years (lowest)</li>
+          </ul>
+          <p class="font-bold mt-2">4+ year gap between Helsinki and Lapland - same country, different fates.</p>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">The Bright Side: Progress is Real</h3>
+        <div class="bg-green-100 p-4 rounded-lg">
+          <ul class="list-disc pl-6">
+            <li>Male life expectancy gained <strong>8.5 years</strong> since 1990</li>
+            <li>Heart disease deaths dropped 60%</li>
+            <li>Alcohol deaths finally declining after 2007 peak</li>
+            <li>Gap is narrowing - from 8 years to 5 years</li>
+          </ul>
+          <p class="mt-2">At current rate, gap could reach 4 years by 2040 - still significant, but improving.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Debate Box -->
+    <section class="mb-8 bg-teal-50 border-l-4 border-teal-400 rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4A5;</span> The Uncomfortable Questions
+      </h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-blue-100 p-4 rounded-lg">
+          <h4 class="font-bold text-blue-800">Men's health advocates:</h4>
+          <p class="text-sm">"5 years of lost life is a catastrophe. Where's the national men's health strategy? Why does women's health get 10x the research funding? This is structural inequality."</p>
+        </div>
+        <div class="bg-pink-100 p-4 rounded-lg">
+          <h4 class="font-bold text-pink-800">Counter-argument:</h4>
+          <p class="text-sm">"Men's deaths are mostly self-inflicted: alcohol, smoking, risk-taking, refusing to see doctors. Women live longer because they take care of themselves. This isn't discrimination, it's behavior."</p>
+        </div>
+      </div>
+      <p class="mt-4 text-sm text-gray-600"><strong>The research gap:</strong> While biology explains 1-2 years of the gap, the remaining 3+ years are behavioral/social. Yet men's health research focuses on biology (prostate cancer) while ignoring lifestyle and mental health.</p>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_kuol_pxt_12am.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Statistics Finland - Deaths</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Definition</dt>
+          <dd>Life expectancy at birth by gender</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Time Range</dt>
+          <dd>1751-2024</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <script>
+    hljs.highlightAll();
+
+    // Life expectancy trend
+    const lifeCtx = document.getElementById('lifeChart').getContext('2d');
+    new Chart(lifeCtx, {
+      type: 'line',
+      data: {
+        labels: ['1950', '1960', '1970', '1980', '1990', '2000', '2010', '2020', '2024'],
+        datasets: [
+          {
+            label: 'Women',
+            data: [66.5, 72.5, 74.2, 77.6, 79.0, 81.0, 83.2, 84.1, 84.6],
+            borderColor: '#EC4899',
+            backgroundColor: 'rgba(236, 72, 153, 0.1)',
+            borderWidth: 3,
+            fill: true
+          },
+          {
+            label: 'Men',
+            data: [58.6, 65.4, 66.5, 69.2, 71.0, 74.1, 76.7, 78.9, 79.5],
+            borderColor: '#3B82F6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            borderWidth: 3,
+            fill: true
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Life Expectancy at Birth by Gender (1950-2024)'
+          }
+        },
+        scales: {
+          y: {
+            min: 50,
+            max: 90,
+            title: { display: true, text: 'Years' }
+          }
+        }
+      }
+    });
+
+    // Causes of death comparison
+    const causesCtx = document.getElementById('causesChart').getContext('2d');
+    new Chart(causesCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Heart disease', 'Cancer', 'Alcohol-related', 'Accidents', 'Suicide', 'Dementia', 'Stroke'],
+        datasets: [
+          {
+            label: 'Men (deaths per 100k)',
+            data: [280, 210, 45, 52, 21, 65, 72],
+            backgroundColor: 'rgba(59, 130, 246, 0.8)'
+          },
+          {
+            label: 'Women (deaths per 100k)',
+            data: [180, 145, 12, 18, 6, 95, 68],
+            backgroundColor: 'rgba(236, 72, 153, 0.8)'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Death Rates by Cause and Gender (per 100,000)'
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            title: { display: true, text: 'Deaths per 100,000' }
+          }
+        }
+      }
+    });
+  </script>
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,457 @@
+[
+  {
+    "id": "statfin_tyonv_pxt_12tn.px",
+    "path": "/tyonv",
+    "title": "12tn -- Periods of unemployment ended by reason and by duration of unemployment in each province dur-ing the month (1315), 2008M01-2025M11",
+    "score": 0.6391578,
+    "published": "2025-12-23T08:09:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_12tp.px",
+    "path": "/tyonv",
+    "title": "12tp -- Foreigners periods of unemployment ended by reason and by duration of unemployment in each province during the month (1316), 2008M01-2025M11",
+    "score": 0.6391578,
+    "published": "2025-12-23T08:09:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_12ta.px",
+    "path": "/tyonv",
+    "title": "12ta -- Unemployed jobseekers by duration of unemployment at the end of the month (1207), 2008M01-2025M11",
+    "score": 0.5154454,
+    "published": "2025-12-23T08:06:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_12ts.px",
+    "path": "/tyonv",
+    "title": "12ts -- Unemployment flow over a certain duration in relation to unemployments begun a month earlier (1355), 2008M01-2025M11",
+    "score": 0.483739883,
+    "published": "2025-12-23T08:10:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_135z.px",
+    "path": "/tyti",
+    "title": "135z -- Key indicators of the Labour Force Survey and their seasonal adjusted series and trends adjusted for random and seasonal variation, 2010M01-2025M11",
+    "score": 0.1454867,
+    "published": "2025-12-22T11:31:00"
+  },
+  {
+    "id": "statfin_tjt_pxt_122s.px",
+    "path": "/tjt",
+    "title": "122s -- Household-dwelling units receiving basic social security and selected other transfers by income decile group, 2010-2024",
+    "score": 0.08572885,
+    "published": "2025-12-16T10:48:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_135y.px",
+    "path": "/tyti",
+    "title": "135y -- Population by labour force status, sex and age, monthly data, 2009M01-2025M11",
+    "score": 0.07919292,
+    "published": "2025-12-22T11:31:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_137h.px",
+    "path": "/tyti",
+    "title": "137h -- Population by labour force status, sex and age, quarterly data, 2009Q1-2025Q3",
+    "score": 0.07919292,
+    "published": "2025-10-20T11:52:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_137i.px",
+    "path": "/tyti",
+    "title": "137i -- Population aged 15-74 by labour force status, sex and major region, quarterly data, 2012Q1-2025Q3",
+    "score": 0.07919292,
+    "published": "2025-10-20T11:52:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_13ak.px",
+    "path": "/tyti",
+    "title": "13ak -- Population aged 15-74 by labour force status, sex and major region, 2012-2024",
+    "score": 0.07919292,
+    "published": "2025-01-23T11:55:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_13ge.px",
+    "path": "/tyti",
+    "title": "13ge -- Population aged 15-74 by labour force status and Regional State Administrative Agencies (AVI), monthly data, 2010M01-2025M11",
+    "score": 0.07919292,
+    "published": "2025-12-22T11:31:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_13lw.px",
+    "path": "/tyti",
+    "title": "13lw -- Population aged 15-74 by labour force status and Regional State Administrative Agencies (AVI), quarterly data, 2010Q1-2025Q3",
+    "score": 0.07919292,
+    "published": "2025-10-20T11:52:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_13nx.px",
+    "path": "/tyti",
+    "title": "13nx -- Population aged 20-59 by labour force status, sex and age of youngest child, 2013-2024",
+    "score": 0.07919292,
+    "published": "2025-06-10T09:05:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_13ny.px",
+    "path": "/tyti",
+    "title": "13ny -- Population aged 20-59 by labour force status, sex and number of children, 2013-2024",
+    "score": 0.07919292,
+    "published": "2025-06-10T09:05:00"
+  },
+  {
+    "id": "statfin_kbar_pxt_13ai.px",
+    "path": "/kbar",
+    "title": "13ai -- Consumer confidence: Outlook and changes, 1995M10-2025M12",
+    "score": 0.06999732,
+    "published": "2025-12-22T15:12:00"
+  },
+  {
+    "id": "statfin_kbar_pxt_13ax.px",
+    "path": "/kbar",
+    "title": "13ax -- Consumer confidence: Response distributions and changes, 2019M05-2025M12",
+    "score": 0.0692938045,
+    "published": "2025-12-22T15:12:00"
+  },
+  {
+    "id": "statfin_tjt_pxt_15bu.px",
+    "path": "/tjt",
+    "title": "15bu -- Dwelling population dependent on basic social security and their income level by age, sex and household-dwelling unit's main income source, 2010-2024",
+    "score": 0.0692938045,
+    "published": "2025-12-16T10:48:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_13aj.px",
+    "path": "/tyti",
+    "title": "13aj -- Population by labour force status, sex and age, 2009-2024",
+    "score": 0.0692938045,
+    "published": "2025-01-23T11:55:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_13al.px",
+    "path": "/tyti",
+    "title": "13al -- Population aged 15-74 by labour force status and region, 2009-2024",
+    "score": 0.0692938045,
+    "published": "2025-01-23T11:55:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_13lx.px",
+    "path": "/tyti",
+    "title": "13lx -- Population aged 15-74 by labour force status and region, quarterly data, 2009Q1-2025Q3",
+    "score": 0.0692938045,
+    "published": "2025-10-20T11:52:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_12tk.px",
+    "path": "/tyonv",
+    "title": "12tk -- Jobseekers by occupation and level of education in each province during the month (1310), 2008M01-2025M11",
+    "score": 0.06858308,
+    "published": "2025-12-23T08:08:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_12tm.px",
+    "path": "/tyonv",
+    "title": "12tm -- Foreign jobseekers by occupation and level of education in each province during the month (1314), 2008M01-2025M11",
+    "score": 0.06858308,
+    "published": "2025-12-23T08:09:00"
+  },
+  {
+    "id": "statfin_kvaa_pxt_14yb.px",
+    "path": "/kvaa",
+    "title": "14yb -- Municipal elections, analysis, 2017-2025",
+    "score": 0.06858308,
+    "published": "2025-06-03T12:52:00"
+  },
+  {
+    "id": "statfin_evaa_pxt_13yh.px",
+    "path": "/evaa",
+    "title": "13yh -- Parliamentary elections, analysis, 2019-2023",
+    "score": 0.06858308,
+    "published": "2023-04-13T13:55:00"
+  },
+  {
+    "id": "statfin_kbar_pxt_11cc.px",
+    "path": "/kbar",
+    "title": "11cc -- Consumer confidence: Time series of balance figures and response distributions, 1995M10-2025M12",
+    "score": 0.06709344,
+    "published": "2025-12-22T15:12:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_12u8.px",
+    "path": "/tyonv",
+    "title": "12u8 -- Those participating in work and training trials in each province at the end of the month (5231), 2008M01-2025M11",
+    "score": 0.05939469,
+    "published": "2025-12-23T08:13:00"
+  },
+  {
+    "id": "statfin_kbar_pxt_11vp.px",
+    "path": "/kbar",
+    "title": "11vp -- Consumer confidence by person's gender, 2019M05-2025M12",
+    "score": 0.0559978522,
+    "published": "2025-12-22T15:12:00"
+  },
+  {
+    "id": "statfin_kbar_pxt_11vq.px",
+    "path": "/kbar",
+    "title": "11vq -- Consumer confidence by person's age group, 2019M05-2025M12",
+    "score": 0.0559978522,
+    "published": "2025-12-22T15:12:00"
+  },
+  {
+    "id": "statfin_kbar_pxt_11vr.px",
+    "path": "/kbar",
+    "title": "11vr -- Consumer confidence by person's educational level, 2019M05-2025M12",
+    "score": 0.0559978522,
+    "published": "2025-12-22T15:12:00"
+  },
+  {
+    "id": "statfin_kbar_pxt_11vs.px",
+    "path": "/kbar",
+    "title": "11vs -- Consumer confidence by region, 2019M05-2025M12",
+    "score": 0.0559978522,
+    "published": "2025-12-22T15:12:00"
+  },
+  {
+    "id": "statfin_kbar_pxt_129h.px",
+    "path": "/kbar",
+    "title": "129h -- Consumer confidence by person's socio-economic status, 2019M05-2025M12",
+    "score": 0.0559978522,
+    "published": "2025-12-22T15:12:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_12tr.px",
+    "path": "/tyonv",
+    "title": "12tr -- Ended job seekings and periods in each province during the month (1319), 2008M01-2025M11",
+    "score": 0.0559978522,
+    "published": "2025-12-23T08:10:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_12uy.px",
+    "path": "/tyonv",
+    "title": "12uy -- Jobseekers by occupation and level of education in each province (1510), Tammi-Kesäkuu 2006-2025",
+    "score": 0.05143731,
+    "published": "2025-07-21T08:00:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_12v5.px",
+    "path": "/tyonv",
+    "title": "12v5 -- Jobseekers by occupation and level of education in each province (1510), Tammi-Joulukuu 2006-2024",
+    "score": 0.05143731,
+    "published": "2025-02-24T08:58:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_135e.px",
+    "path": "/tyonv",
+    "title": "135e -- Ended job seekings and periods by occupation during the month (1318), 2008M01-2025M11",
+    "score": 0.04199839,
+    "published": "2025-12-23T08:14:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_12uf.px",
+    "path": "/tyonv",
+    "title": "12uf -- Other services by participant occupation in each province (5415), Tammi-Huhtikuu 2006-2025",
+    "score": 0.03959646,
+    "published": "2025-08-28T11:11:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_12ug.px",
+    "path": "/tyonv",
+    "title": "12ug -- Work and training trial by employment in each province (5431), Tammi-Huhtikuu 2013-2025",
+    "score": 0.03959646,
+    "published": "2025-08-28T11:11:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_12um.px",
+    "path": "/tyonv",
+    "title": "12um -- Other services by participant occupation in each province (5415), Tammi-Elokuu 2006-2025",
+    "score": 0.03959646,
+    "published": "2025-09-22T08:00:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_12un.px",
+    "path": "/tyonv",
+    "title": "12un -- Work and training trial by employment in each province (5431), Tammi-Elokuu 2013-2025",
+    "score": 0.03959646,
+    "published": "2025-09-22T08:00:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_12uu.px",
+    "path": "/tyonv",
+    "title": "12uu -- Other services by participant occupation in each province (5415), Tammi-Joulukuu 2006-2024",
+    "score": 0.03959646,
+    "published": "2025-01-21T07:48:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_12uv.px",
+    "path": "/tyonv",
+    "title": "12uv -- Work and training trial by employment in each province (5431), Tammi-Joulukuu 2013-2024",
+    "score": 0.03959646,
+    "published": "2025-01-21T07:48:00"
+  },
+  {
+    "id": "statfin_tjt_pxt_128c.px",
+    "path": "/tjt",
+    "title": "128c -- Income and income structure of household-dwelling units by income decile, 1995-2024",
+    "score": 0.03959646,
+    "published": "2025-12-16T10:48:00"
+  },
+  {
+    "id": "statfin_tvtutk_pxt_13u7.px",
+    "path": "/tvtutk",
+    "title": "13u7 -- Structure of labour costs by sector, 2012-2020",
+    "score": 0.03959646,
+    "published": "2022-12-19T08:00:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_12tb.px",
+    "path": "/tyonv",
+    "title": "12tb -- Foreign jobseekers by occupation in each province at the end of the month (1208), 2008M01-2025M11",
+    "score": 0.0346469022,
+    "published": "2025-12-23T08:06:00"
+  },
+  {
+    "id": "statfin_tjt_pxt_15at.px",
+    "path": "/tjt",
+    "title": "15at -- Income of household-dwelling units by number of adults and children and by age of the reference person, 1995-2024",
+    "score": 0.0346469022,
+    "published": "2025-12-16T10:48:00"
+  },
+  {
+    "id": "statfin_tvtutk_pxt_13u8.px",
+    "path": "/tvtutk",
+    "title": "13u8 -- Structure of labour costs in the private sector by industry (TOL 2008), 2012-2020",
+    "score": 0.0346469022,
+    "published": "2022-12-19T08:00:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_12tl.px",
+    "path": "/tyonv",
+    "title": "12tl -- Started job seekings and periods by occupation in each province during the month (1311), 2008M01-2025M11",
+    "score": 0.0296973456,
+    "published": "2025-12-23T08:09:00"
+  },
+  {
+    "id": "statfin_vtp_pxt_129d.px",
+    "path": "/vtp",
+    "title": "129d -- General government revenue and expenditure, annually, 1975-2024*",
+    "score": 0.0247477889,
+    "published": "2025-12-18T07:20:00"
+  },
+  {
+    "id": "statfin_tyokay_pxt_115x.px",
+    "path": "/tyokay",
+    "title": "115x -- Key indicators of employment statistics by area, 1987-2024",
+    "score": 0.0247477889,
+    "published": "2025-12-16T08:20:00"
+  },
+  {
+    "id": "statfin_jmete_pxt_12a6.px",
+    "path": "/jmete",
+    "title": "12a6 -- General government expenditure by function, annually, 1990-2024*",
+    "score": 0.0247477889,
+    "published": "2025-12-17T09:07:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_12r5.px",
+    "path": "/tyonv",
+    "title": "12r5 -- Unemployed jobseekers, persons in services and vacant jobs at the end of the month (1001), 2008M01-2025M11",
+    "score": 0.01979823,
+    "published": "2025-12-23T08:13:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_12t8.px",
+    "path": "/tyonv",
+    "title": "12t8 -- Jobseekers by employment code at the end of the month (1205), 2008M01-2025M11",
+    "score": 0.01979823,
+    "published": "2025-12-23T08:06:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_12te.px",
+    "path": "/tyonv",
+    "title": "12te -- Jobseekers by level of education and labour market status at the end of the month (1221), 2008M01-2025M11",
+    "score": 0.01979823,
+    "published": "2025-12-23T08:07:00"
+  },
+  {
+    "id": "statfin_tjt_pxt_118w.px",
+    "path": "/tjt",
+    "title": "118w -- Income and income structure of household-dwelling units by region, 1995-2024",
+    "score": 0.01979823,
+    "published": "2025-12-16T10:48:00"
+  },
+  {
+    "id": "statfin_sutivi_pxt_13ts.px",
+    "path": "/sutivi",
+    "title": "13ts -- Use of information and communications technology by individuals by gender and labour market position, 2013-2025",
+    "score": 0.0173234511,
+    "published": "2025-11-12T13:31:00"
+  },
+  {
+    "id": "statfin_sutivi_pxt_13ud.px",
+    "path": "/sutivi",
+    "title": "13ud -- Use of information and communications technology by individuals by gender, and age group, 2013-2025",
+    "score": 0.0173234511,
+    "published": "2025-11-12T13:31:00"
+  },
+  {
+    "id": "statfin_sutivi_pxt_13v7.px",
+    "path": "/sutivi",
+    "title": "13v7 -- Use of information and communications technology by individuals by gender and level of education, 2013-2025",
+    "score": 0.0173234511,
+    "published": "2025-11-12T13:31:00"
+  },
+  {
+    "id": "statfin_sutivi_pxt_13vd.px",
+    "path": "/sutivi",
+    "title": "13vd -- Use of information and communications technology by individuals by gender, and region, 2013-2025",
+    "score": 0.0173234511,
+    "published": "2025-11-12T13:31:00"
+  },
+  {
+    "id": "statfin_vtp_pxt_11yx.px",
+    "path": "/vtp",
+    "title": "11yx -- Income and expenditure by sector, annually, 1975-2024*",
+    "score": 0.0123738945,
+    "published": "2025-12-18T07:20:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_12tu.px",
+    "path": "/tyonv",
+    "title": "12tu -- Jobseekers and vacancies by occupation in each province during the month (1371), 2008M01-2025M11",
+    "score": 0.0123738945,
+    "published": "2025-12-23T08:11:00"
+  },
+  {
+    "id": "statfin_tyonv_pxt_12tc.px",
+    "path": "/tyonv",
+    "title": "12tc -- Foreign jobseekers by education in each province at the end of the month (1209), 2008M01-2025M11",
+    "score": 0.009899115,
+    "published": "2025-12-23T08:06:00"
+  },
+  {
+    "id": "statfin_syyttr_pxt_13r7.px",
+    "path": "/syyttr",
+    "title": "13r7 -- Sentences by district court and offence (district courts and courts of appeal as first court instance), 2019-2023",
+    "score": 0.006186947,
+    "published": "2024-09-24T10:00:00"
+  },
+  {
+    "id": "statfin_syyttr_pxt_13r8.px",
+    "path": "/syyttr",
+    "title": "13r8 -- Sentences by gender, age and offence (district courts and courts of appeal as first court instance, summary penal orders and fine orders and petty fines), 2019-2023",
+    "score": 0.006186947,
+    "published": "2024-09-24T10:00:00"
+  },
+  {
+    "id": "statfin_rpk_pxt_13gw.px",
+    "path": "/rpk",
+    "title": "13gw -- Offences recorded and their solving by offence heading according to the investigating authority, 2006-2024",
+    "score": 0.006186947,
+    "published": "2025-06-04T20:50:00"
+  },
+  {
+    "id": "statfin_rpk_pxt_13j2.px",
+    "path": "/rpk",
+    "title": "13j2 -- Offences recorded by offence heading according to the month of reporting, preliminary data, 2006M01-2025M09*",
+    "score": 0.006186947,
+    "published": "2025-10-16T08:57:00"
+  }
+]

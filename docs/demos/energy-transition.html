@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finland's Energy Transition - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-blue-600 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm mb-2">energy</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Finland's Energy Transition</h1>
+      <p class="text-lg text-gray-600">The dramatic shift in electricity production: wind power surge, nuclear stability, and declining fossil fuels</p>
+      <p class="text-gray-500 mt-1">Suomen energiamurros - Sähköntuotannon murros: tuulivoiman nousu, ydinvoiman vakaus ja fossiilisten polttoaineiden lasku</p>
+    </header>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Show how Finland's electricity production mix has changed over the last 10 years - compare hydro, wind, solar, and nuclear power"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Call
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">query_table({
+  tableId: "statfin_ehk_pxt_12su.px",
+  selections: [
+    { variable: "Kuukausi", filter: "item", values: ["2015M12", "2016M12", "2017M12", /* ... 10 values */] },
+    { variable: "Sähkön tuotanto/hankinta", filter: "item", values: ["1.1", "1.2", "1.3", "1.4"] },
+    { variable: "Tiedot", filter: "item", values: ["osuus_sahko_kul"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Chart -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Visualization
+      </h2>
+      <div class="chart-container">
+        <canvas id="chart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Data (25 of 40 rows)
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kuukausi</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sähkön tuotanto/hankinta</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tiedot</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">value</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2015M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.1 Vesivoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">18.8</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2015M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.2 Tuulivoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">4.4</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2015M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.3 Aurinkovoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">0</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2015M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.4 Ydinvoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">26.6</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2016M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.1 Vesivoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">12.6</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2016M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.2 Tuulivoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">6.3</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2016M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.3 Aurinkovoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">0</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2016M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.4 Ydinvoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">24.1</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2017M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.1 Vesivoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">16.4</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2017M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.2 Tuulivoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">7.1</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2017M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.3 Aurinkovoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">0</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2017M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.4 Ydinvoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">25.8</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2018M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.1 Vesivoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">11.5</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2018M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.2 Tuulivoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">5.5</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2018M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.3 Aurinkovoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">0</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2018M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.4 Ydinvoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">24.7</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2019M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.1 Vesivoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15.7</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2019M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.2 Tuulivoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">9.2</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2019M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.3 Aurinkovoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">0</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2019M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.4 Ydinvoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">26.6</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2020M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.1 Vesivoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">18.2</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2020M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.2 Tuulivoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">9.5</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2020M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.3 Aurinkovoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">0</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2020M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.4 Ydinvoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">23.5</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2021M12</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1.1 Vesivoima</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Osuus sähkön kokonaiskulutuksesta (%)</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">13.6</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_ehk_pxt_12su.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Total Rows</dt>
+          <dd>40</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Tilastokeskus, energian hankinta ja kulutus</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Updated</dt>
+          <dd>2025-12-17T06:00:00Z</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+  <script>
+    hljs.highlightAll();
+    const ctx = document.getElementById('chart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ["2015M12","2016M12","2017M12","2018M12","2019M12","2020M12","2021M12","2022M12","2023M12","2024M12"],
+        datasets: [{"label":"1.1 Vesivoima","data":[18.8,12.6,16.4,11.5,15.7,18.2,13.6,12.4,15.7,13.1],"borderColor":"rgb(59, 130, 246)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"1.2 Tuulivoima","data":[4.4,6.3,7.1,5.5,9.2,9.5,10.3,17.4,14.8,34.2],"borderColor":"rgb(239, 68, 68)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"1.3 Aurinkovoima","data":[0,0,0,0,0,0,0,0,0,0],"borderColor":"rgb(34, 197, 94)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"1.4 Ydinvoima","data":[26.6,24.1,25.8,24.7,26.6,23.5,22.7,28.5,38,36.8],"borderColor":"rgb(168, 85, 247)","backgroundColor":"transparent","fill":false,"tension":0.1}]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true, position: 'top' },
+          title: { display: true, text: 'Finland\'s Energy Transition' }
+        },
+        scales: {
+          y: { beginAtZero: false }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

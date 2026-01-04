@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StatFin MCP Server - Live Demos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-blue-600 text-white p-4">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-2xl font-bold">Tilastokeskus StatFin MCP Server</h1>
+      <p class="text-blue-100">Live demonstrations of Statistics Finland data queries</p>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <!-- Hero -->
+    <section class="bg-white rounded-lg shadow-lg p-8 mb-8">
+      <h2 class="text-3xl font-bold mb-4">Finnish Statistics at Your Fingertips</h2>
+      <p class="text-lg text-gray-600 mb-6">
+        This MCP server provides AI assistants with access to Statistics Finland's StatFin database -
+        4,500+ statistical tables covering population, employment, housing, economy, and more.
+      </p>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+        <div class="bg-blue-50 rounded-lg p-4">
+          <div class="text-3xl font-bold text-blue-600">7</div>
+          <div class="text-sm text-gray-600">MCP Tools</div>
+        </div>
+        <div class="bg-blue-50 rounded-lg p-4">
+          <div class="text-3xl font-bold text-blue-600">149</div>
+          <div class="text-sm text-gray-600">Subject Areas</div>
+        </div>
+        <div class="bg-blue-50 rounded-lg p-4">
+          <div class="text-3xl font-bold text-blue-600">4,500+</div>
+          <div class="text-sm text-gray-600">Data Tables</div>
+        </div>
+        <div class="bg-blue-50 rounded-lg p-4">
+          <div class="text-3xl font-bold text-blue-600">3</div>
+          <div class="text-sm text-gray-600">Languages</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Demo Cards by Category -->
+    
+    <section class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 capitalize flex items-center gap-2">
+        <span>&#x1F465;</span> population
+      </h3>
+      <div class="grid md:grid-cols-2 gap-4">
+        
+        <a href="demos/helsinki-population.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 ">
+          <h4 class="font-semibold text-lg mb-2">Helsinki Population Trend</h4>
+          <p class="text-gray-600 text-sm mb-2">Track Helsinki's population growth over the last 10 years</p>
+          <p class="text-gray-400 text-xs">Helsingin väestökehitys</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_vaerak_pxt_11re.p...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+        
+        <a href="demos/finland-births.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 ">
+          <h4 class="font-semibold text-lg mb-2">Finland Birth Rate Decline</h4>
+          <p class="text-gray-600 text-sm mb-2">Annual births in Finland showing the demographic shift</p>
+          <p class="text-gray-400 text-xs">Suomen syntyvyyden lasku</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_synt_pxt_12dx.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+        
+        <a href="demos/population-age-structure.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 ">
+          <h4 class="font-semibold text-lg mb-2">Population Age Structure</h4>
+          <p class="text-gray-600 text-sm mb-2">Finland's aging population - comparing age groups over time</p>
+          <p class="text-gray-400 text-xs">Väestön ikärakenne</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_vaerak_pxt_11rc.p...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+        
+        <a href="demos/population-change.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 ">
+          <h4 class="font-semibold text-lg mb-2">Population Change Components</h4>
+          <p class="text-gray-600 text-sm mb-2">Births, deaths, and migration driving population change</p>
+          <p class="text-gray-400 text-xs">Väestömuutoksen osatekijät</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_synt_pxt_12dx.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+        
+        <a href="demos/dependency-ratio-crisis.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 ">
+          <h4 class="font-semibold text-lg mb-2">Dependency Ratio Crisis</h4>
+          <p class="text-gray-600 text-sm mb-2">Working-age population shrinking while elderly grow: Finland's demographic time bomb visualized</p>
+          <p class="text-gray-400 text-xs">Huoltosuhteen kriisi</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_vaerak_pxt_11rc.p...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+        <a href="demos/fertility-regional-paradox.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 border-2 border-pink-200">
+          <span class="inline-block px-2 py-0.5 bg-pink-100 text-pink-800 text-xs rounded mb-2">NEW</span>
+          <h4 class="font-semibold text-lg mb-2">Regional Fertility Paradox</h4>
+          <p class="text-gray-600 text-sm mb-2">Wealthy Helsinki has 1.15 children per woman, struggling Ostrobothnia has 1.85 - why do poorer regions have more babies?</p>
+          <p class="text-gray-400 text-xs">Alueellinen syntyvyysparadoksi</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_synt_pxt_12du.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+    
+    <section class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 capitalize flex items-center gap-2">
+        <span>&#x1F4BC;</span> employment
+      </h3>
+      <div class="grid md:grid-cols-2 gap-4">
+        
+        <a href="demos/unemployment-rate.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 ">
+          <h4 class="font-semibold text-lg mb-2">Unemployment Rate Trend</h4>
+          <p class="text-gray-600 text-sm mb-2">Monthly unemployment rate showing economic cycles and COVID impact</p>
+          <p class="text-gray-400 text-xs">Työttömyysasteen kehitys</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_tyti_pxt_135z.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+        
+        <a href="demos/employment-trend.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 ">
+          <h4 class="font-semibold text-lg mb-2">Employment Rate Trend</h4>
+          <p class="text-gray-600 text-sm mb-2">Working-age employment rate showing labor market changes</p>
+          <p class="text-gray-400 text-xs">Työllisyysasteen kehitys</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_tyti_pxt_135z.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+        
+        <a href="demos/gender-employment-convergence.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 ">
+          <h4 class="font-semibold text-lg mb-2">Gender Employment Gap Convergence</h4>
+          <p class="text-gray-600 text-sm mb-2">How the employment gap between men and women has narrowed - especially during COVID when women caught up</p>
+          <p class="text-gray-400 text-xs">Sukupuolten työllisyyskuilun kaventuminen</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_tyti_pxt_135y.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+        
+        <a href="demos/shrinking-workforce.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 ">
+          <h4 class="font-semibold text-lg mb-2">The Shrinking Workforce</h4>
+          <p class="text-gray-600 text-sm mb-2">Finland has lost 136,000 working-age people since 2010 - tracking the workforce decline</p>
+          <p class="text-gray-400 text-xs">Kutistuva työvoima</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_tyti_pxt_135y.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+        <a href="demos/manager-explosion.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 border-2 border-purple-200">
+          <span class="inline-block px-2 py-0.5 bg-purple-100 text-purple-800 text-xs rounded mb-2">NEW</span>
+          <h4 class="font-semibold text-lg mb-2">The Manager Explosion Paradox</h4>
+          <p class="text-gray-600 text-sm mb-2">Total employment is declining but manager positions are growing by 34% - who are all these managers managing?</p>
+          <p class="text-gray-400 text-xs">Johtajien paradoksi</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_tyti_pxt_13au.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <section class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 capitalize flex items-center gap-2">
+        <span>&#x1F5FA;&#xFE0F;</span> regional
+      </h3>
+      <div class="grid md:grid-cols-2 gap-4">
+        
+        <a href="demos/regional-population.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 ">
+          <h4 class="font-semibold text-lg mb-2">Regional Population Comparison</h4>
+          <p class="text-gray-600 text-sm mb-2">Population in major Finnish cities</p>
+          <p class="text-gray-400 text-xs">Alueellinen väestövertailu</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_vaerak_pxt_11re.p...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+        <a href="demos/rural-depopulation.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 border-2 border-amber-200">
+          <span class="inline-block px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded mb-2">NEW</span>
+          <h4 class="font-semibold text-lg mb-2">Rural Depopulation Crisis</h4>
+          <p class="text-gray-600 text-sm mb-2">100+ municipalities lost 30%+ of their population - Finland is emptying from the inside out</p>
+          <p class="text-gray-400 text-xs">Maaseudun autioituminen</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_vaerak_pxt_11re.p...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <section class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 capitalize flex items-center gap-2">
+        <span>&#x2708;&#xFE0F;</span> migration
+      </h3>
+      <div class="grid md:grid-cols-2 gap-4">
+        
+        <a href="demos/migration-balance.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 ">
+          <h4 class="font-semibold text-lg mb-2">International Migration Balance</h4>
+          <p class="text-gray-600 text-sm mb-2">Immigration, emigration and net migration over 25 years</p>
+          <p class="text-gray-400 text-xs">Kansainvälinen muuttotase</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_synt_pxt_12dx.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+        
+        <a href="demos/immigration-compensates-births.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 ">
+          <h4 class="font-semibold text-lg mb-2">Immigration Compensates Declining Births</h4>
+          <p class="text-gray-600 text-sm mb-2">Natural population change goes negative while net migration keeps Finland growing</p>
+          <p class="text-gray-400 text-xs">Maahanmuutto kompensoi syntyvyyden laskua</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_synt_pxt_12dx.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+        <a href="demos/brain-drain.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 border-2 border-indigo-200">
+          <span class="inline-block px-2 py-0.5 bg-indigo-100 text-indigo-800 text-xs rounded mb-2">NEW</span>
+          <h4 class="font-semibold text-lg mb-2">Brain Drain</h4>
+          <p class="text-gray-600 text-sm mb-2">15,000 Finns leave every year - educated youth fleeing to Sweden, UK, and US for opportunity</p>
+          <p class="text-gray-400 text-xs">Aivovuoto</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_muutl_pxt_11a1.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <section class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 capitalize flex items-center gap-2">
+        <span>&#x26A1;</span> energy
+      </h3>
+      <div class="grid md:grid-cols-2 gap-4">
+        
+        <a href="demos/energy-transition.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 ">
+          <h4 class="font-semibold text-lg mb-2">Finland's Energy Transition</h4>
+          <p class="text-gray-600 text-sm mb-2">The dramatic shift in electricity production: wind power surge, nuclear stability, and declining fossil fuels</p>
+          <p class="text-gray-400 text-xs">Suomen energiamurros</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_ehk_pxt_12su.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+        <a href="demos/co2-emissions-collapse.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 border-2 border-emerald-200">
+          <span class="inline-block px-2 py-0.5 bg-emerald-100 text-emerald-800 text-xs rounded mb-2">NEW</span>
+          <h4 class="font-semibold text-lg mb-2">CO2 Emissions Collapse</h4>
+          <p class="text-gray-600 text-sm mb-2">From 70 to 35 million tonnes: How Finland halved emissions while the economy grew</p>
+          <p class="text-gray-400 text-xs">CO2-päästöjen romahdus</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_ehk_pxt_12z8.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+    
+    <section class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 capitalize flex items-center gap-2">
+        <span>&#x1F3E0;</span> housing
+      </h3>
+      <div class="grid md:grid-cols-2 gap-4">
+        
+        <a href="demos/housing-price-divergence.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 ">
+          <h4 class="font-semibold text-lg mb-2">Housing Market Divergence</h4>
+          <p class="text-gray-600 text-sm mb-2">The great divide: Helsinki apartment prices rising while other regions stagnate or decline</p>
+          <p class="text-gray-400 text-xs">Asuntomarkkinoiden eriytyminen</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_ashi_pxt_13mv.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+        <a href="demos/single-person-households.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 border-2 border-orange-200">
+          <span class="inline-block px-2 py-0.5 bg-orange-100 text-orange-800 text-xs rounded mb-2">NEW</span>
+          <h4 class="font-semibold text-lg mb-2">Rise of Single-Person Households</h4>
+          <p class="text-gray-600 text-sm mb-2">From 25% to 47% of households: Finland's dramatic shift toward living alone over four decades</p>
+          <p class="text-gray-400 text-xs">Yksinasumisen vallankumous</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_asas_pxt_116a.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <section class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 capitalize flex items-center gap-2">
+        <span>&#x1F697;</span> transport
+      </h3>
+      <div class="grid md:grid-cols-2 gap-4">
+
+        <a href="demos/electric-vehicle-revolution.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 border-2 border-green-200">
+          <span class="inline-block px-2 py-0.5 bg-green-100 text-green-800 text-xs rounded mb-2">NEW</span>
+          <h4 class="font-semibold text-lg mb-2">Electric Vehicle Revolution</h4>
+          <p class="text-gray-600 text-sm mb-2">From 0.1% to 20%+ in 10 years: exponential growth of electric cars as diesel peaks and declines</p>
+          <p class="text-gray-400 text-xs">Sähköautojen vallankumous</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_mkan_pxt_11ie.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+        <a href="demos/road-death-miracle.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 border-2 border-blue-200">
+          <span class="inline-block px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded mb-2">NEW</span>
+          <h4 class="font-semibold text-lg mb-2">Road Death Miracle</h4>
+          <p class="text-gray-600 text-sm mb-2">From 1,200 deaths (1972) to 170 (2024): The silent public health victory - 85% reduction while driving quadrupled</p>
+          <p class="text-gray-400 text-xs">Tieliikennekuolemien romahdus</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_ton_pxt_11bh.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <section class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 capitalize flex items-center gap-2">
+        <span>&#x1F491;</span> society
+      </h3>
+      <div class="grid md:grid-cols-2 gap-4">
+
+        <a href="demos/divorce-marriage-trends.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 border-2 border-red-200">
+          <span class="inline-block px-2 py-0.5 bg-red-100 text-red-800 text-xs rounded mb-2">NEW</span>
+          <h4 class="font-semibold text-lg mb-2">The Death of Marriage?</h4>
+          <p class="text-gray-600 text-sm mb-2">Marriage rates halved since 1990, but divorces also dropped - what does Finland's changing relationship with marriage mean?</p>
+          <p class="text-gray-400 text-xs">Avioliiton kriisi</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_synt_pxt_12dx.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+        <a href="demos/single-parent-explosion.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 border-2 border-pink-200">
+          <span class="inline-block px-2 py-0.5 bg-pink-100 text-pink-800 text-xs rounded mb-2">NEW</span>
+          <h4 class="font-semibold text-lg mb-2">Single Parent Explosion</h4>
+          <p class="text-gray-600 text-sm mb-2">One in five children now lives with a single parent - up from one in ten in 1990</p>
+          <p class="text-gray-400 text-xs">Yksinhuoltajaperheiden räjähdys</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_perh_pxt_12c2.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <section class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 capitalize flex items-center gap-2">
+        <span>&#x1F4B0;</span> economy
+      </h3>
+      <div class="grid md:grid-cols-2 gap-4">
+
+        <a href="demos/household-debt-crisis.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 border-2 border-yellow-200">
+          <span class="inline-block px-2 py-0.5 bg-yellow-100 text-yellow-800 text-xs rounded mb-2">NEW</span>
+          <h4 class="font-semibold text-lg mb-2">Household Debt Crisis</h4>
+          <p class="text-gray-600 text-sm mb-2">Young adults (25-34) now carry 285% debt-to-income ratio - a generational wealth trap or just housing prices?</p>
+          <p class="text-gray-400 text-xs">Kotitalouksien velkakriisi</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_velk_pxt_157q.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+        <a href="demos/government-debt-explosion.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 border-2 border-amber-200">
+          <span class="inline-block px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded mb-2">NEW</span>
+          <h4 class="font-semibold text-lg mb-2">Government Debt Explosion</h4>
+          <p class="text-gray-600 text-sm mb-2">From 32% to 80% of GDP in 16 years: Finland's debt trajectory has become unsustainable</p>
+          <p class="text-gray-400 text-xs">Valtion velan räjähdys</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_jali_pxt_122g.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+        <a href="demos/inequality-myth.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 border-2 border-orange-200">
+          <span class="inline-block px-2 py-0.5 bg-orange-100 text-orange-800 text-xs rounded mb-2">NEW</span>
+          <h4 class="font-semibold text-lg mb-2">The Inequality Myth?</h4>
+          <p class="text-gray-600 text-sm mb-2">Gini coefficient barely moved in 20 years - yet everyone believes inequality is exploding</p>
+          <p class="text-gray-400 text-xs">Eriarvoisuusmyytti</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_tjt_pxt_11x3.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <section class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 capitalize flex items-center gap-2">
+        <span>&#x1F6A8;</span> crime
+      </h3>
+      <div class="grid md:grid-cols-2 gap-4">
+
+        <a href="demos/crime-under-influence.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 border-2 border-rose-200">
+          <span class="inline-block px-2 py-0.5 bg-rose-100 text-rose-800 text-xs rounded mb-2">NEW</span>
+          <h4 class="font-semibold text-lg mb-2">Crime Under The Influence</h4>
+          <p class="text-gray-600 text-sm mb-2">62% of Finnish violent crimes involve intoxicated suspects - alcohol's hidden cost to society visualized</p>
+          <p class="text-gray-400 text-xs">Päihderikokset</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_rpk_pxt_13jh.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+        <a href="demos/fraud-explosion.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 border-2 border-purple-200">
+          <span class="inline-block px-2 py-0.5 bg-purple-100 text-purple-800 text-xs rounded mb-2">NEW</span>
+          <h4 class="font-semibold text-lg mb-2">The Fraud Explosion</h4>
+          <p class="text-gray-600 text-sm mb-2">Fraud tripled in 10 years while violent crime dropped - the new face of crime is digital</p>
+          <p class="text-gray-400 text-xs">Petosrikokset</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_rpk_pxt_13ex.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <section class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 capitalize flex items-center gap-2">
+        <span>&#x1F3E5;</span> health
+      </h3>
+      <div class="grid md:grid-cols-2 gap-4">
+
+        <a href="demos/suicide-gender-gap.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 border-2 border-slate-200">
+          <span class="inline-block px-2 py-0.5 bg-slate-100 text-slate-800 text-xs rounded mb-2">NEW</span>
+          <h4 class="font-semibold text-lg mb-2">Male Suicide Epidemic</h4>
+          <p class="text-gray-600 text-sm mb-2">Men die by suicide at 3.5x the rate of women - the gender gap nobody talks about</p>
+          <p class="text-gray-400 text-xs">Miesten itsemurhaepidemia</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_ksyyt_pxt_11by.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+        <a href="demos/drug-deaths-crisis.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 border-2 border-pink-200">
+          <span class="inline-block px-2 py-0.5 bg-pink-100 text-pink-800 text-xs rounded mb-2">NEW</span>
+          <h4 class="font-semibold text-lg mb-2">Drug Deaths Crisis</h4>
+          <p class="text-gray-600 text-sm mb-2">Drug overdose deaths tripled since 2006 - Finland has EU's highest rate for young adults</p>
+          <p class="text-gray-400 text-xs">Huumekuolemien kriisi</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_ksyyt_pxt_12d9.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+        <a href="demos/life-expectancy-gap.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 border-2 border-teal-200">
+          <span class="inline-block px-2 py-0.5 bg-teal-100 text-teal-800 text-xs rounded mb-2">NEW</span>
+          <h4 class="font-semibold text-lg mb-2">Life Expectancy Gender Gap</h4>
+          <p class="text-gray-600 text-sm mb-2">Men die 5 years younger than women - biology or lifestyle choices? The gap is slowly closing</p>
+          <p class="text-gray-400 text-xs">Elinajanodotteen sukupuoliero</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_kuol_pxt_12am.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <section class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 capitalize flex items-center gap-2">
+        <span>&#x1F393;</span> education
+      </h3>
+      <div class="grid md:grid-cols-2 gap-4">
+
+        <a href="demos/education-revolution.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 border-2 border-violet-200">
+          <span class="inline-block px-2 py-0.5 bg-violet-100 text-violet-800 text-xs rounded mb-2">NEW</span>
+          <h4 class="font-semibold text-lg mb-2">The Education Revolution</h4>
+          <p class="text-gray-600 text-sm mb-2">Women now earn 60% of university degrees - the education gender gap has flipped completely</p>
+          <p class="text-gray-400 text-xs">Koulutuksen vallankumous</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_vkour_pxt_12bq.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <section class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 capitalize flex items-center gap-2">
+        <span>&#x1F5F3;&#xFE0F;</span> elections
+      </h3>
+      <div class="grid md:grid-cols-2 gap-4">
+
+        <a href="demos/youth-voting-crisis.html" class="block bg-white rounded-lg shadow hover:shadow-lg transition p-6 border-2 border-cyan-200">
+          <span class="inline-block px-2 py-0.5 bg-cyan-100 text-cyan-800 text-xs rounded mb-2">NEW</span>
+          <h4 class="font-semibold text-lg mb-2">Youth Voting Crisis</h4>
+          <p class="text-gray-600 text-sm mb-2">50% of young adults vote vs 85% of elderly - democracy is decided by those who will see least of the future</p>
+          <p class="text-gray-400 text-xs">Nuorten äänestyskriisi</p>
+          <div class="mt-4 flex justify-between items-center">
+            <code class="text-xs bg-gray-100 px-2 py-1 rounded">statfin_evaa_pxt_13ys.px...</code>
+            <span class="text-green-500 text-sm">&#x2713; Live data</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="bg-white rounded-lg shadow-lg p-8 mb-8">
+      <h3 class="text-2xl font-bold mb-6">How It Works</h3>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="text-center">
+          <div class="text-4xl mb-3">&#x1F4AC;</div>
+          <h4 class="font-semibold mb-2">1. Ask a Question</h4>
+          <p class="text-gray-600 text-sm">"What is Helsinki's population trend?"</p>
+        </div>
+        <div class="text-center">
+          <div class="text-4xl mb-3">&#x1F50D;</div>
+          <h4 class="font-semibold mb-2">2. AI Searches</h4>
+          <p class="text-gray-600 text-sm">Claude uses search_statistics to find relevant tables</p>
+        </div>
+        <div class="text-center">
+          <div class="text-4xl mb-3">&#x1F4CA;</div>
+          <h4 class="font-semibold mb-2">3. Get Data</h4>
+          <p class="text-gray-600 text-sm">query_table fetches and presents the statistics</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MCP Tools -->
+    <section class="bg-white rounded-lg shadow-lg p-8 mb-8">
+      <h3 class="text-2xl font-bold mb-6">Available MCP Tools</h3>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="border rounded-lg p-4">
+          <h4 class="font-semibold text-blue-600">search_statistics</h4>
+          <p class="text-sm text-gray-600">Full-text search across 4,500+ statistical tables</p>
+        </div>
+        <div class="border rounded-lg p-4">
+          <h4 class="font-semibold text-blue-600">list_subject_areas</h4>
+          <p class="text-sm text-gray-600">Browse all 149 topic categories</p>
+        </div>
+        <div class="border rounded-lg p-4">
+          <h4 class="font-semibold text-blue-600">list_tables</h4>
+          <p class="text-sm text-gray-600">List all tables in a subject area</p>
+        </div>
+        <div class="border rounded-lg p-4">
+          <h4 class="font-semibold text-blue-600">get_table_metadata</h4>
+          <p class="text-sm text-gray-600">Get table structure, variables, and codes</p>
+        </div>
+        <div class="border rounded-lg p-4">
+          <h4 class="font-semibold text-blue-600">get_variable_values</h4>
+          <p class="text-sm text-gray-600">Get all possible values for a variable</p>
+        </div>
+        <div class="border rounded-lg p-4">
+          <h4 class="font-semibold text-blue-600">query_table</h4>
+          <p class="text-sm text-gray-600">Execute data queries with filters</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Installation -->
+    <section class="bg-gray-800 text-white rounded-lg p-8">
+      <h3 class="text-2xl font-bold mb-4">Quick Start</h3>
+      <pre class="bg-gray-900 rounded p-4 overflow-x-auto text-sm"><code>{
+  "mcpServers": {
+    "statfin": {
+      "command": "node",
+      "args": ["/path/to/statfin-mcp/dist/server.js"]
+    }
+  }
+}</code></pre>
+      <p class="mt-4 text-gray-300">Add to your Claude Desktop configuration to get started.</p>
+    </section>
+  </main>
+
+  <footer class="bg-gray-100 p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center text-gray-600">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="mt-2">Built with the Model Context Protocol (MCP)</p>
+    </div>
+  </footer>
+</body>
+</html>

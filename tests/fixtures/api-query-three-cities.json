@@ -1,0 +1,196 @@
+{
+  "version": "2.0",
+  "class": "dataset",
+  "label": "Väestö 31.12. muuttujina Alue, Ikä, Sukupuoli, Vuosi ja Tiedot",
+  "source": "Tilastokeskus, väestörakenne",
+  "updated": "2025-04-04T05:00:00Z",
+  "note": [
+    "<A HREF='https://stat.fi/tilasto/dokumentaatio/vaerak' TARGET=_blank>Tilaston dokumentaatio</A>",
+    "<A HREF=http://guides.stat.fi/historiallisentilastotiedonopas TARGET=_blank>Historiallisen tilastotiedon opas, ks. linkki</A>\r\n \r\n Väestötilastoja vuodesta 1750 lähtien on digitoitu pdf-muotoon Kansalliskirjaston Doria-palveluun:\r\n <A HREF=http://www.doria.fi/handle/10024/67161 TARGET=_blank>  Väestörakenne ja Väestönmuutokset -julkaisuja Doriassa</A>\r\n <A HREF=http://www.doria.fi/handle/10024/67160 TARGET=_blank>  Väestölaskenta-julkaisuja Doriassa</A>\r\n \r\n ---"
+  ],
+  "role": {
+    "time": [
+      "Vuosi"
+    ],
+    "geo": [
+      "Alue"
+    ],
+    "metric": [
+      "Tiedot"
+    ]
+  },
+  "id": [
+    "Alue",
+    "Ikä",
+    "Sukupuoli",
+    "Vuosi",
+    "Tiedot"
+  ],
+  "size": [
+    3,
+    1,
+    1,
+    1,
+    1
+  ],
+  "dimension": {
+    "Alue": {
+      "label": "Alue",
+      "note": [
+        "Tilastossa käytetään 1.1.2025 aluejakoa koko aikasarjassa. Alueliitoskuntien tiedot yhdistetty. Osakuntaliitoksia ei ole huomioitu liitosta edeltävinä vuosina."
+      ],
+      "category": {
+        "index": {
+          "KU049": 0,
+          "KU091": 1,
+          "KU092": 2
+        },
+        "label": {
+          "KU049": "Espoo",
+          "KU091": "Helsinki",
+          "KU092": "Vantaa"
+        }
+      },
+      "extension": {
+        "elimination": false,
+        "show": "value"
+      },
+      "link": {
+        "describedby": [
+          {
+            "extension": {
+              "Alue": "SCALE-TYPE=nominal"
+            }
+          }
+        ]
+      }
+    },
+    "Ikä": {
+      "label": "Ikä",
+      "note": [
+        "Ikä tarkoittaa henkilön ikää kokonaisina vuosina vuoden viimeisenä päivänä."
+      ],
+      "category": {
+        "index": {
+          "SSS": 0
+        },
+        "label": {
+          "SSS": "Yhteensä"
+        }
+      },
+      "extension": {
+        "elimination": true,
+        "eliminationValueCode": "SSS",
+        "show": "value"
+      },
+      "link": {
+        "describedby": [
+          {
+            "extension": {
+              "Ikä": "SCALE-TYPE=ordinal"
+            }
+          }
+        ]
+      }
+    },
+    "Sukupuoli": {
+      "label": "Sukupuoli",
+      "category": {
+        "index": {
+          "SSS": 0
+        },
+        "label": {
+          "SSS": "Yhteensä"
+        }
+      },
+      "extension": {
+        "elimination": true,
+        "eliminationValueCode": "SSS",
+        "show": "value"
+      },
+      "link": {
+        "describedby": [
+          {
+            "extension": {
+              "Sukupuoli": "SCALE-TYPE=nominal"
+            }
+          }
+        ]
+      }
+    },
+    "Vuosi": {
+      "label": "Vuosi",
+      "category": {
+        "index": {
+          "2024": 0
+        },
+        "label": {
+          "2024": "2024"
+        }
+      },
+      "extension": {
+        "elimination": false,
+        "show": "value"
+      }
+    },
+    "Tiedot": {
+      "label": "Tiedot",
+      "category": {
+        "index": {
+          "vaesto": 0
+        },
+        "label": {
+          "vaesto": "Väestö 31.12."
+        },
+        "note": {
+          "vaesto": [
+            "Väkiluku tilastoajanjakson lopussa."
+          ]
+        },
+        "unit": {
+          "vaesto": {
+            "decimals": 0
+          }
+        }
+      },
+      "extension": {
+        "elimination": false,
+        "show": "value"
+      }
+    }
+  },
+  "extension": {
+    "px": {
+      "tableid": "statfin_vaerak_pxt_11re",
+      "decimals": 0,
+      "official-statistics": true,
+      "aggregallowed": true,
+      "language": "fi",
+      "contents": "Väestö 31.12.",
+      "description": "11re -- Väestö iän (1-v.) ja sukupuolen mukaan alueittain, 1972-2024",
+      "descriptiondefault": false,
+      "heading": [
+        "Sukupuoli",
+        "Vuosi",
+        "Tiedot"
+      ],
+      "stub": [
+        "Alue",
+        "Ikä"
+      ],
+      "matrix": "001_11re_2024",
+      "subject-code": "VAERAK",
+      "subject-area": "vaerak"
+    },
+    "contact": [
+      {
+        "raw": "<A HREF='https://stat.fi/tilasto/vaerak' TARGET=_blank>Tilaston kotisivu</A>"
+      }
+    ]
+  },
+  "value": [
+    320931,
+    684018,
+    251269
+  ]
+}

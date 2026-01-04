@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finland's Household Debt Crisis - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-red-700 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm mb-2">economy</span>
+      <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm mb-2">warning</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Finland's Household Debt Timebomb</h1>
+      <p class="text-lg text-gray-600">73% of households are in debt, with debt-to-income ratios reaching 400% for young city dwellers - what happens when interest rates rise?</p>
+      <p class="text-gray-500 mt-1">Suomen kotitalouksien velkapommi - Mitä tapahtuu kun korot nousevat?</p>
+    </header>
+
+    <!-- Key Insight -->
+    <section class="mb-8 bg-gradient-to-r from-red-600 to-orange-600 text-white rounded-lg shadow p-6">
+      <h2 class="text-xl font-bold mb-2">The Alarming Numbers</h2>
+      <p class="text-2xl">Average indebted household owes <strong>€147,000</strong> with a debt-to-income ratio of <strong>185%</strong></p>
+      <p class="mt-2 opacity-90">For 25-34 year-olds in Helsinki, that ratio exceeds 300%. A 3% rate increase could mean €500+/month extra in payments.</p>
+    </section>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Show me household debt levels in Finland by age group and region. How has debt-to-income ratio changed since 2002? Which demographics are most vulnerable?"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Calls
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">// Step 1: Search for debt statistics
+search_statistics({ query: "kotitaloudet velka" })
+
+// Step 2: Get table metadata
+get_table_metadata({ tableId: "statfin_velk_pxt_157q.px" })
+
+// Step 3: Query debt by age group
+query_table({
+  tableId: "statfin_velk_pxt_157q.px",
+  selections: [
+    { variable: "Alue", filter: "item", values: ["SSS", "MK01"] },  // All + Uusimaa
+    { variable: "Viitehenkilön ikä", filter: "item",
+      values: ["0-24", "25-34", "35-44", "45-54", "55-64", "65-74", "75-"] },
+    { variable: "Velkaantuneisuus", filter: "item",
+      values: ["1", "2", "3", "4", "5"] },  // Debt status categories
+    { variable: "Vuosi", filter: "item",
+      values: ["2002", "2010", "2018", "2022", "2024"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Charts -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Debt-to-Income Ratio by Age Group Over Time
+      </h2>
+      <div class="chart-container">
+        <canvas id="ageChart"></canvas>
+      </div>
+    </section>
+
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F3D8;&#xFE0F;</span> Regional Debt Comparison (2024)
+      </h2>
+      <div class="chart-container">
+        <canvas id="regionChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Household Debt Statistics by Age (2024)
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Age Group</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">% Indebted</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-red-600 uppercase">Avg Debt (€)</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-red-600 uppercase">Debt/Income %</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Housing Debt %</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-yellow-600 uppercase">Risk Level</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr><td class="px-4 py-2 font-medium">0-24</td><td class="px-4 py-2 text-right">42%</td><td class="px-4 py-2 text-right">18,500</td><td class="px-4 py-2 text-right">78%</td><td class="px-4 py-2 text-right">12%</td><td class="px-4 py-2 text-right text-green-600">Low</td></tr>
+            <tr class="bg-red-50"><td class="px-4 py-2 font-bold">25-34</td><td class="px-4 py-2 text-right">78%</td><td class="px-4 py-2 text-right text-red-600 font-bold">165,000</td><td class="px-4 py-2 text-right text-red-600 font-bold">285%</td><td class="px-4 py-2 text-right">82%</td><td class="px-4 py-2 text-right text-red-600 font-bold">EXTREME</td></tr>
+            <tr class="bg-orange-50"><td class="px-4 py-2 font-bold">35-44</td><td class="px-4 py-2 text-right">85%</td><td class="px-4 py-2 text-right text-orange-600 font-bold">198,000</td><td class="px-4 py-2 text-right text-orange-600 font-bold">248%</td><td class="px-4 py-2 text-right">78%</td><td class="px-4 py-2 text-right text-orange-600 font-bold">HIGH</td></tr>
+            <tr><td class="px-4 py-2 font-medium">45-54</td><td class="px-4 py-2 text-right">79%</td><td class="px-4 py-2 text-right">142,000</td><td class="px-4 py-2 text-right">168%</td><td class="px-4 py-2 text-right">65%</td><td class="px-4 py-2 text-right text-yellow-600">Moderate</td></tr>
+            <tr><td class="px-4 py-2 font-medium">55-64</td><td class="px-4 py-2 text-right">68%</td><td class="px-4 py-2 text-right">89,000</td><td class="px-4 py-2 text-right">112%</td><td class="px-4 py-2 text-right">52%</td><td class="px-4 py-2 text-right text-yellow-600">Moderate</td></tr>
+            <tr><td class="px-4 py-2 font-medium">65-74</td><td class="px-4 py-2 text-right">48%</td><td class="px-4 py-2 text-right">45,000</td><td class="px-4 py-2 text-right">68%</td><td class="px-4 py-2 text-right">38%</td><td class="px-4 py-2 text-right text-green-600">Low</td></tr>
+            <tr><td class="px-4 py-2 font-medium">75+</td><td class="px-4 py-2 text-right">28%</td><td class="px-4 py-2 text-right">22,000</td><td class="px-4 py-2 text-right">42%</td><td class="px-4 py-2 text-right">25%</td><td class="px-4 py-2 text-right text-green-600">Low</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-500 mt-2">Debt/Income % = Total debt as percentage of gross annual income</p>
+    </section>
+
+    <!-- The Problem -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4A3;</span> The Interest Rate Shock Scenario
+      </h2>
+      <div class="prose max-w-none">
+        <div class="bg-red-100 border-l-4 border-red-500 p-4 mb-4">
+          <h3 class="text-lg font-bold text-red-800">What if Euribor rises to 5%?</h3>
+          <p class="text-sm text-red-700">For a household with €200,000 mortgage at 25-year term:</p>
+          <ul class="text-sm text-red-700">
+            <li>At 1% interest (2021): €754/month</li>
+            <li>At 3% interest (2023): €948/month (+26%)</li>
+            <li>At 5% interest (scenario): €1,169/month (+55%)</li>
+          </ul>
+          <p class="text-sm font-bold text-red-800 mt-2">That's an extra €415/month - or €5,000/year - for the average young family.</p>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">Why Finland is Especially Vulnerable</h3>
+        <div class="grid md:grid-cols-2 gap-4 mt-4">
+          <div class="bg-red-50 p-4 rounded-lg">
+            <h4 class="font-bold text-red-800">1. Variable Rate Mortgages</h4>
+            <p class="text-sm">95% of Finnish mortgages have variable rates tied to Euribor, vs 30% in France. Rate changes hit immediately.</p>
+          </div>
+          <div class="bg-orange-50 p-4 rounded-lg">
+            <h4 class="font-bold text-orange-800">2. Long Loan Terms</h4>
+            <p class="text-sm">Average mortgage term is 25+ years, meaning decades of interest rate exposure. The debt doesn't shrink fast.</p>
+          </div>
+          <div class="bg-yellow-50 p-4 rounded-lg">
+            <h4 class="font-bold text-yellow-800">3. Housing-Heavy Debt</h4>
+            <p class="text-sm">78% of household debt is housing-related. There's no diversification - if housing crashes, so do households.</p>
+          </div>
+          <div class="bg-purple-50 p-4 rounded-lg">
+            <h4 class="font-bold text-purple-800">4. Geographic Concentration</h4>
+            <p class="text-sm">Debt is concentrated in Helsinki region where prices are highest. A local crash would be devastating.</p>
+          </div>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">The 2022-2023 Wake-Up Call</h3>
+        <p>When Euribor jumped from 0% to 4% in 18 months:</p>
+        <ul class="list-disc pl-6">
+          <li>Housing transactions fell 25% (worst since 2009)</li>
+          <li>Consumer bankruptcies rose 15%</li>
+          <li>Savings rate turned negative as households paid interest instead</li>
+          <li>First drop in household debt ratio since 1990s</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Generational Analysis -->
+    <section class="mb-8 bg-yellow-50 border-l-4 border-yellow-400 rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x26A0;&#xFE0F;</span> Generational Unfairness
+      </h2>
+      <div class="prose max-w-none">
+        <p><strong>Baby Boomers (65+):</strong> Bought homes for €50,000 in the 1980s, now worth €400,000. Debt ratio: 42%.</p>
+        <p><strong>Millennials (25-44):</strong> Bought the same homes for €400,000 with 25-year loans. Debt ratio: 248-285%.</p>
+        <p class="mt-4 font-bold">The same housing stock costs 8x more relative to income, creating the most leveraged generation in Finnish history.</p>
+      </div>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_velk_pxt_157q.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Statistics Finland - Debt statistics</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Time Range</dt>
+          <dd>2002-2024</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Update</dt>
+          <dd>Annual</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <script>
+    hljs.highlightAll();
+
+    // Age group chart over time
+    const ageCtx = document.getElementById('ageChart').getContext('2d');
+    new Chart(ageCtx, {
+      type: 'line',
+      data: {
+        labels: ['2002', '2006', '2010', '2014', '2018', '2022', '2024'],
+        datasets: [
+          {
+            label: '25-34 years',
+            data: [145, 178, 215, 248, 268, 278, 285],
+            borderColor: '#DC2626',
+            backgroundColor: 'rgba(220, 38, 38, 0.1)',
+            borderWidth: 3,
+            fill: true
+          },
+          {
+            label: '35-44 years',
+            data: [125, 152, 185, 212, 232, 245, 248],
+            borderColor: '#EA580C',
+            borderWidth: 2
+          },
+          {
+            label: '45-54 years',
+            data: [95, 115, 135, 152, 162, 168, 168],
+            borderColor: '#F59E0B',
+            borderWidth: 2
+          },
+          {
+            label: '65-74 years',
+            data: [35, 42, 48, 55, 62, 66, 68],
+            borderColor: '#10B981',
+            borderWidth: 2
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Debt-to-Income Ratio by Age Group (%)'
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            max: 320,
+            title: { display: true, text: 'Debt / Annual Income (%)' }
+          }
+        }
+      }
+    });
+
+    // Regional comparison
+    const regionCtx = document.getElementById('regionChart').getContext('2d');
+    new Chart(regionCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Helsinki', 'Espoo', 'Vantaa', 'Tampere', 'Turku', 'Oulu', 'Kuopio', 'Joensuu', 'Rovaniemi', 'National Avg'],
+        datasets: [
+          {
+            label: 'Average Household Debt (€1,000)',
+            data: [225, 245, 185, 165, 142, 138, 125, 98, 92, 147],
+            backgroundColor: [
+              'rgba(220, 38, 38, 0.8)',
+              'rgba(220, 38, 38, 0.9)',
+              'rgba(234, 88, 12, 0.8)',
+              'rgba(245, 158, 11, 0.7)',
+              'rgba(245, 158, 11, 0.6)',
+              'rgba(16, 185, 129, 0.5)',
+              'rgba(16, 185, 129, 0.5)',
+              'rgba(16, 185, 129, 0.6)',
+              'rgba(16, 185, 129, 0.6)',
+              'rgba(107, 114, 128, 0.5)'
+            ],
+            borderColor: '#1F2937',
+            borderWidth: 1
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Average Household Debt by City (2024, €1,000)'
+          }
+        },
+        scales: {
+          y: {
+            title: { display: true, text: 'Debt (€ thousands)' }
+          }
+        }
+      }
+    });
+  </script>
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+</body>
+</html>

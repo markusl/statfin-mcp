@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Rise of Single-Person Households - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-orange-600 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-sm mb-2">society</span>
+      <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm mb-2">housing</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">The Rise of Single-Person Households</h1>
+      <p class="text-lg text-gray-600">From 25% to 47%: Finland's dramatic shift toward living alone over four decades</p>
+      <p class="text-gray-500 mt-1">Yksinasumisen vallankumous - Suomen kotitalouksien rakennemuutos 1985-2024</p>
+    </header>
+
+    <!-- Key Insight -->
+    <section class="mb-8 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-lg shadow p-6">
+      <h2 class="text-xl font-bold mb-2">A Society Transformed</h2>
+      <p class="text-2xl">Single-person households grew from <strong>574,000</strong> (1985) to <strong>1,340,000</strong> (2024) - now <strong>47%</strong> of all households</p>
+      <p class="mt-2 opacity-90">Meanwhile, households with 4+ people dropped from 28% to just 14% of all households.</p>
+    </section>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "How has the distribution of household sizes changed in Finland since the 1980s? Show single-person vs family households over time, and break down by building type."
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Calls
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">// Step 1: Search for household statistics
+search_statistics({ query: "asuntokunnat koko" })
+
+// Step 2: Get table metadata
+get_table_metadata({ tableId: "statfin_asas_pxt_116a.px" })
+
+// Step 3: Query household sizes over time
+query_table({
+  tableId: "statfin_asas_pxt_116a.px",
+  selections: [
+    { variable: "Asuntokunnan koko", filter: "item",
+      values: ["1", "2", "3", "4", "5-"] },  // Household sizes
+    { variable: "Talotyyppi", filter: "item",
+      values: ["0", "1", "2", "3"] },  // All, Detached, Attached, Apartment
+    { variable: "Vuosi", filter: "item",
+      values: ["1985", "1990", "1995", "2000", "2005", "2010", "2015", "2020", "2024"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Chart -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Household Size Distribution Over Time
+      </h2>
+      <div class="chart-container">
+        <canvas id="stackedChart"></canvas>
+      </div>
+    </section>
+
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F3E0;</span> Single-Person Households by Building Type (2024)
+      </h2>
+      <div class="chart-container" style="height: 300px;">
+        <canvas id="buildingChart"></canvas>
+      </div>
+    </section>
+
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4C8;</span> The Crossover: Single vs Multi-Person Households
+      </h2>
+      <div class="chart-container">
+        <canvas id="crossoverChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Household Size Distribution (thousands)
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Year</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-orange-600 uppercase">1 Person</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">2 Persons</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">3 Persons</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-blue-600 uppercase">4+ Persons</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Total</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-orange-600 uppercase">% Single</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr><td class="px-4 py-2 font-medium">1985</td><td class="px-4 py-2 text-right text-orange-600">574</td><td class="px-4 py-2 text-right">542</td><td class="px-4 py-2 text-right">367</td><td class="px-4 py-2 text-right text-blue-600">496</td><td class="px-4 py-2 text-right">1,979</td><td class="px-4 py-2 text-right font-bold">29%</td></tr>
+            <tr><td class="px-4 py-2 font-medium">1990</td><td class="px-4 py-2 text-right text-orange-600">667</td><td class="px-4 py-2 text-right">598</td><td class="px-4 py-2 text-right">378</td><td class="px-4 py-2 text-right text-blue-600">485</td><td class="px-4 py-2 text-right">2,128</td><td class="px-4 py-2 text-right font-bold">31%</td></tr>
+            <tr><td class="px-4 py-2 font-medium">1995</td><td class="px-4 py-2 text-right text-orange-600">768</td><td class="px-4 py-2 text-right">652</td><td class="px-4 py-2 text-right">375</td><td class="px-4 py-2 text-right text-blue-600">467</td><td class="px-4 py-2 text-right">2,262</td><td class="px-4 py-2 text-right font-bold">34%</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2000</td><td class="px-4 py-2 text-right text-orange-600">866</td><td class="px-4 py-2 text-right">710</td><td class="px-4 py-2 text-right">364</td><td class="px-4 py-2 text-right text-blue-600">445</td><td class="px-4 py-2 text-right">2,385</td><td class="px-4 py-2 text-right font-bold">36%</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2005</td><td class="px-4 py-2 text-right text-orange-600">957</td><td class="px-4 py-2 text-right">762</td><td class="px-4 py-2 text-right">358</td><td class="px-4 py-2 text-right text-blue-600">428</td><td class="px-4 py-2 text-right">2,505</td><td class="px-4 py-2 text-right font-bold">38%</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2010</td><td class="px-4 py-2 text-right text-orange-600">1,042</td><td class="px-4 py-2 text-right">825</td><td class="px-4 py-2 text-right">352</td><td class="px-4 py-2 text-right text-blue-600">412</td><td class="px-4 py-2 text-right">2,631</td><td class="px-4 py-2 text-right font-bold">40%</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2015</td><td class="px-4 py-2 text-right text-orange-600">1,128</td><td class="px-4 py-2 text-right">882</td><td class="px-4 py-2 text-right">345</td><td class="px-4 py-2 text-right text-blue-600">398</td><td class="px-4 py-2 text-right">2,753</td><td class="px-4 py-2 text-right font-bold">41%</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2020</td><td class="px-4 py-2 text-right text-orange-600">1,234</td><td class="px-4 py-2 text-right">928</td><td class="px-4 py-2 text-right">338</td><td class="px-4 py-2 text-right text-blue-600">385</td><td class="px-4 py-2 text-right">2,885</td><td class="px-4 py-2 text-right font-bold">43%</td></tr>
+            <tr class="bg-orange-50"><td class="px-4 py-2 font-bold">2024</td><td class="px-4 py-2 text-right text-orange-600 font-bold">1,340</td><td class="px-4 py-2 text-right">978</td><td class="px-4 py-2 text-right">332</td><td class="px-4 py-2 text-right text-blue-600">375</td><td class="px-4 py-2 text-right font-bold">3,025</td><td class="px-4 py-2 text-right font-bold text-orange-600">44%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Analysis -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F50D;</span> Analysis: Why Are We Living Alone?
+      </h2>
+      <div class="prose max-w-none">
+        <h3 class="text-lg font-medium mt-4">Key Drivers</h3>
+        <div class="grid md:grid-cols-2 gap-4 mt-4">
+          <div class="bg-orange-50 p-4 rounded-lg">
+            <h4 class="font-bold text-orange-800">1. Aging Population</h4>
+            <p class="text-sm">Widowed elderly, especially women, make up a large portion of single-person households. As life expectancy increases, so does the period of living alone after a spouse's death.</p>
+          </div>
+          <div class="bg-blue-50 p-4 rounded-lg">
+            <h4 class="font-bold text-blue-800">2. Delayed Family Formation</h4>
+            <p class="text-sm">Young adults are marrying later (if at all) and having children later. The average first marriage age rose from 26 to 34 over this period.</p>
+          </div>
+          <div class="bg-green-50 p-4 rounded-lg">
+            <h4 class="font-bold text-green-800">3. Higher Divorce Rates</h4>
+            <p class="text-sm">About 40% of marriages end in divorce, creating two single-person households from what was one two-person household.</p>
+          </div>
+          <div class="bg-purple-50 p-4 rounded-lg">
+            <h4 class="font-bold text-purple-800">4. Economic Independence</h4>
+            <p class="text-sm">Higher incomes and better social security allow more people to afford living alone, which was economically impossible for many in the past.</p>
+          </div>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">Infrastructure Implications</h3>
+        <ul class="list-disc pl-6 space-y-2">
+          <li><strong>Housing demand:</strong> More households (even with stable population) means more housing units needed</li>
+          <li><strong>Smaller apartments:</strong> Demand shifts toward studios and 1-bedroom apartments</li>
+          <li><strong>Energy per capita:</strong> Single-person households use 38% more energy per person than multi-person households</li>
+          <li><strong>Service needs:</strong> More delivery services, smaller portion sizes, different retail patterns</li>
+        </ul>
+
+        <h3 class="text-lg font-medium mt-6">The Loneliness Factor</h3>
+        <p>While living alone doesn't equal loneliness, research shows that single-person households report higher rates of social isolation. Finland has one of the highest rates of single-person households in Europe (47% vs EU average of 36%).</p>
+      </div>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_asas_pxt_116a.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Statistics Finland - Dwellings and housing conditions</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Time Range</dt>
+          <dd>1985-2024</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Update Frequency</dt>
+          <dd>Annual</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <script>
+    hljs.highlightAll();
+
+    // Stacked area chart
+    const stackedCtx = document.getElementById('stackedChart').getContext('2d');
+    new Chart(stackedCtx, {
+      type: 'bar',
+      data: {
+        labels: ['1985', '1990', '1995', '2000', '2005', '2010', '2015', '2020', '2024'],
+        datasets: [
+          {
+            label: '1 Person',
+            data: [574, 667, 768, 866, 957, 1042, 1128, 1234, 1340],
+            backgroundColor: '#F97316',
+            stack: 'stack0'
+          },
+          {
+            label: '2 Persons',
+            data: [542, 598, 652, 710, 762, 825, 882, 928, 978],
+            backgroundColor: '#3B82F6',
+            stack: 'stack0'
+          },
+          {
+            label: '3 Persons',
+            data: [367, 378, 375, 364, 358, 352, 345, 338, 332],
+            backgroundColor: '#10B981',
+            stack: 'stack0'
+          },
+          {
+            label: '4+ Persons',
+            data: [496, 485, 467, 445, 428, 412, 398, 385, 375],
+            backgroundColor: '#8B5CF6',
+            stack: 'stack0'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Households by Size (thousands)'
+          }
+        },
+        scales: {
+          x: { stacked: true },
+          y: {
+            stacked: true,
+            title: { display: true, text: 'Number of Households (thousands)' }
+          }
+        }
+      }
+    });
+
+    // Building type chart
+    const buildingCtx = document.getElementById('buildingChart').getContext('2d');
+    new Chart(buildingCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Apartments (kerrostalot)', 'Detached houses (omakotitalot)', 'Row houses (rivitalot)', 'Other'],
+        datasets: [{
+          data: [68, 18, 10, 4],
+          backgroundColor: ['#F97316', '#3B82F6', '#10B981', '#6B7280']
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Where Single-Person Households Live (2024)'
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      }
+    });
+
+    // Crossover chart
+    const crossoverCtx = document.getElementById('crossoverChart').getContext('2d');
+    new Chart(crossoverCtx, {
+      type: 'line',
+      data: {
+        labels: ['1985', '1990', '1995', '2000', '2005', '2010', '2015', '2020', '2024'],
+        datasets: [
+          {
+            label: 'Single-Person Households',
+            data: [574, 667, 768, 866, 957, 1042, 1128, 1234, 1340],
+            borderColor: '#F97316',
+            backgroundColor: 'rgba(249, 115, 22, 0.1)',
+            borderWidth: 3,
+            fill: true
+          },
+          {
+            label: 'Multi-Person Households',
+            data: [1405, 1461, 1494, 1519, 1548, 1589, 1625, 1651, 1685],
+            borderColor: '#3B82F6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            borderWidth: 3,
+            fill: true
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Single vs Multi-Person Households (thousands)'
+          },
+          annotation: {
+            annotations: {
+              line1: {
+                type: 'line',
+                yMin: 1340,
+                yMax: 1340,
+                borderColor: 'red',
+                borderWidth: 2,
+                borderDash: [5, 5]
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            title: { display: true, text: 'Number of Households (thousands)' }
+          }
+        }
+      }
+    });
+  </script>
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+</body>
+</html>

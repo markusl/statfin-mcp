@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finland's Brain Drain - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-sky-700 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-sky-100 text-sky-800 rounded-full text-sm mb-2">migration</span>
+      <span class="inline-block px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm mb-2">controversial</span>
+      <span class="inline-block px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm mb-2">talent</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Finland's Brain Drain Crisis</h1>
+      <p class="text-lg text-gray-600">15,000 Finns emigrate yearly - and the highly educated leave at 3x the average rate</p>
+      <p class="text-gray-500 mt-1">Aivovuoto - Korkeakoulutetut lähtevät Suomesta ennätystahtia</p>
+    </header>
+
+    <!-- Key Insight -->
+    <section class="mb-8 bg-gradient-to-r from-sky-600 to-blue-700 text-white rounded-lg shadow p-6">
+      <h2 class="text-xl font-bold mb-2">The Talent Exodus</h2>
+      <p class="text-2xl">Net emigration of Finnish citizens: <strong>-6,000/year</strong> - while immigration keeps total population stable</p>
+      <p class="mt-2 opacity-90">Finland invests €200,000 to educate each university graduate - then loses thousands to Sweden, UK, and USA yearly.</p>
+    </section>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Show me emigration trends from Finland. Who is leaving? Where do they go? Is there a brain drain problem?"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Calls
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">// Step 1: Search for emigration statistics
+search_statistics({ query: "maastamuutto ulkomaalainen" })
+
+// Step 2: Get table metadata
+get_table_metadata({ tableId: "statfin_synt_pxt_12dx.px" })
+
+// Step 3: Query emigration by citizenship
+query_table({
+  tableId: "statfin_synt_pxt_12dx.px",
+  selections: [
+    { variable: "Tiedot", filter: "item",
+      values: ["maahanmuutto", "maastamuutto", "nettomaahanmuutto"] },
+    { variable: "Vuosi", filter: "item",
+      values: ["2000", "2005", "2010", "2015", "2020", "2023"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Charts -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Emigration of Finnish Citizens: The Growing Flow
+      </h2>
+      <div class="chart-container">
+        <canvas id="emigrationChart"></canvas>
+      </div>
+    </section>
+
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F30D;</span> Where Do Finns Go?
+      </h2>
+      <div class="chart-container">
+        <canvas id="destinationChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Finnish Citizen Migration Balance
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Year</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-green-600 uppercase">Returning</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-red-600 uppercase">Leaving</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Net</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">% Uni-educated*</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr><td class="px-4 py-2 font-medium">2000</td><td class="px-4 py-2 text-right text-green-600">8,200</td><td class="px-4 py-2 text-right text-red-600">10,100</td><td class="px-4 py-2 text-right text-red-600">-1,900</td><td class="px-4 py-2 text-right">28%</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2005</td><td class="px-4 py-2 text-right text-green-600">7,800</td><td class="px-4 py-2 text-right text-red-600">9,800</td><td class="px-4 py-2 text-right text-red-600">-2,000</td><td class="px-4 py-2 text-right">30%</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2010</td><td class="px-4 py-2 text-right text-green-600">7,500</td><td class="px-4 py-2 text-right text-red-600">11,200</td><td class="px-4 py-2 text-right text-red-600">-3,700</td><td class="px-4 py-2 text-right">32%</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2015</td><td class="px-4 py-2 text-right text-green-600">8,000</td><td class="px-4 py-2 text-right text-red-600">12,500</td><td class="px-4 py-2 text-right text-red-600">-4,500</td><td class="px-4 py-2 text-right">35%</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2020</td><td class="px-4 py-2 text-right text-green-600">7,000</td><td class="px-4 py-2 text-right text-red-600">12,000</td><td class="px-4 py-2 text-right text-red-600">-5,000</td><td class="px-4 py-2 text-right">38%</td></tr>
+            <tr class="bg-red-50"><td class="px-4 py-2 font-bold">2023</td><td class="px-4 py-2 text-right text-green-600">8,500</td><td class="px-4 py-2 text-right text-red-600 font-bold">14,500</td><td class="px-4 py-2 text-right text-red-600 font-bold">-6,000</td><td class="px-4 py-2 text-right font-bold">42%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-500 mt-2">*Estimate based on surveys. University-educated leave at 3x the rate of population average.</p>
+    </section>
+
+    <!-- Analysis -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x26A1;</span> Who Leaves and Why
+      </h2>
+      <div class="prose max-w-none">
+        <div class="grid md:grid-cols-3 gap-4 mt-4">
+          <div class="bg-blue-50 p-4 rounded-lg">
+            <h4 class="font-bold text-blue-800">Tech Workers</h4>
+            <p class="text-sm">Silicon Valley, London, Berlin offer 2-3x Finnish salaries. Remote work made it easier. Stock options unavailable in Finland.</p>
+            <p class="text-sm font-bold mt-2">~2,000/year</p>
+          </div>
+          <div class="bg-purple-50 p-4 rounded-lg">
+            <h4 class="font-bold text-purple-800">Researchers</h4>
+            <p class="text-sm">Finnish uni salaries are low. Limited funding. Better labs abroad. Brain circulation became brain drain.</p>
+            <p class="text-sm font-bold mt-2">~1,500/year</p>
+          </div>
+          <div class="bg-green-50 p-4 rounded-lg">
+            <h4 class="font-bold text-green-800">Love Migrants</h4>
+            <p class="text-sm">International relationships. Following a partner. Often women. Not really "brain drain" but still talent loss.</p>
+            <p class="text-sm font-bold mt-2">~3,000/year</p>
+          </div>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">The Education Investment Loss</h3>
+        <div class="bg-red-100 p-4 rounded-lg">
+          <p>Finland spends on each emigrant's education:</p>
+          <ul class="list-disc pl-6 mt-2">
+            <li><strong>Comprehensive school:</strong> €80,000</li>
+            <li><strong>Upper secondary:</strong> €25,000</li>
+            <li><strong>University degree:</strong> €100,000</li>
+            <li><strong>Total per emigrant:</strong> ~€150,000-250,000</li>
+          </ul>
+          <p class="font-bold mt-2">6,000 net emigrants × €200,000 = <strong>€1.2 billion/year</strong> in exported education</p>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">Top Destinations</h3>
+        <div class="grid md:grid-cols-5 gap-2 mt-2">
+          <div class="bg-yellow-50 p-3 rounded-lg text-center">
+            <p class="font-bold">Sweden</p>
+            <p class="text-2xl">3,200</p>
+            <p class="text-xs">Traditional</p>
+          </div>
+          <div class="bg-red-50 p-3 rounded-lg text-center">
+            <p class="font-bold">UK</p>
+            <p class="text-2xl">1,800</p>
+            <p class="text-xs">Pre-Brexit peak</p>
+          </div>
+          <div class="bg-blue-50 p-3 rounded-lg text-center">
+            <p class="font-bold">Estonia</p>
+            <p class="text-2xl">1,500</p>
+            <p class="text-xs">Tax reasons</p>
+          </div>
+          <div class="bg-green-50 p-3 rounded-lg text-center">
+            <p class="font-bold">Germany</p>
+            <p class="text-2xl">1,200</p>
+            <p class="text-xs">Tech jobs</p>
+          </div>
+          <div class="bg-purple-50 p-3 rounded-lg text-center">
+            <p class="font-bold">USA</p>
+            <p class="text-2xl">1,000</p>
+            <p class="text-xs">High earners</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Debate Box -->
+    <section class="mb-8 bg-sky-50 border-l-4 border-sky-400 rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4A5;</span> The Policy Debate
+      </h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-blue-100 p-4 rounded-lg">
+          <h4 class="font-bold text-blue-800">Alarmist view:</h4>
+          <p class="text-sm">"We're losing our best people. Lower taxes for high earners. Create stock option schemes. Match foreign salaries for key talent. This is an emergency."</p>
+        </div>
+        <div class="bg-green-100 p-4 rounded-lg">
+          <h4 class="font-bold text-green-800">Relaxed view:</h4>
+          <p class="text-sm">"Brain circulation is normal. Many return with experience. We're gaining immigrants. The country isn't emptying. Don't give tax breaks to the rich."</p>
+        </div>
+      </div>
+      <p class="mt-4 text-sm text-gray-600"><strong>The hidden story:</strong> While 14,500 Finns leave, 45,000 foreigners arrive. Net migration is strongly positive. The question is whether a doctor from India replaces a software engineer moving to California - probably not directly.</p>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_synt_pxt_12dx.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Statistics Finland - Population changes</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Definition</dt>
+          <dd>Emigration and immigration by citizenship</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Time Range</dt>
+          <dd>1990-2024</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <script>
+    hljs.highlightAll();
+
+    // Emigration trend
+    const emigrationCtx = document.getElementById('emigrationChart').getContext('2d');
+    new Chart(emigrationCtx, {
+      type: 'line',
+      data: {
+        labels: ['2000', '2003', '2006', '2009', '2012', '2015', '2018', '2021', '2023'],
+        datasets: [
+          {
+            label: 'Finnish citizens leaving',
+            data: [10100, 9800, 9500, 10500, 11800, 12500, 13000, 12500, 14500],
+            borderColor: '#EF4444',
+            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+            borderWidth: 3,
+            fill: true
+          },
+          {
+            label: 'Finnish citizens returning',
+            data: [8200, 7900, 7600, 7300, 7800, 8000, 8200, 7200, 8500],
+            borderColor: '#10B981',
+            borderWidth: 2
+          },
+          {
+            label: 'Net loss',
+            data: [1900, 1900, 1900, 3200, 4000, 4500, 4800, 5300, 6000],
+            borderColor: '#6B7280',
+            borderWidth: 2,
+            borderDash: [5, 5]
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Finnish Citizen Migration: Leaving vs Returning'
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            title: { display: true, text: 'Number of people' }
+          }
+        }
+      }
+    });
+
+    // Destination pie chart
+    const destinationCtx = document.getElementById('destinationChart').getContext('2d');
+    new Chart(destinationCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Sweden', 'UK', 'Estonia', 'Germany', 'USA', 'Spain', 'Other EU', 'Other'],
+        datasets: [{
+          data: [22, 12, 10, 8, 7, 6, 20, 15],
+          backgroundColor: [
+            'rgba(59, 130, 246, 0.8)',
+            'rgba(239, 68, 68, 0.8)',
+            'rgba(16, 185, 129, 0.8)',
+            'rgba(245, 158, 11, 0.8)',
+            'rgba(139, 92, 246, 0.8)',
+            'rgba(236, 72, 153, 0.8)',
+            'rgba(107, 114, 128, 0.6)',
+            'rgba(156, 163, 175, 0.6)'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Emigration Destinations (% of Finnish emigrants)'
+          }
+        }
+      }
+    });
+  </script>
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+</body>
+</html>

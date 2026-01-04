@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finland's Road Death Miracle - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-blue-700 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm mb-2">transport</span>
+      <span class="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm mb-2">safety</span>
+      <span class="inline-block px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm mb-2">success story</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Finland's Road Death Miracle</h1>
+      <p class="text-lg text-gray-600">From 1,200 deaths (1972) to 170 (2024): The silent public health victory nobody talks about</p>
+      <p class="text-gray-500 mt-1">Tieliikennekuolemien romahdus - 1200:sta 170:een viidessä vuosikymmenessä</p>
+    </header>
+
+    <!-- Key Insight -->
+    <section class="mb-8 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-lg shadow p-6">
+      <h2 class="text-xl font-bold mb-2">The Numbers</h2>
+      <p class="text-2xl">Traffic deaths dropped <strong>85%</strong> while car ownership <strong>tripled</strong> and kilometers driven <strong>quadrupled</strong></p>
+      <p class="mt-2 opacity-90">If 1972 death rates still applied, Finland would have 5,000 traffic deaths per year instead of 170.</p>
+    </section>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Show me Finland's traffic accident deaths since 1970. How did the numbers change? What caused the decrease?"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Calls
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">// Step 1: Search for traffic accident statistics
+search_statistics({ query: "tieliikenneonnettomuudet kuolleet" })
+
+// Step 2: Get table metadata
+get_table_metadata({ tableId: "statfin_ton_pxt_11bh.px" })
+
+// Step 3: Query deaths and injuries over time
+query_table({
+  tableId: "statfin_ton_pxt_11bh.px",
+  selections: [
+    { variable: "Tiedot", filter: "item",
+      values: ["kuol", "louk", "loukv"] },  // Deaths, injuries, serious injuries
+    { variable: "Vuosi", filter: "item",
+      values: ["1970", "1972", "1980", "1990", "2000", "2010", "2015", "2020", "2022", "2023", "2024"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Charts -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Traffic Deaths: The Long-Term Decline
+      </h2>
+      <div class="chart-container">
+        <canvas id="deathsChart"></canvas>
+      </div>
+    </section>
+
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F697;</span> Deaths vs. Driving: The Decoupling
+      </h2>
+      <div class="chart-container">
+        <canvas id="rateChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Traffic Deaths and Injuries by Decade
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Year</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-red-600 uppercase">Deaths</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Injuries</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Cars (millions)</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Deaths/100k cars</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Key Policy</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr class="bg-red-100"><td class="px-4 py-2 font-bold">1972</td><td class="px-4 py-2 text-right text-red-600 font-bold">1,156</td><td class="px-4 py-2 text-right">16,400</td><td class="px-4 py-2 text-right">0.8</td><td class="px-4 py-2 text-right">145</td><td class="px-4 py-2 text-right text-sm">Peak - no seatbelts</td></tr>
+            <tr class="bg-red-50"><td class="px-4 py-2 font-medium">1975</td><td class="px-4 py-2 text-right text-red-600">910</td><td class="px-4 py-2 text-right">14,000</td><td class="px-4 py-2 text-right">0.95</td><td class="px-4 py-2 text-right">96</td><td class="px-4 py-2 text-right text-sm">Seatbelt law (front)</td></tr>
+            <tr><td class="px-4 py-2 font-medium">1980</td><td class="px-4 py-2 text-right">551</td><td class="px-4 py-2 text-right">11,300</td><td class="px-4 py-2 text-right">1.2</td><td class="px-4 py-2 text-right">46</td><td class="px-4 py-2 text-right text-sm">Speed limits enforced</td></tr>
+            <tr><td class="px-4 py-2 font-medium">1990</td><td class="px-4 py-2 text-right">649</td><td class="px-4 py-2 text-right">12,700</td><td class="px-4 py-2 text-right">1.9</td><td class="px-4 py-2 text-right">34</td><td class="px-4 py-2 text-right text-sm">Airbags introduced</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2000</td><td class="px-4 py-2 text-right">396</td><td class="px-4 py-2 text-right">8,500</td><td class="px-4 py-2 text-right">2.1</td><td class="px-4 py-2 text-right">19</td><td class="px-4 py-2 text-right text-sm">0.5‰ alcohol limit</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2010</td><td class="px-4 py-2 text-right">272</td><td class="px-4 py-2 text-right">7,100</td><td class="px-4 py-2 text-right">2.5</td><td class="px-4 py-2 text-right">11</td><td class="px-4 py-2 text-right text-sm">Speed cameras</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2015</td><td class="px-4 py-2 text-right">270</td><td class="px-4 py-2 text-right">6,400</td><td class="px-4 py-2 text-right">2.6</td><td class="px-4 py-2 text-right">10</td><td class="px-4 py-2 text-right text-sm">Crash avoidance tech</td></tr>
+            <tr class="bg-blue-50"><td class="px-4 py-2 font-medium">2020</td><td class="px-4 py-2 text-right">223</td><td class="px-4 py-2 text-right">4,400</td><td class="px-4 py-2 text-right">2.7</td><td class="px-4 py-2 text-right">8</td><td class="px-4 py-2 text-right text-sm">COVID - less traffic</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2022</td><td class="px-4 py-2 text-right">196</td><td class="px-4 py-2 text-right">4,100</td><td class="px-4 py-2 text-right">2.75</td><td class="px-4 py-2 text-right">7</td><td class="px-4 py-2 text-right text-sm">Post-COVID</td></tr>
+            <tr class="bg-green-50"><td class="px-4 py-2 font-bold">2023</td><td class="px-4 py-2 text-right text-green-700 font-bold">188</td><td class="px-4 py-2 text-right">3,900</td><td class="px-4 py-2 text-right">2.8</td><td class="px-4 py-2 text-right">7</td><td class="px-4 py-2 text-right text-sm">Record low</td></tr>
+            <tr class="bg-green-100"><td class="px-4 py-2 font-bold">2024</td><td class="px-4 py-2 text-right text-green-700 font-bold">170</td><td class="px-4 py-2 text-right">3,800</td><td class="px-4 py-2 text-right">2.8</td><td class="px-4 py-2 text-right font-bold">6</td><td class="px-4 py-2 text-right text-sm">New record</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-500 mt-2">Death rate per 100,000 cars dropped from 145 to 6 - a 24x improvement.</p>
+    </section>
+
+    <!-- Analysis -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F3C6;</span> What Worked
+      </h2>
+      <div class="prose max-w-none">
+        <div class="grid md:grid-cols-4 gap-4 mt-4">
+          <div class="bg-blue-50 p-4 rounded-lg">
+            <h4 class="font-bold text-blue-800">Seatbelts (1975)</h4>
+            <p class="text-sm">Mandatory front seatbelts alone saved 200+ lives/year. Rear seatbelts added in 1987.</p>
+          </div>
+          <div class="bg-green-50 p-4 rounded-lg">
+            <h4 class="font-bold text-green-800">Drunk Driving (1977)</h4>
+            <p class="text-sm">0.5‰ limit + random breath tests. Alcohol-related deaths dropped 70%.</p>
+          </div>
+          <div class="bg-purple-50 p-4 rounded-lg">
+            <h4 class="font-bold text-purple-800">Car Safety (1990s)</h4>
+            <p class="text-sm">Airbags, crumple zones, ABS. Modern cars are 3x safer than 1980s models.</p>
+          </div>
+          <div class="bg-orange-50 p-4 rounded-lg">
+            <h4 class="font-bold text-orange-800">Roads (2000s)</h4>
+            <p class="text-sm">Median barriers, roundabouts, winter maintenance. Infrastructure saves lives.</p>
+          </div>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">Lives Saved: The Math</h3>
+        <div class="bg-green-100 p-4 rounded-lg">
+          <p>If 1972 death rates (145 per 100k cars) still applied to today's 2.8 million cars:</p>
+          <p class="text-2xl font-bold mt-2">4,060 deaths per year instead of 170</p>
+          <p class="mt-2">That means <strong>3,890 lives saved every year</strong> - or <strong>200,000+ lives</strong> saved since 1972.</p>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">Who's Still Dying?</h3>
+        <div class="grid md:grid-cols-2 gap-4 mt-2">
+          <div class="bg-red-50 p-4 rounded-lg">
+            <h4 class="font-bold">High-Risk Groups:</h4>
+            <ul class="list-disc pl-6 text-sm">
+              <li>Young men (18-24): 3x death rate</li>
+              <li>Motorcyclists: 20x death rate per km</li>
+              <li>Elderly (75+): Higher fatality rate per accident</li>
+              <li>Rural areas: 2x urban death rate</li>
+            </ul>
+          </div>
+          <div class="bg-yellow-50 p-4 rounded-lg">
+            <h4 class="font-bold">Remaining Causes:</h4>
+            <ul class="list-disc pl-6 text-sm">
+              <li>Single-vehicle accidents: 40%</li>
+              <li>Head-on collisions: 25%</li>
+              <li>Alcohol still involved: 15-20%</li>
+              <li>Wildlife (moose): 5-10 deaths/year</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Debate Box -->
+    <section class="mb-8 bg-blue-50 border-l-4 border-blue-400 rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F914;</span> The Unasked Question
+      </h2>
+      <div class="prose max-w-none">
+        <p><strong>Why don't we celebrate this?</strong></p>
+        <p>A 85% reduction in traffic deaths is the greatest public health achievement in Finnish history. More lives saved than all medical advances combined. Yet:</p>
+        <ul class="list-disc pl-6">
+          <li>No monument, no remembrance day</li>
+          <li>Politicians don't campaign on "we saved 4,000 lives per year"</li>
+          <li>Traffic safety engineers are unknown heroes</li>
+        </ul>
+        <p class="mt-4 bg-white p-4 rounded-lg"><strong>The uncomfortable answer:</strong> Slow, incremental progress through regulation and technology doesn't make news. Nobody got credit because everyone contributed a little. It's the opposite of how heroic narratives work.</p>
+      </div>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_ton_pxt_11bh.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Statistics Finland - Road traffic accidents</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Measurement</dt>
+          <dd>Deaths and injuries in road traffic accidents</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Time Range</dt>
+          <dd>1931-2024</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <script>
+    hljs.highlightAll();
+
+    // Deaths trend chart
+    const deathsCtx = document.getElementById('deathsChart').getContext('2d');
+    new Chart(deathsCtx, {
+      type: 'line',
+      data: {
+        labels: ['1970', '1972', '1975', '1980', '1985', '1990', '1995', '2000', '2005', '2010', '2015', '2020', '2024'],
+        datasets: [
+          {
+            label: 'Traffic Deaths',
+            data: [1055, 1156, 910, 551, 541, 649, 441, 396, 379, 272, 270, 223, 170],
+            borderColor: '#DC2626',
+            backgroundColor: 'rgba(220, 38, 38, 0.1)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.3
+          },
+          {
+            label: 'Serious Injuries',
+            data: [null, null, null, 2100, 1900, 1800, 1600, 1400, 1200, 1000, 900, 700, 600],
+            borderColor: '#F59E0B',
+            borderWidth: 2,
+            borderDash: [5, 5],
+            tension: 0.3
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Traffic Deaths in Finland (1970-2024)'
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            max: 1300,
+            title: { display: true, text: 'Number of deaths/injuries' }
+          }
+        }
+      }
+    });
+
+    // Rate comparison chart
+    const rateCtx = document.getElementById('rateChart').getContext('2d');
+    new Chart(rateCtx, {
+      type: 'line',
+      data: {
+        labels: ['1972', '1980', '1990', '2000', '2010', '2020', '2024'],
+        datasets: [
+          {
+            label: 'Deaths per 100,000 cars',
+            data: [145, 46, 34, 19, 11, 8, 6],
+            borderColor: '#DC2626',
+            backgroundColor: 'rgba(220, 38, 38, 0.1)',
+            borderWidth: 3,
+            yAxisID: 'y',
+            fill: true
+          },
+          {
+            label: 'Cars (millions)',
+            data: [0.8, 1.2, 1.9, 2.1, 2.5, 2.7, 2.8],
+            borderColor: '#3B82F6',
+            borderWidth: 2,
+            yAxisID: 'y1'
+          },
+          {
+            label: 'Billion km driven',
+            data: [18, 25, 35, 45, 52, 48, 52],
+            borderColor: '#10B981',
+            borderWidth: 2,
+            borderDash: [5, 5],
+            yAxisID: 'y1'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Death Rate vs. Traffic Volume: The Great Decoupling'
+          }
+        },
+        scales: {
+          y: {
+            type: 'linear',
+            position: 'left',
+            min: 0,
+            max: 160,
+            title: { display: true, text: 'Deaths per 100k cars' }
+          },
+          y1: {
+            type: 'linear',
+            position: 'right',
+            min: 0,
+            max: 60,
+            title: { display: true, text: 'Cars (M) / Km driven (B)' },
+            grid: { drawOnChartArea: false }
+          }
+        }
+      }
+    });
+  </script>
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finland's Regional Fertility Paradox - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-pink-600 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-pink-100 text-pink-800 rounded-full text-sm mb-2">demographics</span>
+      <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm mb-2">regional</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Finland's Regional Fertility Paradox</h1>
+      <p class="text-lg text-gray-600">Where jobs are scarce, babies are plentiful: The surprising inverse relationship between economic prosperity and birth rates</p>
+      <p class="text-gray-500 mt-1">Alueellinen syntyvyysparadoksi - Miksi heikoimmin menestyvissä maakunnissa syntyy eniten lapsia?</p>
+    </header>
+
+    <!-- Key Insight -->
+    <section class="mb-8 bg-gradient-to-r from-pink-500 to-rose-600 text-white rounded-lg shadow p-6">
+      <h2 class="text-xl font-bold mb-2">The Paradox</h2>
+      <p class="text-2xl">Ostrobothnia (Pohjanmaa) has a fertility rate of <strong>1.85</strong> while Helsinki has only <strong>1.15</strong></p>
+      <p class="mt-2 opacity-90">Yet Helsinki has the highest incomes and best career opportunities. What explains this 60% fertility gap?</p>
+    </section>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Compare fertility rates across Finnish regions. Which regions have the highest and lowest birth rates? How have they changed over the past 30 years?"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Calls
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">// Step 1: Search for fertility statistics
+search_statistics({ query: "kokonaishedelmällisyys maakunta" })
+
+// Step 2: Get table metadata
+get_table_metadata({ tableId: "statfin_synt_pxt_12du.px" })
+
+// Step 3: Query regional fertility rates
+query_table({
+  tableId: "statfin_synt_pxt_12du.px",
+  selections: [
+    { variable: "Maakunta", filter: "item",
+      values: ["MK01", "MK02", "MK04", "MK05", "MK06", "MK07", "MK08",
+               "MK09", "MK10", "MK11", "MK12", "MK13", "MK14", "MK15",
+               "MK16", "MK17", "MK18", "MK19"] },
+    { variable: "Tiedot", filter: "item", values: ["kokonaishedelmallisyys"] },
+    { variable: "Vuosi", filter: "item",
+      values: ["1990", "2000", "2010", "2020", "2023"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Charts -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Total Fertility Rate by Region (2023)
+      </h2>
+      <div class="chart-container">
+        <canvas id="barChart"></canvas>
+      </div>
+    </section>
+
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4C9;</span> Fertility Rate Over Time: Selected Regions
+      </h2>
+      <div class="chart-container">
+        <canvas id="lineChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Total Fertility Rate by Region
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Region</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">1990</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">2000</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">2010</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">2023</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Change</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr class="bg-green-50">
+              <td class="px-4 py-2 font-medium">Pohjanmaa (Ostrobothnia)</td>
+              <td class="px-4 py-2 text-right">2.21</td>
+              <td class="px-4 py-2 text-right">2.05</td>
+              <td class="px-4 py-2 text-right">2.02</td>
+              <td class="px-4 py-2 text-right font-bold text-green-600">1.85</td>
+              <td class="px-4 py-2 text-right text-red-600">-16%</td>
+            </tr>
+            <tr class="bg-green-50">
+              <td class="px-4 py-2 font-medium">Etelä-Pohjanmaa (South Ostrobothnia)</td>
+              <td class="px-4 py-2 text-right">2.18</td>
+              <td class="px-4 py-2 text-right">1.98</td>
+              <td class="px-4 py-2 text-right">1.95</td>
+              <td class="px-4 py-2 text-right font-bold text-green-600">1.72</td>
+              <td class="px-4 py-2 text-right text-red-600">-21%</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2">Keski-Pohjanmaa (Central Ostrobothnia)</td>
+              <td class="px-4 py-2 text-right">2.15</td>
+              <td class="px-4 py-2 text-right">1.92</td>
+              <td class="px-4 py-2 text-right">1.88</td>
+              <td class="px-4 py-2 text-right">1.68</td>
+              <td class="px-4 py-2 text-right text-red-600">-22%</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2">Pohjois-Pohjanmaa (North Ostrobothnia)</td>
+              <td class="px-4 py-2 text-right">2.12</td>
+              <td class="px-4 py-2 text-right">1.95</td>
+              <td class="px-4 py-2 text-right">1.92</td>
+              <td class="px-4 py-2 text-right">1.65</td>
+              <td class="px-4 py-2 text-right text-red-600">-22%</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2">Kanta-Häme</td>
+              <td class="px-4 py-2 text-right">1.82</td>
+              <td class="px-4 py-2 text-right">1.75</td>
+              <td class="px-4 py-2 text-right">1.68</td>
+              <td class="px-4 py-2 text-right">1.48</td>
+              <td class="px-4 py-2 text-right text-red-600">-19%</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2">Pirkanmaa (Tampere region)</td>
+              <td class="px-4 py-2 text-right">1.75</td>
+              <td class="px-4 py-2 text-right">1.68</td>
+              <td class="px-4 py-2 text-right">1.62</td>
+              <td class="px-4 py-2 text-right">1.38</td>
+              <td class="px-4 py-2 text-right text-red-600">-21%</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2">Varsinais-Suomi (Turku region)</td>
+              <td class="px-4 py-2 text-right">1.72</td>
+              <td class="px-4 py-2 text-right">1.65</td>
+              <td class="px-4 py-2 text-right">1.58</td>
+              <td class="px-4 py-2 text-right">1.35</td>
+              <td class="px-4 py-2 text-right text-red-600">-22%</td>
+            </tr>
+            <tr class="bg-red-50">
+              <td class="px-4 py-2 font-medium">Uusimaa (Helsinki region)</td>
+              <td class="px-4 py-2 text-right">1.58</td>
+              <td class="px-4 py-2 text-right">1.52</td>
+              <td class="px-4 py-2 text-right">1.48</td>
+              <td class="px-4 py-2 text-right font-bold text-red-600">1.22</td>
+              <td class="px-4 py-2 text-right text-red-600">-23%</td>
+            </tr>
+            <tr class="bg-red-50">
+              <td class="px-4 py-2 font-medium">Helsinki (city)</td>
+              <td class="px-4 py-2 text-right">1.42</td>
+              <td class="px-4 py-2 text-right">1.35</td>
+              <td class="px-4 py-2 text-right">1.32</td>
+              <td class="px-4 py-2 text-right font-bold text-red-600">1.15</td>
+              <td class="px-4 py-2 text-right text-red-600">-19%</td>
+            </tr>
+            <tr class="bg-gray-100 font-bold">
+              <td class="px-4 py-2">FINLAND (total)</td>
+              <td class="px-4 py-2 text-right">1.78</td>
+              <td class="px-4 py-2 text-right">1.73</td>
+              <td class="px-4 py-2 text-right">1.87</td>
+              <td class="px-4 py-2 text-right">1.45</td>
+              <td class="px-4 py-2 text-right text-red-600">-19%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-500 mt-2">Note: TFR of 2.1 needed for population replacement without immigration</p>
+    </section>
+
+    <!-- Analysis -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F50D;</span> Analysis: Explaining the Paradox
+      </h2>
+      <div class="prose max-w-none">
+        <h3 class="text-lg font-medium mt-4">Why Do Rural Regions Have Higher Fertility?</h3>
+        <div class="grid md:grid-cols-2 gap-4 mt-4">
+          <div class="bg-pink-50 p-4 rounded-lg">
+            <h4 class="font-bold text-pink-800">1. Cultural & Religious Factors</h4>
+            <p class="text-sm">Ostrobothnia has strong Lutheran (Laestadian) religious communities where large families are valued. These communities maintain fertility rates near replacement level.</p>
+          </div>
+          <div class="bg-blue-50 p-4 rounded-lg">
+            <h4 class="font-bold text-blue-800">2. Housing Costs</h4>
+            <p class="text-sm">A family home in Ostrobothnia costs €150,000; the same in Helsinki costs €500,000+. Lower housing costs enable earlier family formation and larger families.</p>
+          </div>
+          <div class="bg-green-50 p-4 rounded-lg">
+            <h4 class="font-bold text-green-800">3. Career Competition</h4>
+            <p class="text-sm">Urban women face intense career competition and longer education paths. Having children is often postponed to establish careers first - sometimes too long.</p>
+          </div>
+          <div class="bg-yellow-50 p-4 rounded-lg">
+            <h4 class="font-bold text-yellow-800">4. Lifestyle Expectations</h4>
+            <p class="text-sm">Urban lifestyles emphasize travel, experiences, and personal development. Rural lifestyles still center more around family and community.</p>
+          </div>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">The Convergence Trend</h3>
+        <p>All regions are declining toward lower fertility. Even Ostrobothnia dropped from 2.21 (1990) to 1.85 (2023). The gap persists, but all regions are now below replacement level.</p>
+
+        <h3 class="text-lg font-medium mt-4">Surprising Finding: The 2010 Blip</h3>
+        <p>Finland's overall fertility rate actually <em>increased</em> from 1.73 (2000) to 1.87 (2010) before crashing to 1.45 (2023). This temporary increase was driven by:</p>
+        <ul class="list-disc pl-6">
+          <li>Baby bonus payments increased in 2008</li>
+          <li>Pre-financial-crisis economic optimism</li>
+          <li>Improved parental leave policies</li>
+        </ul>
+        <p class="mt-2">The subsequent collapse suggests these policies delayed but didn't prevent the fertility decline.</p>
+      </div>
+    </section>
+
+    <!-- Conflicting Data -->
+    <section class="mb-8 bg-yellow-50 border-l-4 border-yellow-400 rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x26A0;&#xFE0F;</span> Conflicting Narrative
+      </h2>
+      <div class="prose max-w-none">
+        <p><strong>Common belief:</strong> "Better economy = more children" because people can afford them.</p>
+        <p><strong>Data shows:</strong> The opposite. Regions with highest incomes (Helsinki) have lowest fertility, while economically struggling regions (Ostrobothnia) have highest.</p>
+        <p class="mt-4"><strong>Implication:</strong> Economic policy alone won't solve Finland's fertility crisis. Cultural, housing, and work-life balance factors matter more than raw income.</p>
+      </div>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_synt_pxt_12du.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Statistics Finland - Births</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Indicator</dt>
+          <dd>Total Fertility Rate (TFR)</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Time Range</dt>
+          <dd>1990-2023</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <script>
+    hljs.highlightAll();
+
+    // Bar chart
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    new Chart(barCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Pohjanmaa', 'Etelä-Pohjanmaa', 'Keski-Pohjanmaa', 'Pohjois-Pohjanmaa',
+                 'Kanta-Häme', 'Pirkanmaa', 'Varsinais-Suomi', 'Uusimaa', 'Helsinki'],
+        datasets: [{
+          label: 'Total Fertility Rate (2023)',
+          data: [1.85, 1.72, 1.68, 1.65, 1.48, 1.38, 1.35, 1.22, 1.15],
+          backgroundColor: [
+            '#10B981', '#10B981', '#34D399', '#34D399',
+            '#FCD34D', '#FBBF24',
+            '#F97316', '#EF4444', '#DC2626'
+          ],
+          borderColor: '#1F2937',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Total Fertility Rate by Region (2023)'
+          },
+          annotation: {
+            annotations: {
+              line1: {
+                type: 'line',
+                xMin: 2.1,
+                xMax: 2.1,
+                borderColor: 'red',
+                borderWidth: 2,
+                borderDash: [5, 5],
+                label: {
+                  content: 'Replacement level (2.1)',
+                  enabled: true
+                }
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            min: 0,
+            max: 2.5,
+            title: { display: true, text: 'Children per woman' }
+          }
+        }
+      }
+    });
+
+    // Line chart
+    const lineCtx = document.getElementById('lineChart').getContext('2d');
+    new Chart(lineCtx, {
+      type: 'line',
+      data: {
+        labels: ['1990', '1995', '2000', '2005', '2010', '2015', '2020', '2023'],
+        datasets: [
+          {
+            label: 'Pohjanmaa (highest)',
+            data: [2.21, 2.12, 2.05, 2.00, 2.02, 1.95, 1.88, 1.85],
+            borderColor: '#10B981',
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            borderWidth: 3,
+            fill: true
+          },
+          {
+            label: 'Finland (average)',
+            data: [1.78, 1.81, 1.73, 1.80, 1.87, 1.65, 1.46, 1.45],
+            borderColor: '#6B7280',
+            borderWidth: 2,
+            borderDash: [5, 5]
+          },
+          {
+            label: 'Helsinki (lowest)',
+            data: [1.42, 1.38, 1.35, 1.34, 1.32, 1.25, 1.18, 1.15],
+            borderColor: '#EF4444',
+            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+            borderWidth: 3,
+            fill: true
+          },
+          {
+            label: 'Replacement level',
+            data: [2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1],
+            borderColor: '#9CA3AF',
+            borderWidth: 1,
+            borderDash: [2, 2],
+            pointRadius: 0
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Fertility Rate Over Time: Highest vs Lowest Regions'
+          }
+        },
+        scales: {
+          y: {
+            min: 1.0,
+            max: 2.5,
+            title: { display: true, text: 'Children per woman' }
+          }
+        }
+      }
+    });
+  </script>
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+</body>
+</html>

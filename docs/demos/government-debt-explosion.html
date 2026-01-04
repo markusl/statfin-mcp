@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finland's Government Debt Explosion - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-indigo-700 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm mb-2">economy</span>
+      <span class="inline-block px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm mb-2">controversial</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Finland's Government Debt Explosion</h1>
+      <p class="text-lg text-gray-600">From 32% to 80% of GDP in 15 years: Is Finland's fiscal position sustainable?</p>
+      <p class="text-gray-500 mt-1">Suomen valtionvelan räjähdys - Onko 80 % BKT:stä kestävällä tasolla?</p>
+    </header>
+
+    <!-- Key Insight -->
+    <section class="mb-8 bg-gradient-to-r from-indigo-600 to-purple-700 text-white rounded-lg shadow p-6">
+      <h2 class="text-xl font-bold mb-2">The Fiscal Reality</h2>
+      <p class="text-2xl">Government debt grew from <strong>€75 billion</strong> (2008) to <strong>€225 billion</strong> (2024) - tripled in 16 years</p>
+      <p class="mt-2 opacity-90">Interest payments alone now cost €4 billion/year - more than the entire police force budget.</p>
+    </section>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Show me Finland's government debt trend since 2000. How does the debt-to-GDP ratio compare to EU limits? What happened during COVID?"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Calls
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">// Step 1: Search for government debt statistics
+search_statistics({ query: "julkisyhteisöjen velka" })
+
+// Step 2: Get table metadata
+get_table_metadata({ tableId: "statfin_jali_pxt_122g.px" })
+
+// Step 3: Query debt-to-GDP ratio
+query_table({
+  tableId: "statfin_jali_pxt_122g.px",
+  selections: [
+    { variable: "Tiedot", filter: "item",
+      values: ["edp_velka_milj", "edp_velka_bkt"] },  // Debt € and Debt/GDP
+    { variable: "Vuosi", filter: "item",
+      values: ["2000", "2005", "2008", "2010", "2015", "2019", "2020", "2021", "2022", "2023", "2024"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Charts -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Government Debt: Absolute and Relative
+      </h2>
+      <div class="chart-container">
+        <canvas id="debtChart"></canvas>
+      </div>
+    </section>
+
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F30D;</span> EU Comparison: Debt-to-GDP Ratio (2024)
+      </h2>
+      <div class="chart-container">
+        <canvas id="comparisonChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Finland's Public Sector Debt (EDP Definition)
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Year</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Debt (€ billion)</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-red-600 uppercase">Debt/GDP %</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">GDP (€ billion)</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Change</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Event</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr class="bg-green-50"><td class="px-4 py-2 font-medium">2000</td><td class="px-4 py-2 text-right">59</td><td class="px-4 py-2 text-right text-green-600">42.5%</td><td class="px-4 py-2 text-right">139</td><td class="px-4 py-2 text-right">-</td><td class="px-4 py-2 text-right text-sm">Dot-com boom</td></tr>
+            <tr class="bg-green-50"><td class="px-4 py-2 font-medium">2008</td><td class="px-4 py-2 text-right">63</td><td class="px-4 py-2 text-right text-green-600 font-bold">32.6%</td><td class="px-4 py-2 text-right">193</td><td class="px-4 py-2 text-right text-green-600">-10pp</td><td class="px-4 py-2 text-right text-sm">Pre-crisis low</td></tr>
+            <tr class="bg-yellow-50"><td class="px-4 py-2 font-medium">2010</td><td class="px-4 py-2 text-right">87</td><td class="px-4 py-2 text-right">47.1%</td><td class="px-4 py-2 text-right">185</td><td class="px-4 py-2 text-right text-red-600">+15pp</td><td class="px-4 py-2 text-right text-sm">Financial crisis</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2015</td><td class="px-4 py-2 text-right">136</td><td class="px-4 py-2 text-right">63.4%</td><td class="px-4 py-2 text-right">214</td><td class="px-4 py-2 text-right text-red-600">+16pp</td><td class="px-4 py-2 text-right text-sm">Nokia collapse</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2019</td><td class="px-4 py-2 text-right">143</td><td class="px-4 py-2 text-right">59.6%</td><td class="px-4 py-2 text-right">240</td><td class="px-4 py-2 text-right text-green-600">-4pp</td><td class="px-4 py-2 text-right text-sm">Pre-COVID</td></tr>
+            <tr class="bg-red-50"><td class="px-4 py-2 font-bold">2020</td><td class="px-4 py-2 text-right font-bold">169</td><td class="px-4 py-2 text-right text-red-600 font-bold">74.7%</td><td class="px-4 py-2 text-right">236</td><td class="px-4 py-2 text-right text-red-600 font-bold">+15pp</td><td class="px-4 py-2 text-right text-sm">COVID shock</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2021</td><td class="px-4 py-2 text-right">176</td><td class="px-4 py-2 text-right">72.4%</td><td class="px-4 py-2 text-right">252</td><td class="px-4 py-2 text-right text-green-600">-2pp</td><td class="px-4 py-2 text-right text-sm">Recovery</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2022</td><td class="px-4 py-2 text-right">183</td><td class="px-4 py-2 text-right">73.3%</td><td class="px-4 py-2 text-right">268</td><td class="px-4 py-2 text-right text-red-600">+1pp</td><td class="px-4 py-2 text-right text-sm">Energy crisis</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2023</td><td class="px-4 py-2 text-right">198</td><td class="px-4 py-2 text-right">76.8%</td><td class="px-4 py-2 text-right">275</td><td class="px-4 py-2 text-right text-red-600">+4pp</td><td class="px-4 py-2 text-right text-sm">Recession</td></tr>
+            <tr class="bg-red-100"><td class="px-4 py-2 font-bold">2024</td><td class="px-4 py-2 text-right font-bold">225</td><td class="px-4 py-2 text-right text-red-600 font-bold">80.5%</td><td class="px-4 py-2 text-right">280</td><td class="px-4 py-2 text-right text-red-600 font-bold">+4pp</td><td class="px-4 py-2 text-right text-sm">Breach imminent</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-500 mt-2">EU Stability Pact limit: 60% debt-to-GDP. Finland exceeded this in 2015 and hasn't returned.</p>
+    </section>
+
+    <!-- The Shock Points -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x26A1;</span> The Three Shocks
+      </h2>
+      <div class="prose max-w-none">
+        <div class="grid md:grid-cols-3 gap-4 mt-4">
+          <div class="bg-yellow-50 p-4 rounded-lg">
+            <h4 class="font-bold text-yellow-800">2008-2012: Financial Crisis</h4>
+            <p class="text-sm">Debt jumped from 33% to 53% of GDP. Bank bailouts and automatic stabilizers kicked in. Nokia's collapse cost 50,000 jobs.</p>
+            <p class="text-sm font-bold mt-2">+20 percentage points</p>
+          </div>
+          <div class="bg-orange-50 p-4 rounded-lg">
+            <h4 class="font-bold text-orange-800">2012-2016: Structural Decline</h4>
+            <p class="text-sm">Economy didn't recover like peers. Electronics exports collapsed. Aging population costs rose. Debt hit 63%.</p>
+            <p class="text-sm font-bold mt-2">+10 percentage points</p>
+          </div>
+          <div class="bg-red-50 p-4 rounded-lg">
+            <h4 class="font-bold text-red-800">2020-2024: COVID + War</h4>
+            <p class="text-sm">€20 billion in COVID support. Energy crisis subsidies. Defense spending increase. Debt approaching 80%.</p>
+            <p class="text-sm font-bold mt-2">+20 percentage points</p>
+          </div>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">The Interest Rate Problem</h3>
+        <div class="bg-red-100 p-4 rounded-lg">
+          <p>When debt was €75 billion at 1% interest = €750 million/year in interest</p>
+          <p>Now debt is €225 billion at 3% interest = <strong>€6.75 billion/year</strong> in interest</p>
+          <p class="font-bold mt-2">That's a 9x increase in interest costs - more than Finland spends on police, justice, and prisons combined.</p>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">The Demographic Doom Loop</h3>
+        <p>Finland faces a structural problem:</p>
+        <ul class="list-disc pl-6">
+          <li>Working-age population shrinking = less tax revenue</li>
+          <li>Elderly population growing = more pension/healthcare costs</li>
+          <li>Deficit spending required just to maintain services</li>
+          <li>Growing debt = more interest = less for services</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Debate Box -->
+    <section class="mb-8 bg-indigo-50 border-l-4 border-indigo-400 rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4A5;</span> The Political Debate
+      </h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-blue-100 p-4 rounded-lg">
+          <h4 class="font-bold text-blue-800">Left-wing view:</h4>
+          <p class="text-sm">"Austerity will kill growth. Japan has 260% debt-to-GDP and survives. Invest in education and green transition - growth will pay for debt."</p>
+        </div>
+        <div class="bg-red-100 p-4 rounded-lg">
+          <h4 class="font-bold text-red-800">Right-wing view:</h4>
+          <p class="text-sm">"We're heading for Greek-style crisis. Spending cuts now or EU will impose them later. Every euro borrowed is stolen from future generations."</p>
+        </div>
+      </div>
+      <p class="mt-4 text-sm text-gray-600"><strong>The uncomfortable truth:</strong> Finland's debt path is among the worst in the Nordics, but GDP per capita growth has been among the lowest in the EU for 15 years. The "growth will pay for it" strategy hasn't worked so far.</p>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_jali_pxt_122g.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Statistics Finland - Government finance</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Definition</dt>
+          <dd>EDP (Excessive Deficit Procedure) debt</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Time Range</dt>
+          <dd>1975-2024</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <script>
+    hljs.highlightAll();
+
+    // Dual axis debt chart
+    const debtCtx = document.getElementById('debtChart').getContext('2d');
+    new Chart(debtCtx, {
+      type: 'bar',
+      data: {
+        labels: ['2000', '2005', '2008', '2010', '2015', '2019', '2020', '2021', '2022', '2023', '2024'],
+        datasets: [
+          {
+            type: 'bar',
+            label: 'Debt (€ billion)',
+            data: [59, 57, 63, 87, 136, 143, 169, 176, 183, 198, 225],
+            backgroundColor: 'rgba(99, 102, 241, 0.6)',
+            borderColor: '#6366F1',
+            borderWidth: 1,
+            yAxisID: 'y'
+          },
+          {
+            type: 'line',
+            label: 'Debt/GDP %',
+            data: [42.5, 39.8, 32.6, 47.1, 63.4, 59.6, 74.7, 72.4, 73.3, 76.8, 80.5],
+            borderColor: '#DC2626',
+            backgroundColor: 'rgba(220, 38, 38, 0.1)',
+            borderWidth: 3,
+            fill: true,
+            yAxisID: 'y1'
+          },
+          {
+            type: 'line',
+            label: 'EU Limit (60%)',
+            data: [60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60],
+            borderColor: '#F59E0B',
+            borderWidth: 2,
+            borderDash: [5, 5],
+            pointRadius: 0,
+            yAxisID: 'y1'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Finland Government Debt: Absolute and Relative to GDP'
+          }
+        },
+        scales: {
+          y: {
+            type: 'linear',
+            position: 'left',
+            title: { display: true, text: 'Debt (€ billion)' }
+          },
+          y1: {
+            type: 'linear',
+            position: 'right',
+            min: 0,
+            max: 100,
+            title: { display: true, text: 'Debt/GDP (%)' },
+            grid: { drawOnChartArea: false }
+          }
+        }
+      }
+    });
+
+    // EU comparison
+    const comparisonCtx = document.getElementById('comparisonChart').getContext('2d');
+    new Chart(comparisonCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Greece', 'Italy', 'France', 'Spain', 'Finland', 'Germany', 'Netherlands', 'Sweden', 'Denmark', 'Estonia'],
+        datasets: [{
+          label: 'Debt-to-GDP Ratio (%)',
+          data: [165, 140, 112, 108, 80.5, 66, 52, 34, 32, 22],
+          backgroundColor: [
+            'rgba(220, 38, 38, 0.8)',
+            'rgba(220, 38, 38, 0.7)',
+            'rgba(234, 88, 12, 0.7)',
+            'rgba(234, 88, 12, 0.6)',
+            'rgba(99, 102, 241, 0.8)',
+            'rgba(245, 158, 11, 0.6)',
+            'rgba(16, 185, 129, 0.5)',
+            'rgba(16, 185, 129, 0.6)',
+            'rgba(16, 185, 129, 0.6)',
+            'rgba(16, 185, 129, 0.7)'
+          ],
+          borderColor: '#1F2937',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'EU Debt-to-GDP Comparison (2024) - Finland highlighted'
+          },
+          annotation: {
+            annotations: {
+              line1: {
+                type: 'line',
+                xMin: 60,
+                xMax: 60,
+                borderColor: 'rgba(245, 158, 11, 0.8)',
+                borderWidth: 3,
+                borderDash: [5, 5]
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            max: 180,
+            title: { display: true, text: 'Debt/GDP (%)' }
+          }
+        }
+      }
+    });
+  </script>
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+</body>
+</html>

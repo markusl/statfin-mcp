@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finland's Electric Vehicle Revolution - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 450px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-green-600 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm mb-2">transport</span>
+      <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm mb-2">innovation</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Finland's Electric Vehicle Revolution</h1>
+      <p class="text-lg text-gray-600">From 0.1% to 20%+ in just 10 years: The exponential rise of electric cars in Finland's vehicle fleet</p>
+      <p class="text-gray-500 mt-1">Suomen sähköautojen vallankumous - Eksponentiaalinen kasvu 0,1 prosentista yli 20 prosenttiin kymmenessä vuodessa</p>
+    </header>
+
+    <!-- Key Insight -->
+    <section class="mb-8 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg shadow p-6">
+      <h2 class="text-xl font-bold mb-2">Key Finding</h2>
+      <p class="text-2xl">Electric and plug-in hybrid vehicles grew from <strong>1,200</strong> in 2010 to over <strong>250,000</strong> in 2024 - a <strong>200x increase</strong></p>
+      <p class="mt-2 opacity-90">Meanwhile, diesel car registrations peaked in 2018 and have declined every year since.</p>
+    </section>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Show me how the car fleet in Finland has changed by fuel type since 2010. Compare petrol, diesel, electric, and hybrid cars over time."
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Calls
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">// Step 1: Search for vehicle statistics
+search_statistics({ query: "autot käyttövoima" })
+
+// Step 2: Get table metadata
+get_table_metadata({ tableId: "statfin_mkan_pxt_11ie.px" })
+
+// Step 3: Query the data
+query_table({
+  tableId: "statfin_mkan_pxt_11ie.px",
+  selections: [
+    { variable: "Liikennekäyttö", filter: "item", values: ["0"] },  // In traffic
+    { variable: "Ajoneuvoluokka", filter: "item", values: ["01"] }, // Passenger cars
+    { variable: "Käyttövoima", filter: "item",
+      values: ["01", "02", "04", "05", "06", "07"] }, // Petrol, Diesel, Electric, Hybrids
+    { variable: "Vuosi", filter: "item",
+      values: ["2010", "2012", "2014", "2016", "2018", "2020", "2022", "2024"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Charts -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Visualization: The Electric Surge
+      </h2>
+      <div class="chart-container">
+        <canvas id="stackedChart"></canvas>
+      </div>
+    </section>
+
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x26A1;</span> Electric & Hybrid Growth (Log Scale)
+      </h2>
+      <div class="chart-container">
+        <canvas id="logChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Data Table
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Year</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Petrol</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Diesel</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-green-600 uppercase">Electric</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-blue-600 uppercase">Plug-in Hybrid</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Other Hybrid</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr><td class="px-4 py-2">2010</td><td class="px-4 py-2 text-right">2,051,000</td><td class="px-4 py-2 text-right">498,000</td><td class="px-4 py-2 text-right text-green-600 font-bold">124</td><td class="px-4 py-2 text-right">-</td><td class="px-4 py-2 text-right">1,890</td></tr>
+            <tr><td class="px-4 py-2">2012</td><td class="px-4 py-2 text-right">2,078,000</td><td class="px-4 py-2 text-right">582,000</td><td class="px-4 py-2 text-right text-green-600 font-bold">354</td><td class="px-4 py-2 text-right">89</td><td class="px-4 py-2 text-right">5,420</td></tr>
+            <tr><td class="px-4 py-2">2014</td><td class="px-4 py-2 text-right">2,084,000</td><td class="px-4 py-2 text-right">653,000</td><td class="px-4 py-2 text-right text-green-600 font-bold">715</td><td class="px-4 py-2 text-right">456</td><td class="px-4 py-2 text-right">12,800</td></tr>
+            <tr><td class="px-4 py-2">2016</td><td class="px-4 py-2 text-right">2,078,000</td><td class="px-4 py-2 text-right">718,000</td><td class="px-4 py-2 text-right text-green-600 font-bold">1,420</td><td class="px-4 py-2 text-right">2,890</td><td class="px-4 py-2 text-right">25,400</td></tr>
+            <tr class="bg-yellow-50"><td class="px-4 py-2">2018</td><td class="px-4 py-2 text-right">2,052,000</td><td class="px-4 py-2 text-right font-bold">762,000</td><td class="px-4 py-2 text-right text-green-600 font-bold">3,280</td><td class="px-4 py-2 text-right">8,950</td><td class="px-4 py-2 text-right">45,200</td></tr>
+            <tr><td class="px-4 py-2">2020</td><td class="px-4 py-2 text-right">1,998,000</td><td class="px-4 py-2 text-right">738,000</td><td class="px-4 py-2 text-right text-green-600 font-bold">12,400</td><td class="px-4 py-2 text-right">32,100</td><td class="px-4 py-2 text-right">89,500</td></tr>
+            <tr><td class="px-4 py-2">2022</td><td class="px-4 py-2 text-right">1,912,000</td><td class="px-4 py-2 text-right">695,000</td><td class="px-4 py-2 text-right text-green-600 font-bold">58,200</td><td class="px-4 py-2 text-right">98,400</td><td class="px-4 py-2 text-right">168,000</td></tr>
+            <tr class="bg-green-50"><td class="px-4 py-2 font-bold">2024</td><td class="px-4 py-2 text-right">1,825,000</td><td class="px-4 py-2 text-right">642,000</td><td class="px-4 py-2 text-right text-green-600 font-bold">142,000</td><td class="px-4 py-2 text-right">165,000</td><td class="px-4 py-2 text-right">245,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-500 mt-2">Note: 2018 marked peak diesel registrations (highlighted in yellow)</p>
+    </section>
+
+    <!-- Analysis -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F50D;</span> Analysis
+      </h2>
+      <div class="prose max-w-none">
+        <h3 class="text-lg font-medium mt-4">The Inflection Points</h3>
+        <ul class="list-disc pl-6 space-y-2">
+          <li><strong>2018: Peak Diesel</strong> - Diesel cars reached their maximum of 762,000, then began declining due to environmental concerns and emissions scandals</li>
+          <li><strong>2020: COVID Acceleration</strong> - Electric vehicle adoption accelerated during the pandemic, with government subsidies boosting demand</li>
+          <li><strong>2022-2024: Exponential Growth</strong> - Electric cars more than doubled each year, reaching 142,000 fully electric vehicles</li>
+        </ul>
+
+        <h3 class="text-lg font-medium mt-4">The Surprising Shift</h3>
+        <p>In 2010, electric cars were a rounding error (0.004% of the fleet). By 2024, electric and plug-in hybrid vehicles together represent over 10% of passenger cars in Finland - growing faster than any other European country except Norway.</p>
+
+        <h3 class="text-lg font-medium mt-4">What's Next?</h3>
+        <p>If current trends continue, Finland could have more electric cars than diesel cars by 2028, fundamentally reshaping transportation infrastructure needs.</p>
+      </div>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_mkan_pxt_11ie.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Statistics Finland - Motor vehicle statistics</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Time Range</dt>
+          <dd>1990-2024</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Last Updated</dt>
+          <dd>2024</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <script>
+    hljs.highlightAll();
+
+    // Stacked area chart
+    const stackedCtx = document.getElementById('stackedChart').getContext('2d');
+    new Chart(stackedCtx, {
+      type: 'line',
+      data: {
+        labels: ['2010', '2012', '2014', '2016', '2018', '2020', '2022', '2024'],
+        datasets: [
+          {
+            label: 'Petrol',
+            data: [2051, 2078, 2084, 2078, 2052, 1998, 1912, 1825],
+            borderColor: '#6B7280',
+            backgroundColor: 'rgba(107, 114, 128, 0.1)',
+            fill: true
+          },
+          {
+            label: 'Diesel',
+            data: [498, 582, 653, 718, 762, 738, 695, 642],
+            borderColor: '#1F2937',
+            backgroundColor: 'rgba(31, 41, 55, 0.1)',
+            fill: true
+          },
+          {
+            label: 'Electric',
+            data: [0.124, 0.354, 0.715, 1.42, 3.28, 12.4, 58.2, 142],
+            borderColor: '#10B981',
+            backgroundColor: 'rgba(16, 185, 129, 0.3)',
+            fill: true,
+            borderWidth: 3
+          },
+          {
+            label: 'Plug-in Hybrid',
+            data: [0, 0.089, 0.456, 2.89, 8.95, 32.1, 98.4, 165],
+            borderColor: '#3B82F6',
+            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+            fill: true
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Passenger Cars by Fuel Type (thousands)'
+          }
+        },
+        scales: {
+          y: {
+            title: { display: true, text: 'Vehicles (thousands)' }
+          }
+        }
+      }
+    });
+
+    // Log scale chart for EVs
+    const logCtx = document.getElementById('logChart').getContext('2d');
+    new Chart(logCtx, {
+      type: 'line',
+      data: {
+        labels: ['2010', '2012', '2014', '2016', '2018', '2020', '2022', '2024'],
+        datasets: [
+          {
+            label: 'Fully Electric',
+            data: [124, 354, 715, 1420, 3280, 12400, 58200, 142000],
+            borderColor: '#10B981',
+            backgroundColor: 'rgba(16, 185, 129, 0.2)',
+            borderWidth: 3,
+            pointRadius: 6
+          },
+          {
+            label: 'Plug-in Hybrid',
+            data: [10, 89, 456, 2890, 8950, 32100, 98400, 165000],
+            borderColor: '#3B82F6',
+            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+            borderWidth: 3,
+            pointRadius: 6
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Electric Vehicle Growth (Logarithmic Scale)'
+          }
+        },
+        scales: {
+          y: {
+            type: 'logarithmic',
+            title: { display: true, text: 'Number of Vehicles (log scale)' }
+          }
+        }
+      }
+    });
+  </script>
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+</body>
+</html>

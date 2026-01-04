@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>International Migration Balance - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-blue-600 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm mb-2">migration</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">International Migration Balance</h1>
+      <p class="text-lg text-gray-600">Immigration, emigration and net migration over 25 years</p>
+      <p class="text-gray-500 mt-1">Kansainvälinen muuttotase - Maahanmuutto, maastamuutto ja nettomuutto 25 vuoden ajalta</p>
+    </header>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Show Finland's immigration and emigration numbers"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Call
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">query_table({
+  tableId: "statfin_synt_pxt_12dx.px",
+  selections: [
+    { variable: "Vuosi", filter: "item", values: ["2000", "2005", "2010", /* ... 13 values */] },
+    { variable: "Tiedot", filter: "item", values: ["vm41", "vm42", "vm43_tilv"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Chart -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Visualization
+      </h2>
+      <div class="chart-container">
+        <canvas id="chart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Data (25 of 39 rows)
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vuosi</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tiedot</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">value</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2000</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kuntien välinen muutto</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">260047</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2000</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Maahanmuutto Suomeen</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">16895</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2000</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Maastamuutto Suomesta</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">14311</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2005</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kuntien välinen muutto</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">290149</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2005</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Maahanmuutto Suomeen</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">21355</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2005</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Maastamuutto Suomesta</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">12369</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2010</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kuntien välinen muutto</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">270688</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2010</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Maahanmuutto Suomeen</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">25636</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2010</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Maastamuutto Suomesta</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">11905</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2015</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kuntien välinen muutto</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">280484</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2015</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Maahanmuutto Suomeen</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">28746</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2015</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Maastamuutto Suomesta</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">16305</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2016</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kuntien välinen muutto</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">282257</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2016</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Maahanmuutto Suomeen</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">34905</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2016</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Maastamuutto Suomesta</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">18082</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2017</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kuntien välinen muutto</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">287839</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2017</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Maahanmuutto Suomeen</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">31797</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2017</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Maastamuutto Suomesta</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">16973</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2018</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kuntien välinen muutto</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">288443</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2018</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Maahanmuutto Suomeen</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">31106</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2018</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Maastamuutto Suomesta</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">19141</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2019</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kuntien välinen muutto</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">286700</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2019</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Maahanmuutto Suomeen</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">32758</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2019</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Maastamuutto Suomesta</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">17263</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2020</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kuntien välinen muutto</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">296852</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_synt_pxt_12dx.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Total Rows</dt>
+          <dd>39</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Tilastokeskus, syntyneet</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Updated</dt>
+          <dd>2025-05-28T05:00:00Z</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+  <script>
+    hljs.highlightAll();
+    const ctx = document.getElementById('chart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ["2000","2005","2010","2015","2016","2017","2018","2019","2020","2021","2022","2023","2024"],
+        datasets: [{"label":"Kuntien välinen muutto","data":[260047,290149,270688,280484,282257,287839,288443,286700,296852,303935,295710,286968,288939],"borderColor":"rgb(59, 130, 246)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"Maahanmuutto Suomeen","data":[16895,21355,25636,28746,34905,31797,31106,32758,32898,36364,49998,73236,63965],"borderColor":"rgb(239, 68, 68)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"Maastamuutto Suomesta","data":[14311,12369,11905,16305,18082,16973,19141,17263,15084,13459,15635,15322,16914],"borderColor":"rgb(34, 197, 94)","backgroundColor":"transparent","fill":false,"tension":0.1}]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true, position: 'top' },
+          title: { display: true, text: 'International Migration Balance' }
+        },
+        scales: {
+          y: { beginAtZero: false }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

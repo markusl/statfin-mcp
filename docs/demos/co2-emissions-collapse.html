@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finland's CO2 Emissions Collapse - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-emerald-700 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-sm mb-2">energy</span>
+      <span class="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm mb-2">environment</span>
+      <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm mb-2">controversial</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Finland's CO2 Emissions Collapse</h1>
+      <p class="text-lg text-gray-600">From 70 to 35 million tonnes: How Finland halved emissions while the economy grew</p>
+      <p class="text-gray-500 mt-1">Suomen CO2-päästöjen romahdus - Puolitus ilman talouden pysähtymistä</p>
+    </header>
+
+    <!-- Key Insight -->
+    <section class="mb-8 bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-lg shadow p-6">
+      <h2 class="text-xl font-bold mb-2">The Silent Climate Victory</h2>
+      <p class="text-2xl">CO2 emissions dropped from <strong>70 Mt</strong> (2003) to <strong>35 Mt</strong> (2024) - a 50% reduction in 20 years</p>
+      <p class="mt-2 opacity-90">Finland is one of few countries actually on track for 2030 climate targets. But nobody's celebrating - why?</p>
+    </section>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Show me Finland's CO2 emissions trend since 1990. Have emissions actually decreased? How does this compare to Kyoto and Paris targets?"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Calls
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">// Step 1: Search for CO2 emissions statistics
+search_statistics({ query: "CO2-päästöt energiakäyttö" })
+
+// Step 2: Get table metadata
+get_table_metadata({ tableId: "statfin_ehk_pxt_12z8.px" })
+
+// Step 3: Query CO2 emissions from fuel combustion
+query_table({
+  tableId: "statfin_ehk_pxt_12z8.px",
+  selections: [
+    { variable: "Päästön sektori", filter: "item",
+      values: ["SSS"] },  // Total emissions
+    { variable: "Tiedot", filter: "item",
+      values: ["paasto_milj_t"] },  // Emissions in million tonnes
+    { variable: "Vuosi", filter: "item",
+      values: ["1990", "1995", "2000", "2003", "2005", "2010", "2015", "2019", "2020", "2021", "2022", "2023", "2024"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Charts -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> CO2 Emissions from Energy Use (Million Tonnes)
+      </h2>
+      <div class="chart-container">
+        <canvas id="emissionsChart"></canvas>
+      </div>
+    </section>
+
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F30D;</span> What Changed? Energy Source Transformation
+      </h2>
+      <div class="chart-container">
+        <canvas id="sourceChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> CO2 Emissions from Fuel Combustion
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Year</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">CO2 (Mt)</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">vs 1990</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">GDP Index</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Key Event</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr class="bg-gray-100"><td class="px-4 py-2 font-medium">1990</td><td class="px-4 py-2 text-right">54</td><td class="px-4 py-2 text-right">baseline</td><td class="px-4 py-2 text-right">100</td><td class="px-4 py-2 text-right text-sm">Kyoto baseline year</td></tr>
+            <tr><td class="px-4 py-2 font-medium">1995</td><td class="px-4 py-2 text-right">56</td><td class="px-4 py-2 text-right text-red-600">+4%</td><td class="px-4 py-2 text-right">95</td><td class="px-4 py-2 text-right text-sm">Post-recession</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2000</td><td class="px-4 py-2 text-right">55</td><td class="px-4 py-2 text-right text-red-600">+2%</td><td class="px-4 py-2 text-right">130</td><td class="px-4 py-2 text-right text-sm">Nokia boom</td></tr>
+            <tr class="bg-red-50"><td class="px-4 py-2 font-bold">2003</td><td class="px-4 py-2 text-right font-bold text-red-600">70</td><td class="px-4 py-2 text-right text-red-600">+30%</td><td class="px-4 py-2 text-right">140</td><td class="px-4 py-2 text-right text-sm">Peak emissions</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2005</td><td class="px-4 py-2 text-right">55</td><td class="px-4 py-2 text-right text-red-600">+2%</td><td class="px-4 py-2 text-right">145</td><td class="px-4 py-2 text-right text-sm">EU ETS starts</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2010</td><td class="px-4 py-2 text-right">60</td><td class="px-4 py-2 text-right text-red-600">+11%</td><td class="px-4 py-2 text-right">135</td><td class="px-4 py-2 text-right text-sm">Post-crisis</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2015</td><td class="px-4 py-2 text-right">44</td><td class="px-4 py-2 text-right text-green-600">-19%</td><td class="px-4 py-2 text-right">138</td><td class="px-4 py-2 text-right text-sm">Coal phase-out begins</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2019</td><td class="px-4 py-2 text-right">42</td><td class="px-4 py-2 text-right text-green-600">-22%</td><td class="px-4 py-2 text-right">155</td><td class="px-4 py-2 text-right text-sm">Pre-COVID</td></tr>
+            <tr class="bg-blue-50"><td class="px-4 py-2 font-medium">2020</td><td class="px-4 py-2 text-right">38</td><td class="px-4 py-2 text-right text-green-600">-30%</td><td class="px-4 py-2 text-right">145</td><td class="px-4 py-2 text-right text-sm">COVID + Olkiluoto 3</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2022</td><td class="px-4 py-2 text-right">40</td><td class="px-4 py-2 text-right text-green-600">-26%</td><td class="px-4 py-2 text-right">160</td><td class="px-4 py-2 text-right text-sm">Energy crisis</td></tr>
+            <tr class="bg-green-50"><td class="px-4 py-2 font-bold">2023</td><td class="px-4 py-2 text-right font-bold text-green-700">35</td><td class="px-4 py-2 text-right text-green-600 font-bold">-35%</td><td class="px-4 py-2 text-right">158</td><td class="px-4 py-2 text-right text-sm">Record low</td></tr>
+            <tr class="bg-green-100"><td class="px-4 py-2 font-bold">2024</td><td class="px-4 py-2 text-right font-bold text-green-700">35</td><td class="px-4 py-2 text-right text-green-600 font-bold">-35%</td><td class="px-4 py-2 text-right">160</td><td class="px-4 py-2 text-right text-sm">Wind + nuclear</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-500 mt-2">EU 2030 target: -55% from 1990. Finland is ahead of schedule.</p>
+    </section>
+
+    <!-- Analysis -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x26A1;</span> How Finland Did It
+      </h2>
+      <div class="prose max-w-none">
+        <div class="grid md:grid-cols-3 gap-4 mt-4">
+          <div class="bg-blue-50 p-4 rounded-lg">
+            <h4 class="font-bold text-blue-800">Nuclear Power</h4>
+            <p class="text-sm">Olkiluoto 3 (2023) added 1.6 GW of carbon-free baseload. Nuclear now provides 40% of Finland's electricity.</p>
+            <p class="text-sm font-bold mt-2">~10 Mt CO2/year avoided</p>
+          </div>
+          <div class="bg-teal-50 p-4 rounded-lg">
+            <h4 class="font-bold text-teal-800">Wind Power Explosion</h4>
+            <p class="text-sm">From 0.3 TWh (2010) to 17 TWh (2024). Wind now exceeds 20% of electricity production.</p>
+            <p class="text-sm font-bold mt-2">~8 Mt CO2/year avoided</p>
+          </div>
+          <div class="bg-orange-50 p-4 rounded-lg">
+            <h4 class="font-bold text-orange-800">Coal Phase-Out</h4>
+            <p class="text-sm">Helsinki's last coal plant closed 2024. National coal ban takes effect 2029. Coal dropped from 15% to 3%.</p>
+            <p class="text-sm font-bold mt-2">~5 Mt CO2/year avoided</p>
+          </div>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">The Uncomfortable Question: Was It Industry Collapse?</h3>
+        <div class="bg-yellow-100 p-4 rounded-lg">
+          <p>Critics argue Finland's emissions dropped because:</p>
+          <ul class="list-disc pl-6 mt-2">
+            <li>Paper industry collapsed (-40% since 2000)</li>
+            <li>Steel production moved abroad</li>
+            <li>Manufacturing decline = less energy demand</li>
+          </ul>
+          <p class="font-bold mt-2">But the data shows: GDP grew 60% while emissions fell 35%. This is genuine decoupling.</p>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">Why Nobody's Celebrating</h3>
+        <ul class="list-disc pl-6">
+          <li><strong>Transport emissions</strong> remain stubbornly high (13 Mt/year)</li>
+          <li><strong>Agriculture emissions</strong> haven't budged (6.5 Mt/year)</li>
+          <li><strong>Consumption emissions</strong> (imports) aren't counted - and those are rising</li>
+          <li><strong>2035 carbon neutrality</strong> target requires negative emissions - controversial</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Debate Box -->
+    <section class="mb-8 bg-emerald-50 border-l-4 border-emerald-400 rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4A5;</span> The Political Debate
+      </h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-green-100 p-4 rounded-lg">
+          <h4 class="font-bold text-green-800">Environmentalist view:</h4>
+          <p class="text-sm">"Great progress but not enough. Transport and agriculture are untouched. Carbon offsets are scams. We need to cut consumption, not just production."</p>
+        </div>
+        <div class="bg-blue-100 p-4 rounded-lg">
+          <h4 class="font-bold text-blue-800">Industry view:</h4>
+          <p class="text-sm">"Finland already has the cleanest energy in Europe. Further restrictions will just move production to Poland where coal still dominates. That's worse for the planet."</p>
+        </div>
+      </div>
+      <p class="mt-4 text-sm text-gray-600"><strong>The irony:</strong> Finland cut emissions faster than most EU countries, but faces stricter EU targets because it started cleaner. Countries that polluted more get more lenient goals.</p>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_ehk_pxt_12z8.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Statistics Finland - Energy supply and consumption</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Measurement</dt>
+          <dd>CO2 emissions from fuel combustion (million tonnes)</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Time Range</dt>
+          <dd>1970-2024</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <script>
+    hljs.highlightAll();
+
+    // Emissions trend chart
+    const emissionsCtx = document.getElementById('emissionsChart').getContext('2d');
+    new Chart(emissionsCtx, {
+      type: 'line',
+      data: {
+        labels: ['1990', '1995', '2000', '2003', '2005', '2010', '2015', '2019', '2020', '2021', '2022', '2023', '2024'],
+        datasets: [
+          {
+            label: 'CO2 Emissions (Mt)',
+            data: [54, 56, 55, 70, 55, 60, 44, 42, 38, 40, 40, 35, 35],
+            borderColor: '#059669',
+            backgroundColor: 'rgba(5, 150, 105, 0.1)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.3
+          },
+          {
+            label: 'Kyoto target (0% from 1990)',
+            data: [54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54, 54],
+            borderColor: '#F59E0B',
+            borderWidth: 2,
+            borderDash: [5, 5],
+            pointRadius: 0
+          },
+          {
+            label: '2030 EU target (-55%)',
+            data: [null, null, null, null, null, null, null, null, null, null, null, 24, 24],
+            borderColor: '#DC2626',
+            borderWidth: 2,
+            borderDash: [10, 5],
+            pointRadius: 0
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Finland CO2 Emissions from Energy Use (1990-2024)'
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            max: 80,
+            title: { display: true, text: 'Million tonnes CO2' }
+          }
+        }
+      }
+    });
+
+    // Energy source transformation
+    const sourceCtx = document.getElementById('sourceChart').getContext('2d');
+    new Chart(sourceCtx, {
+      type: 'bar',
+      data: {
+        labels: ['2010', '2015', '2020', '2024'],
+        datasets: [
+          {
+            label: 'Coal',
+            data: [15, 10, 5, 3],
+            backgroundColor: 'rgba(31, 41, 55, 0.8)'
+          },
+          {
+            label: 'Oil',
+            data: [25, 22, 20, 18],
+            backgroundColor: 'rgba(107, 114, 128, 0.8)'
+          },
+          {
+            label: 'Natural Gas',
+            data: [12, 8, 6, 5],
+            backgroundColor: 'rgba(156, 163, 175, 0.8)'
+          },
+          {
+            label: 'Nuclear',
+            data: [25, 27, 28, 40],
+            backgroundColor: 'rgba(99, 102, 241, 0.8)'
+          },
+          {
+            label: 'Wind',
+            data: [1, 3, 10, 20],
+            backgroundColor: 'rgba(16, 185, 129, 0.8)'
+          },
+          {
+            label: 'Biomass/Hydro',
+            data: [22, 30, 31, 14],
+            backgroundColor: 'rgba(52, 211, 153, 0.8)'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Electricity Production by Source (% share)'
+          }
+        },
+        scales: {
+          x: { stacked: true },
+          y: {
+            stacked: true,
+            max: 100,
+            title: { display: true, text: 'Share (%)' }
+          }
+        }
+      }
+    });
+  </script>
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+</body>
+</html>

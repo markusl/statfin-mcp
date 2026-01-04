@@ -1,0 +1,747 @@
+[
+  {
+    "id": "adopt",
+    "type": "l",
+    "text": "Adoptiot"
+  },
+  {
+    "id": "aku",
+    "type": "l",
+    "text": "Aikuiskoulutukseen osallistuminen"
+  },
+  {
+    "id": "ava",
+    "type": "l",
+    "text": "Ainevalinnat"
+  },
+  {
+    "id": "akay",
+    "type": "l",
+    "text": "Ajankäyttö"
+  },
+  {
+    "id": "aly",
+    "type": "l",
+    "text": "Aloittaneet ja lopettaneet yritykset"
+  },
+  {
+    "id": "alyr",
+    "type": "l",
+    "text": "Alueellinen yritystoimintatilasto"
+  },
+  {
+    "id": "alvaa",
+    "type": "l",
+    "text": "Aluevaalit"
+  },
+  {
+    "id": "ati",
+    "type": "l",
+    "text": "Ansiotasoindeksi"
+  },
+  {
+    "id": "asen",
+    "type": "l",
+    "text": "Asumisen energiankulutus"
+  },
+  {
+    "id": "asas",
+    "type": "l",
+    "text": "Asunnot ja asuinolot"
+  },
+  {
+    "id": "asvu",
+    "type": "l",
+    "text": "Asuntojen vuokrat"
+  },
+  {
+    "id": "asku",
+    "type": "l",
+    "text": "Asuntokunnat ja asuinolot"
+  },
+  {
+    "id": "asyta",
+    "type": "l",
+    "text": "Asunto-osakeyhtiöiden talous"
+  },
+  {
+    "id": "atp",
+    "type": "l",
+    "text": "Avoimet työpaikat"
+  },
+  {
+    "id": "cvts",
+    "type": "l",
+    "text": "CVTS, yritysten henkilöstökoulutus"
+  },
+  {
+    "id": "evaa",
+    "type": "l",
+    "text": "Eduskuntavaalit"
+  },
+  {
+    "id": "eot",
+    "type": "l",
+    "text": "Elinolotilasto"
+  },
+  {
+    "id": "ehk",
+    "type": "l",
+    "text": "Energian hankinta ja kulutus\n"
+  },
+  {
+    "id": "ehi",
+    "type": "l",
+    "text": "Energian hinnat"
+  },
+  {
+    "id": "entp",
+    "type": "l",
+    "text": "Energiatilinpito\n\n"
+  },
+  {
+    "id": "euvaa",
+    "type": "l",
+    "text": "Europarlamenttivaalit"
+  },
+  {
+    "id": "gvc",
+    "type": "l",
+    "text": "Globaalit arvoketjut"
+  },
+  {
+    "id": "ilma",
+    "type": "l",
+    "text": "Ilmaliikenne"
+  },
+  {
+    "id": "tilma",
+    "type": "l",
+    "text": "Ilmapäästötilinpito"
+  },
+  {
+    "id": "inn",
+    "type": "l",
+    "text": "Innovaatiotoiminta"
+  },
+  {
+    "id": "jvie",
+    "type": "l",
+    "text": "Joukkoviestintä"
+  },
+  {
+    "id": "jmhi",
+    "type": "l",
+    "text": "Julkisten menojen hintaindeksi"
+  },
+  {
+    "id": "jali",
+    "type": "l",
+    "text": "Julkisyhteisöjen alijäämä ja velka"
+  },
+  {
+    "id": "jmete",
+    "type": "l",
+    "text": "Julkisyhteisöjen menot tehtävittäin"
+  },
+  {
+    "id": "jtume",
+    "type": "l",
+    "text": "Julkisyhteisöjen tulot ja menot neljännesvuosittain"
+  },
+  {
+    "id": "jyev",
+    "type": "l",
+    "text": "Julkisyhteisöjen velka neljännesvuosittain"
+  },
+  {
+    "id": "jate",
+    "type": "l",
+    "text": "Jätetilasto"
+  },
+  {
+    "id": "kvhv",
+    "type": "l",
+    "text": "Kansainvälinen hintavertailu"
+  },
+  {
+    "id": "altp",
+    "type": "l",
+    "text": "Kansantalouden aluetilinpito"
+  },
+  {
+    "id": "ntp",
+    "type": "l",
+    "text": "Kansantalouden neljännesvuositilinpito"
+  },
+  {
+    "id": "rtp",
+    "type": "l",
+    "text": "Kansantalouden rahoitustilinpito"
+  },
+  {
+    "id": "sekn",
+    "type": "l",
+    "text": "Kansantalouden sektoritilit neljännesvuosittain"
+  },
+  {
+    "id": "pt",
+    "type": "l",
+    "text": "Kansantalouden tarjonta-, käyttö- sekä panos-tuotostaulukot"
+  },
+  {
+    "id": "ttut",
+    "type": "l",
+    "text": "Kansantalouden tuottavuusmittarit"
+  },
+  {
+    "id": "vtp",
+    "type": "l",
+    "text": "Kansantalouden vuositilinpito"
+  },
+  {
+    "id": "khki",
+    "type": "l",
+    "text": "Kasvihuonekaasut"
+  },
+  {
+    "id": "klv",
+    "type": "l",
+    "text": "Kaupan liikevaihtokuvaaja"
+  },
+  {
+    "id": "klaiv",
+    "type": "l",
+    "text": "Kauppalaivasto"
+  },
+  {
+    "id": "kihi",
+    "type": "l",
+    "text": "Kiinteistöjen hinnat"
+  },
+  {
+    "id": "kyki",
+    "type": "l",
+    "text": "Kiinteistön ylläpidon kustannusindeksi"
+  },
+  {
+    "id": "kivih",
+    "type": "l",
+    "text": "Kivihiilen kulutus"
+  },
+  {
+    "id": "kony",
+    "type": "l",
+    "text": "Konkurssit ja yrityssaneeraukset"
+  },
+  {
+    "id": "kora",
+    "type": "l",
+    "text": "Korjausrakentaminen"
+  },
+  {
+    "id": "kosu",
+    "type": "l",
+    "text": "Korjausrakentamisen suhdannekuvaaja"
+  },
+  {
+    "id": "kvliik",
+    "type": "l",
+    "text": "Kotimaan vesiliikenne"
+  },
+  {
+    "id": "ktutk",
+    "type": "l",
+    "text": "Kotitalouksien kulutus"
+  },
+  {
+    "id": "vtutk",
+    "type": "l",
+    "text": "Kotitalouksien varallisuus"
+  },
+  {
+    "id": "kotsa",
+    "type": "l",
+    "text": "Kotitaloustuotannon arvo"
+  },
+  {
+    "id": "khak",
+    "type": "l",
+    "text": "Koulutukseen hakeutuminen"
+  },
+  {
+    "id": "kjarj",
+    "type": "l",
+    "text": "Koulutuksen järjestäjät ja oppilaitokset"
+  },
+  {
+    "id": "kkesk",
+    "type": "l",
+    "text": "Koulutuksen keskeyttäminen"
+  },
+  {
+    "id": "kotal",
+    "type": "l",
+    "text": "Koulutuksen talous"
+  },
+  {
+    "id": "klt",
+    "type": "l",
+    "text": "Kulttuuri"
+  },
+  {
+    "id": "klts",
+    "type": "l",
+    "text": "Kulttuurin satelliittitilinpito"
+  },
+  {
+    "id": "khi",
+    "type": "l",
+    "text": "Kuluttajahintaindeksi"
+  },
+  {
+    "id": "kbar",
+    "type": "l",
+    "text": "Kuluttajien luottamus"
+  },
+  {
+    "id": "kvaa",
+    "type": "l",
+    "text": "Kuntavaalit"
+  },
+  {
+    "id": "ksyyt",
+    "type": "l",
+    "text": "Kuolemansyyt"
+  },
+  {
+    "id": "kuol",
+    "type": "l",
+    "text": "Kuolleet"
+  },
+  {
+    "id": "mmtal",
+    "type": "l",
+    "text": "Maa- ja metsätalousyritysten taloustilasto"
+  },
+  {
+    "id": "maku",
+    "type": "l",
+    "text": "Maarakennuskustannusindeksi"
+  },
+  {
+    "id": "eaa",
+    "type": "l",
+    "text": "Maatalouden taloustilit (EAA)"
+  },
+  {
+    "id": "ttohi",
+    "type": "l",
+    "text": "Maatalouden tuotantovälineiden ostohintaindeksi"
+  },
+  {
+    "id": "mthi",
+    "type": "l",
+    "text": "Maatalouden tuottajahintaindeksi"
+  },
+  {
+    "id": "matk",
+    "type": "l",
+    "text": "Majoitustilasto"
+  },
+  {
+    "id": "mata",
+    "type": "l",
+    "text": "Maksutase ja ulkomainen varallisuusasema"
+  },
+  {
+    "id": "kanma",
+    "type": "l",
+    "text": "Materiaalitilinpito"
+  },
+  {
+    "id": "merek",
+    "type": "l",
+    "text": "Moottoriajoneuvojen ensirekisteröinnit"
+  },
+  {
+    "id": "mkan",
+    "type": "l",
+    "text": "Moottoriajoneuvokanta"
+  },
+  {
+    "id": "muutl",
+    "type": "l",
+    "text": "Muuttoliike"
+  },
+  {
+    "id": "opku",
+    "type": "l",
+    "text": "Opintojen kulku"
+  },
+  {
+    "id": "opiskt",
+    "type": "l",
+    "text": "Opiskelijat ja tutkinnot"
+  },
+  {
+    "id": "erop",
+    "type": "l",
+    "text": "Oppimisen tuki"
+  },
+  {
+    "id": "ashi",
+    "type": "l",
+    "text": "Osakeasuntojen hinnat"
+  },
+  {
+    "id": "ksp",
+    "type": "l",
+    "text": "Paikallishallinnon palkat"
+  },
+  {
+    "id": "pra",
+    "type": "l",
+    "text": "Palkkarakenne"
+  },
+  {
+    "id": "ktps",
+    "type": "l",
+    "text": "Palkkasummakuvaajat"
+  },
+  {
+    "id": "palhy",
+    "type": "l",
+    "text": "Palvelualojen hyödyketilasto"
+  },
+  {
+    "id": "plv",
+    "type": "l",
+    "text": "Palvelualojen liikevaihtokuvaaja"
+  },
+  {
+    "id": "pthi",
+    "type": "l",
+    "text": "Palvelujen tuottajahintaindeksit"
+  },
+  {
+    "id": "perh",
+    "type": "l",
+    "text": "Perheet"
+  },
+  {
+    "id": "pvaa",
+    "type": "l",
+    "text": "Presidentinvaalit"
+  },
+  {
+    "id": "rakke",
+    "type": "l",
+    "text": "Rakennukset ja kesämökit"
+  },
+  {
+    "id": "ras",
+    "type": "l",
+    "text": "Rakennus- ja asuntotuotanto"
+  },
+  {
+    "id": "raku",
+    "type": "l",
+    "text": "Rakennuskanta ja uudistuotanto"
+  },
+  {
+    "id": "rki",
+    "type": "l",
+    "text": "Rakennuskustannusindeksi"
+  },
+  {
+    "id": "rlv",
+    "type": "l",
+    "text": "Rakentamisen liikevaihtokuvaaja"
+  },
+  {
+    "id": "rtie",
+    "type": "l",
+    "text": "Rautatietilasto"
+  },
+  {
+    "id": "rpk",
+    "type": "l",
+    "text": "Rikos- ja pakkokeinotilasto"
+  },
+  {
+    "id": "sijk",
+    "type": "l",
+    "text": "Sijoittuminen koulutuksen jälkeen"
+  },
+  {
+    "id": "ssaaty",
+    "type": "l",
+    "text": "Siviilisäädyn muutokset"
+  },
+  {
+    "id": "stu",
+    "type": "l",
+    "text": "Suomalaiset tytäryhtiöt ulkomailla"
+  },
+  {
+    "id": "smat",
+    "type": "l",
+    "text": "Suomalaisten matkailu"
+  },
+  {
+    "id": "kans",
+    "type": "l",
+    "text": "Suomen kansalaisuuden saamiset"
+  },
+  {
+    "id": "synt",
+    "type": "l",
+    "text": "Syntyneet"
+  },
+  {
+    "id": "syyttr",
+    "type": "l",
+    "text": "Syytetyt, tuomitut ja rangaistukset"
+  },
+  {
+    "id": "salatuo",
+    "type": "l",
+    "text": "Sähkön ja lämmön tuotanto"
+  },
+  {
+    "id": "tpulk",
+    "type": "l",
+    "text": "Tavaroiden ja palveluiden ulkomaankauppa"
+  },
+  {
+    "id": "tene",
+    "type": "l",
+    "text": "Teollisuuden energiankäyttö"
+  },
+  {
+    "id": "tlv",
+    "type": "l",
+    "text": "Teollisuuden liikevaihtokuvaaja"
+  },
+  {
+    "id": "teul",
+    "type": "l",
+    "text": "Teollisuuden uudet tilaukset"
+  },
+  {
+    "id": "ttvi",
+    "type": "l",
+    "text": "Teollisuustuotannon volyymi-indeksi"
+  },
+  {
+    "id": "tti",
+    "type": "l",
+    "text": "Teollisuustuotanto"
+  },
+  {
+    "id": "ton",
+    "type": "l",
+    "text": "Tieliikenneonnettomuustilasto"
+  },
+  {
+    "id": "kttav",
+    "type": "l",
+    "text": "Tieliikenteen tavarankuljetukset"
+  },
+  {
+    "id": "tiet",
+    "type": "l",
+    "text": "Tietilasto"
+  },
+  {
+    "id": "icte",
+    "type": "l",
+    "text": "Tietotekniikan käyttö yrityksissä"
+  },
+  {
+    "id": "tjt",
+    "type": "l",
+    "text": "Tulonjakotilasto"
+  },
+  {
+    "id": "ktkk",
+    "type": "l",
+    "text": "Tuotannon suhdannekuvaaja"
+  },
+  {
+    "id": "thi",
+    "type": "l",
+    "text": "Tuottajahintaindeksit"
+  },
+  {
+    "id": "tkker",
+    "type": "l",
+    "text": "Tutkimus- ja kehittämisrahoitus valtion talousarviossa"
+  },
+  {
+    "id": "tkke",
+    "type": "l",
+    "text": "Tutkimus- ja kehittämistoiminta"
+  },
+  {
+    "id": "tyonv",
+    "type": "l",
+    "text": "Työnvälitystilasto (KEHA-keskus)"
+  },
+  {
+    "id": "tyoolot",
+    "type": "l",
+    "text": "Työolot"
+  },
+  {
+    "id": "tyokay",
+    "type": "l",
+    "text": "Työssäkäynti"
+  },
+  {
+    "id": "tta",
+    "type": "l",
+    "text": "Työtaistelutilasto"
+  },
+  {
+    "id": "ttap",
+    "type": "l",
+    "text": "Työtapaturmat"
+  },
+  {
+    "id": "tvki",
+    "type": "l",
+    "text": "Työvoimakustannusindeksi"
+  },
+  {
+    "id": "tvtutk",
+    "type": "l",
+    "text": "Työvoimakustannustutkimus"
+  },
+  {
+    "id": "tyti",
+    "type": "l",
+    "text": "Työvoimatutkimus"
+  },
+  {
+    "id": "uvliik",
+    "type": "l",
+    "text": "Ulkomaan meriliikenne"
+  },
+  {
+    "id": "ssij",
+    "type": "l",
+    "text": "Ulkomaiset suorat sijoitukset"
+  },
+  {
+    "id": "ulkoy",
+    "type": "l",
+    "text": "Ulkomaiset tytäryhtiöt Suomessa"
+  },
+  {
+    "id": "uloa",
+    "type": "l",
+    "text": "Ulosottovelalliset"
+  },
+  {
+    "id": "vkp",
+    "type": "l",
+    "text": "Valtion kuukausipalkat"
+  },
+  {
+    "id": "vpa",
+    "type": "l",
+    "text": "Vapaa-ajan osallistuminen"
+  },
+  {
+    "id": "oaiop",
+    "type": "l",
+    "text": "Vapaan sivistystyön koulutus"
+  },
+  {
+    "id": "vaka",
+    "type": "l",
+    "text": "Varhaiskasvatus"
+  },
+  {
+    "id": "velk",
+    "type": "l",
+    "text": "Velkaantumistilasto"
+  },
+  {
+    "id": "velj",
+    "type": "l",
+    "text": "Velkajärjestelyt"
+  },
+  {
+    "id": "vaenn",
+    "type": "l",
+    "text": "Väestöennuste"
+  },
+  {
+    "id": "vamuu",
+    "type": "l",
+    "text": "Väestön ennakkotilasto"
+  },
+  {
+    "id": "vkour",
+    "type": "l",
+    "text": "Väestön koulutusrakenne"
+  },
+  {
+    "id": "sutivi",
+    "type": "l",
+    "text": "Väestön tieto- ja viestintätekniikan käyttö"
+  },
+  {
+    "id": "vaerak",
+    "type": "l",
+    "text": "Väestörakenne"
+  },
+  {
+    "id": "yskp",
+    "type": "l",
+    "text": "Yksityisen sektorin kuukausipalkat"
+  },
+  {
+    "id": "ystp",
+    "type": "l",
+    "text": "Yksityisen sektorin tuntipalkat"
+  },
+  {
+    "id": "ylt",
+    "type": "l",
+    "text": "Ympäristöliiketoiminta\n"
+  },
+  {
+    "id": "ympsm",
+    "type": "l",
+    "text": "Ympäristönsuojelumenot"
+  },
+  {
+    "id": "ymtu",
+    "type": "l",
+    "text": "Ympäristötuet"
+  },
+  {
+    "id": "yev",
+    "type": "l",
+    "text": "Ympäristöverot"
+  },
+  {
+    "id": "bdem",
+    "type": "l",
+    "text": "Yritysdemografia"
+  },
+  {
+    "id": "yrti",
+    "type": "l",
+    "text": "Yritysten rakenne- ja tilinpäätöstilasto"
+  },
+  {
+    "id": "yrtt",
+    "type": "l",
+    "text": "Yritystukitilasto"
+  }
+]

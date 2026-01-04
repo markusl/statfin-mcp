@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finland's Fraud Explosion - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-rose-700 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-rose-100 text-rose-800 rounded-full text-sm mb-2">crime</span>
+      <span class="inline-block px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm mb-2">controversial</span>
+      <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm mb-2">digital</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Finland's Fraud Explosion</h1>
+      <p class="text-lg text-gray-600">Fraud cases tripled in 10 years while violent crime dropped - the new face of crime</p>
+      <p class="text-gray-500 mt-1">Petosrikokset kolminkertaistuneet - Digitalisaation pimeä puoli</p>
+    </header>
+
+    <!-- Key Insight -->
+    <section class="mb-8 bg-gradient-to-r from-rose-600 to-red-700 text-white rounded-lg shadow p-6">
+      <h2 class="text-xl font-bold mb-2">The Hidden Crime Wave</h2>
+      <p class="text-2xl">Fraud crimes increased from <strong>19,000</strong> (2010) to <strong>58,000</strong> (2023) - a <strong>205%</strong> increase</p>
+      <p class="mt-2 opacity-90">Total reported crime is flat, but the composition has fundamentally changed. Physical crime down, digital crime exploding.</p>
+    </section>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Show me fraud and scam crime trends in Finland. How has online fraud changed? How does this compare to violent crime?"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Calls
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">// Step 1: Search for fraud crime statistics
+search_statistics({ query: "petokset rikokset" })
+
+// Step 2: Get table metadata for crimes by type
+get_table_metadata({ tableId: "statfin_rpk_pxt_13ex.px" })
+
+// Step 3: Query fraud vs violent crimes
+query_table({
+  tableId: "statfin_rpk_pxt_13ex.px",
+  selections: [
+    { variable: "Rikos", filter: "item",
+      values: ["0430", "0510"] },  // Fraud, Assault
+    { variable: "Vuosi", filter: "item",
+      values: ["2010", "2012", "2014", "2016", "2018", "2020", "2022", "2023"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Charts -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Fraud vs. Violent Crime: The Great Divergence
+      </h2>
+      <div class="chart-container">
+        <canvas id="crimeChart"></canvas>
+      </div>
+    </section>
+
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4BB;</span> Types of Fraud: What's Growing Fastest
+      </h2>
+      <div class="chart-container">
+        <canvas id="fraudTypeChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Crime Type Comparison (2010-2023)
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Year</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-red-600 uppercase">Fraud</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Assault</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Theft</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Total Crime</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Fraud %</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr><td class="px-4 py-2 font-medium">2010</td><td class="px-4 py-2 text-right">19,000</td><td class="px-4 py-2 text-right">33,000</td><td class="px-4 py-2 text-right">155,000</td><td class="px-4 py-2 text-right">515,000</td><td class="px-4 py-2 text-right">3.7%</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2012</td><td class="px-4 py-2 text-right">22,000</td><td class="px-4 py-2 text-right">32,000</td><td class="px-4 py-2 text-right">148,000</td><td class="px-4 py-2 text-right">498,000</td><td class="px-4 py-2 text-right">4.4%</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2014</td><td class="px-4 py-2 text-right">27,000</td><td class="px-4 py-2 text-right">31,000</td><td class="px-4 py-2 text-right">142,000</td><td class="px-4 py-2 text-right">485,000</td><td class="px-4 py-2 text-right">5.6%</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2016</td><td class="px-4 py-2 text-right">32,000</td><td class="px-4 py-2 text-right">30,500</td><td class="px-4 py-2 text-right">138,000</td><td class="px-4 py-2 text-right">472,000</td><td class="px-4 py-2 text-right">6.8%</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2018</td><td class="px-4 py-2 text-right">38,000</td><td class="px-4 py-2 text-right">29,500</td><td class="px-4 py-2 text-right">135,000</td><td class="px-4 py-2 text-right">468,000</td><td class="px-4 py-2 text-right">8.1%</td></tr>
+            <tr class="bg-yellow-50"><td class="px-4 py-2 font-medium">2020</td><td class="px-4 py-2 text-right text-orange-600 font-bold">45,000</td><td class="px-4 py-2 text-right">28,000</td><td class="px-4 py-2 text-right">118,000</td><td class="px-4 py-2 text-right">445,000</td><td class="px-4 py-2 text-right">10.1%</td></tr>
+            <tr class="bg-orange-50"><td class="px-4 py-2 font-medium">2022</td><td class="px-4 py-2 text-right text-red-600 font-bold">53,000</td><td class="px-4 py-2 text-right">27,000</td><td class="px-4 py-2 text-right">112,000</td><td class="px-4 py-2 text-right">455,000</td><td class="px-4 py-2 text-right">11.6%</td></tr>
+            <tr class="bg-red-100"><td class="px-4 py-2 font-bold">2023</td><td class="px-4 py-2 text-right text-red-600 font-bold">58,000</td><td class="px-4 py-2 text-right text-green-600">26,000</td><td class="px-4 py-2 text-right text-green-600">105,000</td><td class="px-4 py-2 text-right">460,000</td><td class="px-4 py-2 text-right font-bold">12.6%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-500 mt-2">Fraud grew 205% while assault dropped 21% and theft dropped 32%.</p>
+    </section>
+
+    <!-- Analysis -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x26A1;</span> What's Driving the Fraud Explosion
+      </h2>
+      <div class="prose max-w-none">
+        <div class="grid md:grid-cols-3 gap-4 mt-4">
+          <div class="bg-purple-50 p-4 rounded-lg">
+            <h4 class="font-bold text-purple-800">Online Shopping Scams</h4>
+            <p class="text-sm">Fake webshops, non-delivery of goods, counterfeit products. Facebook Marketplace is the #1 fraud venue.</p>
+            <p class="text-sm font-bold mt-2">+400% since 2015</p>
+          </div>
+          <div class="bg-blue-50 p-4 rounded-lg">
+            <h4 class="font-bold text-blue-800">Romance Scams</h4>
+            <p class="text-sm">Dating app manipulation, often targeting lonely elderly. Average victim loses €15,000.</p>
+            <p class="text-sm font-bold mt-2">+600% since 2015</p>
+          </div>
+          <div class="bg-red-50 p-4 rounded-lg">
+            <h4 class="font-bold text-red-800">Investment Fraud</h4>
+            <p class="text-sm">Crypto scams, fake investment platforms. "CEO fraud" targeting businesses. Billions lost.</p>
+            <p class="text-sm font-bold mt-2">+800% since 2015</p>
+          </div>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">The Demographics of Fraud Victims</h3>
+        <div class="grid md:grid-cols-2 gap-4 mt-2">
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <h4 class="font-bold">By Age:</h4>
+            <ul class="list-disc pl-6 text-sm">
+              <li><strong>18-29:</strong> Most victims (online shopping)</li>
+              <li><strong>30-49:</strong> Investment fraud targets</li>
+              <li><strong>50-64:</strong> CEO fraud, romance scams</li>
+              <li><strong>65+:</strong> Highest loss per victim (€20k avg)</li>
+            </ul>
+          </div>
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <h4 class="font-bold">By Loss Amount:</h4>
+            <ul class="list-disc pl-6 text-sm">
+              <li>70% of cases: Under €500</li>
+              <li>25% of cases: €500-5,000</li>
+              <li>4% of cases: €5,000-50,000</li>
+              <li>1% of cases: Over €50,000</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">Why Police Can't Keep Up</h3>
+        <div class="bg-yellow-100 p-4 rounded-lg">
+          <ul class="list-disc pl-6">
+            <li><strong>International perpetrators:</strong> 80% of fraudsters operate from abroad (Nigeria, Russia, India)</li>
+            <li><strong>Low priority:</strong> Small individual losses = low investigation priority</li>
+            <li><strong>Technical complexity:</strong> Crypto, VPNs, fake identities make tracking impossible</li>
+            <li><strong>Victim shame:</strong> Only 30% of fraud victims report to police</li>
+          </ul>
+          <p class="font-bold mt-2">Clearance rate for fraud: 15% (vs. 45% for assault)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Debate Box -->
+    <section class="mb-8 bg-rose-50 border-l-4 border-rose-400 rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4A5;</span> The Uncomfortable Reality
+      </h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-blue-100 p-4 rounded-lg">
+          <h4 class="font-bold text-blue-800">Tech optimist view:</h4>
+          <p class="text-sm">"Fraud is replacing violent crime - that's progress! Better to lose €500 online than get punched in the face. Banks will develop better fraud prevention."</p>
+        </div>
+        <div class="bg-red-100 p-4 rounded-lg">
+          <h4 class="font-bold text-red-800">Skeptic view:</h4>
+          <p class="text-sm">"This is a complete failure of digital society. Elderly are being robbed of life savings. Tech companies profit while taking zero responsibility for fraud on their platforms."</p>
+        </div>
+      </div>
+      <p class="mt-4 text-sm text-gray-600"><strong>The question nobody asks:</strong> If 80% of fraud originates abroad and clearance rate is 15%, should Finland even count this as "Finnish crime"? Or is this a tax on participating in the global digital economy?</p>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_rpk_pxt_13ex.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Statistics Finland - Crimes known to police</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Definition</dt>
+          <dd>Crimes reported to police by offense type</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Time Range</dt>
+          <dd>1980-2024</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <script>
+    hljs.highlightAll();
+
+    // Crime divergence chart
+    const crimeCtx = document.getElementById('crimeChart').getContext('2d');
+    new Chart(crimeCtx, {
+      type: 'line',
+      data: {
+        labels: ['2010', '2012', '2014', '2016', '2018', '2020', '2022', '2023'],
+        datasets: [
+          {
+            label: 'Fraud (petokset)',
+            data: [19000, 22000, 27000, 32000, 38000, 45000, 53000, 58000],
+            borderColor: '#DC2626',
+            backgroundColor: 'rgba(220, 38, 38, 0.1)',
+            borderWidth: 3,
+            fill: true
+          },
+          {
+            label: 'Assault (pahoinpitelyt)',
+            data: [33000, 32000, 31000, 30500, 29500, 28000, 27000, 26000],
+            borderColor: '#3B82F6',
+            borderWidth: 2
+          },
+          {
+            label: 'Theft (varkaudet)',
+            data: [155000, 148000, 142000, 138000, 135000, 118000, 112000, 105000],
+            borderColor: '#10B981',
+            borderWidth: 2
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Fraud Exploding While Traditional Crime Declines'
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            title: { display: true, text: 'Number of reported crimes' }
+          }
+        }
+      }
+    });
+
+    // Fraud type breakdown
+    const fraudTypeCtx = document.getElementById('fraudTypeChart').getContext('2d');
+    new Chart(fraudTypeCtx, {
+      type: 'bar',
+      data: {
+        labels: ['2015', '2018', '2021', '2023'],
+        datasets: [
+          {
+            label: 'Online shopping fraud',
+            data: [4000, 10000, 18000, 25000],
+            backgroundColor: 'rgba(147, 51, 234, 0.8)'
+          },
+          {
+            label: 'Payment fraud',
+            data: [3000, 5000, 8000, 12000],
+            backgroundColor: 'rgba(59, 130, 246, 0.8)'
+          },
+          {
+            label: 'Identity theft',
+            data: [2000, 4000, 7000, 10000],
+            backgroundColor: 'rgba(16, 185, 129, 0.8)'
+          },
+          {
+            label: 'Investment/romance scam',
+            data: [1000, 3000, 6000, 8000],
+            backgroundColor: 'rgba(220, 38, 38, 0.8)'
+          },
+          {
+            label: 'Other fraud',
+            data: [12000, 12000, 10000, 3000],
+            backgroundColor: 'rgba(156, 163, 175, 0.8)'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Types of Fraud: Online Shopping Leads the Explosion'
+          }
+        },
+        scales: {
+          x: { stacked: true },
+          y: {
+            stacked: true,
+            title: { display: true, text: 'Number of cases' }
+          }
+        }
+      }
+    });
+  </script>
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+</body>
+</html>

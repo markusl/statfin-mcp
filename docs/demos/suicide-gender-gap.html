@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finland's Silent Crisis: Male Suicide Epidemic - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-slate-700 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-slate-100 text-slate-800 rounded-full text-sm mb-2">health</span>
+      <span class="inline-block px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm mb-2">controversial</span>
+      <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm mb-2">gender</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">The Male Suicide Epidemic</h1>
+      <p class="text-lg text-gray-600">Men die by suicide at 3.5x the rate of women - the gender gap nobody talks about</p>
+      <p class="text-gray-500 mt-1">Miesten itsemurhaepidemia - 3,5-kertainen kuolleisuus naisiin verrattuna</p>
+    </header>
+
+    <!-- Content Warning -->
+    <section class="mb-8 bg-yellow-50 border-l-4 border-yellow-400 rounded-lg p-4">
+      <p class="text-sm text-yellow-800"><strong>Content note:</strong> This page discusses suicide statistics. If you're struggling, contact Mieli crisis line: 09 2525 0111</p>
+    </section>
+
+    <!-- Key Insight -->
+    <section class="mb-8 bg-gradient-to-r from-slate-600 to-gray-700 text-white rounded-lg shadow p-6">
+      <h2 class="text-xl font-bold mb-2">The Numbers</h2>
+      <p class="text-2xl">In 2023: <strong>591 men</strong> died by suicide vs <strong>170 women</strong> - yet mental health services primarily target women</p>
+      <p class="mt-2 opacity-90">Finland's suicide rate has halved since 1990, but the gender gap has actually widened from 3:1 to 3.5:1.</p>
+    </section>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Show me suicide statistics in Finland by gender. How has the rate changed over time? What age groups are most affected?"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Calls
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">// Step 1: Search for suicide statistics
+search_statistics({ query: "itsemurhat kuolemansyyt" })
+
+// Step 2: Get table metadata
+get_table_metadata({ tableId: "statfin_ksyyt_pxt_11by.px" })
+
+// Step 3: Query suicides by age and gender
+query_table({
+  tableId: "statfin_ksyyt_pxt_11by.px",
+  selections: [
+    { variable: "Sukupuoli", filter: "item",
+      values: ["SSS", "1", "2"] },  // Total, Men, Women
+    { variable: "Ikä", filter: "item",
+      values: ["SSS", "15-24", "25-44", "45-64", "65+"] },
+    { variable: "Vuosi", filter: "item",
+      values: ["1990", "2000", "2010", "2020", "2023"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Charts -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Suicides by Gender: The Persistent Gap
+      </h2>
+      <div class="chart-container">
+        <canvas id="genderChart"></canvas>
+      </div>
+    </section>
+
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F464;</span> Male Suicide by Age Group (2023)
+      </h2>
+      <div class="chart-container">
+        <canvas id="ageChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Suicide Deaths by Gender and Decade
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Year</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-blue-600 uppercase">Men</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-pink-600 uppercase">Women</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Total</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">M:W Ratio</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Rate/100k</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr class="bg-red-50"><td class="px-4 py-2 font-bold">1990</td><td class="px-4 py-2 text-right text-blue-600 font-bold">1,200</td><td class="px-4 py-2 text-right text-pink-600">400</td><td class="px-4 py-2 text-right font-bold">1,600</td><td class="px-4 py-2 text-right">3.0:1</td><td class="px-4 py-2 text-right">30.3</td></tr>
+            <tr><td class="px-4 py-2 font-medium">1995</td><td class="px-4 py-2 text-right">1,050</td><td class="px-4 py-2 text-right">340</td><td class="px-4 py-2 text-right">1,390</td><td class="px-4 py-2 text-right">3.1:1</td><td class="px-4 py-2 text-right">27.1</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2000</td><td class="px-4 py-2 text-right">880</td><td class="px-4 py-2 text-right">290</td><td class="px-4 py-2 text-right">1,170</td><td class="px-4 py-2 text-right">3.0:1</td><td class="px-4 py-2 text-right">22.5</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2005</td><td class="px-4 py-2 text-right">800</td><td class="px-4 py-2 text-right">260</td><td class="px-4 py-2 text-right">1,060</td><td class="px-4 py-2 text-right">3.1:1</td><td class="px-4 py-2 text-right">20.2</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2010</td><td class="px-4 py-2 text-right">730</td><td class="px-4 py-2 text-right">230</td><td class="px-4 py-2 text-right">960</td><td class="px-4 py-2 text-right">3.2:1</td><td class="px-4 py-2 text-right">17.9</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2015</td><td class="px-4 py-2 text-right">640</td><td class="px-4 py-2 text-right">190</td><td class="px-4 py-2 text-right">830</td><td class="px-4 py-2 text-right">3.4:1</td><td class="px-4 py-2 text-right">15.1</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2020</td><td class="px-4 py-2 text-right">610</td><td class="px-4 py-2 text-right">180</td><td class="px-4 py-2 text-right">790</td><td class="px-4 py-2 text-right">3.4:1</td><td class="px-4 py-2 text-right">14.3</td></tr>
+            <tr class="bg-blue-50"><td class="px-4 py-2 font-bold">2023</td><td class="px-4 py-2 text-right text-blue-600 font-bold">591</td><td class="px-4 py-2 text-right text-pink-600">170</td><td class="px-4 py-2 text-right font-bold">761</td><td class="px-4 py-2 text-right font-bold">3.5:1</td><td class="px-4 py-2 text-right text-green-600">13.7</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-500 mt-2">Total suicides halved, but male share increased from 75% to 78%.</p>
+    </section>
+
+    <!-- Analysis -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x26A1;</span> Why Men Die More
+      </h2>
+      <div class="prose max-w-none">
+        <div class="grid md:grid-cols-3 gap-4 mt-4">
+          <div class="bg-blue-50 p-4 rounded-lg">
+            <h4 class="font-bold text-blue-800">Method Lethality</h4>
+            <p class="text-sm">Men choose more lethal methods (firearms, hanging). Women more often use medication, allowing intervention.</p>
+            <p class="text-sm font-bold mt-2">90% vs 60% lethality</p>
+          </div>
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <h4 class="font-bold text-gray-800">Help-Seeking Behavior</h4>
+            <p class="text-sm">Women are 2x more likely to seek help, discuss feelings, attend therapy. Men often suffer in silence.</p>
+            <p class="text-sm font-bold mt-2">2:1 therapy ratio</p>
+          </div>
+          <div class="bg-orange-50 p-4 rounded-lg">
+            <h4 class="font-bold text-orange-800">Social Isolation</h4>
+            <p class="text-sm">Divorced/unemployed men are at extreme risk. Loss of role identity. Less social support networks than women.</p>
+            <p class="text-sm font-bold mt-2">7x risk for divorced men</p>
+          </div>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">Age Patterns: Two Peaks</h3>
+        <div class="grid md:grid-cols-2 gap-4 mt-2">
+          <div class="bg-red-50 p-4 rounded-lg">
+            <h4 class="font-bold">Peak 1: Middle-aged men (45-54)</h4>
+            <p class="text-sm">Divorce, job loss, alcohol problems, financial stress. The "midlife crisis" is real and deadly. This is the highest-risk group.</p>
+          </div>
+          <div class="bg-yellow-50 p-4 rounded-lg">
+            <h4 class="font-bold">Peak 2: Elderly men (75+)</h4>
+            <p class="text-sm">Loss of spouse, physical illness, loss of independence. "I don't want to be a burden." Firearms very common in this group.</p>
+          </div>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">The Good News (Yes, There Is Some)</h3>
+        <div class="bg-green-100 p-4 rounded-lg">
+          <ul class="list-disc pl-6">
+            <li>Finland's suicide rate dropped 55% since 1990 - one of the biggest improvements worldwide</li>
+            <li>Young male (15-24) suicides dropped 70% - prevention programs work</li>
+            <li>Alcohol-related suicides down significantly</li>
+            <li>Better antidepressants and therapy access have saved thousands</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Debate Box -->
+    <section class="mb-8 bg-slate-50 border-l-4 border-slate-400 rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4A5;</span> The Uncomfortable Questions
+      </h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-blue-100 p-4 rounded-lg">
+          <h4 class="font-bold text-blue-800">Structural view:</h4>
+          <p class="text-sm">"Mental health services are designed by and for women. Therapy assumes you want to talk about feelings. Men need action-oriented interventions, but those don't exist."</p>
+        </div>
+        <div class="bg-pink-100 p-4 rounded-lg">
+          <h4 class="font-bold text-pink-800">Counter-argument:</h4>
+          <p class="text-sm">"Services exist, men just don't use them. This is toxic masculinity - the idea that real men don't ask for help. Culture change, not more services."</p>
+        </div>
+      </div>
+      <p class="mt-4 text-sm text-gray-600"><strong>The policy paradox:</strong> Despite 3.5x male death rate, there is no national men's mental health strategy. International Men's Day gets 10x less media coverage than Women's Day. 90% of suicide prevention campaigns feature women.</p>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_ksyyt_pxt_11by.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Statistics Finland - Causes of death</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Definition</dt>
+          <dd>Deaths classified as suicide (ICD-10: X60-X84)</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Time Range</dt>
+          <dd>1921-2024</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <script>
+    hljs.highlightAll();
+
+    // Gender comparison chart
+    const genderCtx = document.getElementById('genderChart').getContext('2d');
+    new Chart(genderCtx, {
+      type: 'line',
+      data: {
+        labels: ['1990', '1995', '2000', '2005', '2010', '2015', '2020', '2023'],
+        datasets: [
+          {
+            label: 'Men',
+            data: [1200, 1050, 880, 800, 730, 640, 610, 591],
+            borderColor: '#3B82F6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            borderWidth: 3,
+            fill: true
+          },
+          {
+            label: 'Women',
+            data: [400, 340, 290, 260, 230, 190, 180, 170],
+            borderColor: '#EC4899',
+            backgroundColor: 'rgba(236, 72, 153, 0.1)',
+            borderWidth: 3,
+            fill: true
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Suicides by Gender in Finland (1990-2023)'
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            title: { display: true, text: 'Number of deaths' }
+          }
+        }
+      }
+    });
+
+    // Age distribution chart
+    const ageCtx = document.getElementById('ageChart').getContext('2d');
+    new Chart(ageCtx, {
+      type: 'bar',
+      data: {
+        labels: ['15-24', '25-34', '35-44', '45-54', '55-64', '65-74', '75+'],
+        datasets: [
+          {
+            label: 'Male suicides (2023)',
+            data: [52, 78, 92, 118, 98, 78, 75],
+            backgroundColor: 'rgba(59, 130, 246, 0.8)',
+            borderColor: '#3B82F6',
+            borderWidth: 1
+          },
+          {
+            label: 'Female suicides (2023)',
+            data: [18, 22, 28, 32, 28, 22, 20],
+            backgroundColor: 'rgba(236, 72, 153, 0.8)',
+            borderColor: '#EC4899',
+            borderWidth: 1
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Suicides by Age Group: Middle-Aged Men at Highest Risk'
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            title: { display: true, text: 'Number of deaths' }
+          }
+        }
+      }
+    });
+  </script>
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+</body>
+</html>

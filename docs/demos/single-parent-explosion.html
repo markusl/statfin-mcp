@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Single Parent Explosion - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-pink-700 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-pink-100 text-pink-800 rounded-full text-sm mb-2">society</span>
+      <span class="inline-block px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm mb-2">controversial</span>
+      <span class="inline-block px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm mb-2">family</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">The Single Parent Explosion</h1>
+      <p class="text-lg text-gray-600">One in five children now lives with a single parent - up from one in ten in 1990</p>
+      <p class="text-gray-500 mt-1">Yksinhuoltajaperheiden räjähdys - Joka viides lapsi asuu yhden vanhemman perheessä</p>
+    </header>
+
+    <!-- Key Insight -->
+    <section class="mb-8 bg-gradient-to-r from-pink-600 to-rose-700 text-white rounded-lg shadow p-6">
+      <h2 class="text-xl font-bold mb-2">The Numbers</h2>
+      <p class="text-2xl">Single-parent families grew from <strong>102,000</strong> (1992) to <strong>180,000</strong> (2024) - <strong>+76%</strong></p>
+      <p class="mt-2 opacity-90">Meanwhile, married couples with children dropped 30%. The "traditional family" is becoming a minority.</p>
+    </section>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Show me how family structures have changed in Finland. How many single-parent families are there? How does this compare to married couples?"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Calls
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">// Step 1: Search for family statistics
+search_statistics({ query: "perheet perhetyyppi" })
+
+// Step 2: Get table metadata
+get_table_metadata({ tableId: "statfin_perh_pxt_12c2.px" })
+
+// Step 3: Query families by type over time
+query_table({
+  tableId: "statfin_perh_pxt_12c2.px",
+  selections: [
+    { variable: "Perhetyyppi", filter: "all" },
+    { variable: "Vuosi", filter: "item",
+      values: ["1992", "2000", "2010", "2020", "2024"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Charts -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Family Structure Transformation
+      </h2>
+      <div class="chart-container">
+        <canvas id="familyChart"></canvas>
+      </div>
+    </section>
+
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F476;</span> Children's Living Arrangements (2024)
+      </h2>
+      <div class="chart-container">
+        <canvas id="childrenChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Families by Type (thousands)
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Year</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-blue-600 uppercase">Married w/children</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-purple-600 uppercase">Cohabiting w/children</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-pink-600 uppercase">Single mothers</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Single fathers</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Total families</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr><td class="px-4 py-2 font-medium">1992</td><td class="px-4 py-2 text-right text-blue-600">458</td><td class="px-4 py-2 text-right">68</td><td class="px-4 py-2 text-right">88</td><td class="px-4 py-2 text-right">14</td><td class="px-4 py-2 text-right">1,366</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2000</td><td class="px-4 py-2 text-right">401</td><td class="px-4 py-2 text-right">95</td><td class="px-4 py-2 text-right">103</td><td class="px-4 py-2 text-right">17</td><td class="px-4 py-2 text-right">1,402</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2010</td><td class="px-4 py-2 text-right">347</td><td class="px-4 py-2 text-right">118</td><td class="px-4 py-2 text-right">122</td><td class="px-4 py-2 text-right">18</td><td class="px-4 py-2 text-right">1,455</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2020</td><td class="px-4 py-2 text-right">303</td><td class="px-4 py-2 text-right">128</td><td class="px-4 py-2 text-right">147</td><td class="px-4 py-2 text-right">29</td><td class="px-4 py-2 text-right">1,472</td></tr>
+            <tr class="bg-pink-50"><td class="px-4 py-2 font-bold">2024</td><td class="px-4 py-2 text-right text-red-600">285</td><td class="px-4 py-2 text-right">135</td><td class="px-4 py-2 text-right text-pink-600 font-bold">152</td><td class="px-4 py-2 text-right font-bold">32</td><td class="px-4 py-2 text-right">1,481</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-500 mt-2">Married couples with children: -38%. Single-parent families: +80%.</p>
+    </section>
+
+    <!-- Analysis -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x26A1;</span> What's Driving The Change
+      </h2>
+      <div class="prose max-w-none">
+        <div class="grid md:grid-cols-3 gap-4 mt-4">
+          <div class="bg-pink-50 p-4 rounded-lg">
+            <h4 class="font-bold text-pink-800">Divorce Normalization</h4>
+            <p class="text-sm">40% of marriages end in divorce. Second marriages fail at 60% rate. Serial monogamy creates single-parent phases.</p>
+          </div>
+          <div class="bg-purple-50 p-4 rounded-lg">
+            <h4 class="font-bold text-purple-800">Cohabitation Breakups</h4>
+            <p class="text-sm">50% of cohabiting couples with children separate (vs 25% of married). No legal protections = easier exits.</p>
+          </div>
+          <div class="bg-blue-50 p-4 rounded-lg">
+            <h4 class="font-bold text-blue-800">Choice Motherhood</h4>
+            <p class="text-sm">Growing number of women having children without partners. Sperm donation, adoption, personal choice. Stigma gone.</p>
+          </div>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">The Child Poverty Connection</h3>
+        <div class="bg-red-100 p-4 rounded-lg">
+          <p>Single-parent families face dramatically higher poverty rates:</p>
+          <ul class="list-disc pl-6 mt-2">
+            <li><strong>Two-parent families:</strong> 8% poverty rate</li>
+            <li><strong>Single-parent families:</strong> 26% poverty rate</li>
+            <li><strong>Single mothers:</strong> 28% poverty rate</li>
+            <li><strong>Single fathers:</strong> 18% poverty rate</li>
+          </ul>
+          <p class="font-bold mt-2">140,000 children in Finland live in poverty - majority in single-parent homes.</p>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">The Gender Gap</h3>
+        <div class="grid md:grid-cols-2 gap-4 mt-2">
+          <div class="bg-pink-50 p-4 rounded-lg">
+            <h4 class="font-bold">Single mothers: 152,000 (83%)</h4>
+            <ul class="list-disc pl-6 text-sm">
+              <li>Average income 40% below two-parent families</li>
+              <li>60% receive child maintenance payments</li>
+              <li>Higher depression and burnout rates</li>
+            </ul>
+          </div>
+          <div class="bg-blue-50 p-4 rounded-lg">
+            <h4 class="font-bold">Single fathers: 32,000 (17%)</h4>
+            <ul class="list-disc pl-6 text-sm">
+              <li>Growing fastest: +128% since 1992</li>
+              <li>Usually older, more established</li>
+              <li>Less likely to receive maintenance</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Debate Box -->
+    <section class="mb-8 bg-pink-50 border-l-4 border-pink-400 rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4A5;</span> The Political Debate
+      </h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-blue-100 p-4 rounded-lg">
+          <h4 class="font-bold text-blue-800">Conservative view:</h4>
+          <p class="text-sm">"The decline of marriage is a social catastrophe. Children need two parents. We need tax incentives for marriage, mandatory co-parenting, and less easy divorce."</p>
+        </div>
+        <div class="bg-green-100 p-4 rounded-lg">
+          <h4 class="font-bold text-green-800">Progressive view:</h4>
+          <p class="text-sm">"Family diversity is liberation. Bad marriages harm children more than single parenting. Support all families equally, don't privilege marriage over other structures."</p>
+        </div>
+      </div>
+      <p class="mt-4 text-sm text-gray-600"><strong>The uncomfortable data:</strong> Children of single parents have statistically worse outcomes (education, income, mental health) - but is this causation or correlation with poverty? Scandinavian countries with generous single-parent support show smaller gaps.</p>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_perh_pxt_12c2.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Statistics Finland - Families</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Definition</dt>
+          <dd>Families by type (married, cohabiting, single parent)</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Time Range</dt>
+          <dd>1992-2024</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <script>
+    hljs.highlightAll();
+
+    // Family structure chart
+    const familyCtx = document.getElementById('familyChart').getContext('2d');
+    new Chart(familyCtx, {
+      type: 'line',
+      data: {
+        labels: ['1992', '1996', '2000', '2004', '2008', '2012', '2016', '2020', '2024'],
+        datasets: [
+          {
+            label: 'Married couples with children',
+            data: [458, 430, 401, 375, 358, 338, 320, 303, 285],
+            borderColor: '#3B82F6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            borderWidth: 3,
+            fill: true
+          },
+          {
+            label: 'Single-parent families',
+            data: [102, 108, 120, 130, 135, 140, 155, 176, 184],
+            borderColor: '#EC4899',
+            backgroundColor: 'rgba(236, 72, 153, 0.1)',
+            borderWidth: 3,
+            fill: true
+          },
+          {
+            label: 'Cohabiting with children',
+            data: [68, 78, 95, 105, 112, 118, 124, 128, 135],
+            borderColor: '#8B5CF6',
+            borderWidth: 2
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Family Types in Finland (thousands)'
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            title: { display: true, text: 'Number of families (thousands)' }
+          }
+        }
+      }
+    });
+
+    // Children's living arrangements
+    const childrenCtx = document.getElementById('childrenChart').getContext('2d');
+    new Chart(childrenCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['With married parents', 'With cohabiting parents', 'With single mother', 'With single father', 'In blended family'],
+        datasets: [{
+          data: [52, 18, 15, 3, 12],
+          backgroundColor: [
+            'rgba(59, 130, 246, 0.8)',
+            'rgba(139, 92, 246, 0.8)',
+            'rgba(236, 72, 153, 0.8)',
+            'rgba(107, 114, 128, 0.8)',
+            'rgba(245, 158, 11, 0.8)'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Where Children Live (% of children under 18)'
+          }
+        }
+      }
+    });
+  </script>
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+</body>
+</html>

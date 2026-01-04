@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Youth Voting Crisis - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-violet-700 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-violet-100 text-violet-800 rounded-full text-sm mb-2">elections</span>
+      <span class="inline-block px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm mb-2">controversial</span>
+      <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm mb-2">democracy</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">The Youth Voting Crisis</h1>
+      <p class="text-lg text-gray-600">Only 50% of 18-24 year olds vote - vs 85% of pensioners. Democracy's generational divide.</p>
+      <p class="text-gray-500 mt-1">Nuorten äänestämiskriisi - Puolet nuorista jättää äänestämättä</p>
+    </header>
+
+    <!-- Key Insight -->
+    <section class="mb-8 bg-gradient-to-r from-violet-600 to-purple-700 text-white rounded-lg shadow p-6">
+      <h2 class="text-xl font-bold mb-2">The Democratic Deficit</h2>
+      <p class="text-2xl">35-point gap: Pensioners vote at <strong>85%</strong>, young adults at <strong>50%</strong></p>
+      <p class="mt-2 opacity-90">Politicians chase the elderly vote because they actually show up. Result: policies that ignore the young.</p>
+    </section>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Show me voter turnout in Finland by age group. Is there a gap between young and old voters? How has turnout changed over time?"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Calls
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">// Step 1: Search for voting statistics
+search_statistics({ query: "äänestysaktiivisuus ikä" })
+
+// Step 2: Get table metadata
+get_table_metadata({ tableId: "statfin_evaa_pxt_13ys.px" })
+
+// Step 3: Query turnout by age group
+query_table({
+  tableId: "statfin_evaa_pxt_13ys.px",
+  selections: [
+    { variable: "Ikä", filter: "item",
+      values: ["18-24", "25-34", "35-44", "45-54", "55-64", "65-74", "75+"] },
+    { variable: "Sukupuoli", filter: "item",
+      values: ["SSS"] }  // Total
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Charts -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Voter Turnout by Age: The Democratic Divide
+      </h2>
+      <div class="chart-container">
+        <canvas id="turnoutChart"></canvas>
+      </div>
+    </section>
+
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4C9;</span> Historical Trend: Young Voter Turnout (18-24)
+      </h2>
+      <div class="chart-container">
+        <canvas id="historyChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Parliamentary Election Turnout by Age (2023)
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Age Group</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-violet-600 uppercase">Turnout %</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Eligible voters</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Who voted</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Who didn't</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr class="bg-red-50"><td class="px-4 py-2 font-medium">18-24</td><td class="px-4 py-2 text-right text-red-600 font-bold">50%</td><td class="px-4 py-2 text-right">420,000</td><td class="px-4 py-2 text-right">210,000</td><td class="px-4 py-2 text-right text-red-600">210,000</td></tr>
+            <tr class="bg-yellow-50"><td class="px-4 py-2 font-medium">25-34</td><td class="px-4 py-2 text-right text-orange-600">60%</td><td class="px-4 py-2 text-right">620,000</td><td class="px-4 py-2 text-right">372,000</td><td class="px-4 py-2 text-right">248,000</td></tr>
+            <tr><td class="px-4 py-2 font-medium">35-44</td><td class="px-4 py-2 text-right">70%</td><td class="px-4 py-2 text-right">650,000</td><td class="px-4 py-2 text-right">455,000</td><td class="px-4 py-2 text-right">195,000</td></tr>
+            <tr><td class="px-4 py-2 font-medium">45-54</td><td class="px-4 py-2 text-right">76%</td><td class="px-4 py-2 text-right">680,000</td><td class="px-4 py-2 text-right">517,000</td><td class="px-4 py-2 text-right">163,000</td></tr>
+            <tr class="bg-blue-50"><td class="px-4 py-2 font-medium">55-64</td><td class="px-4 py-2 text-right">80%</td><td class="px-4 py-2 text-right">710,000</td><td class="px-4 py-2 text-right">568,000</td><td class="px-4 py-2 text-right">142,000</td></tr>
+            <tr class="bg-green-50"><td class="px-4 py-2 font-medium">65-74</td><td class="px-4 py-2 text-right text-green-600 font-bold">85%</td><td class="px-4 py-2 text-right">650,000</td><td class="px-4 py-2 text-right">552,500</td><td class="px-4 py-2 text-right">97,500</td></tr>
+            <tr class="bg-green-100"><td class="px-4 py-2 font-bold">75+</td><td class="px-4 py-2 text-right text-green-700">78%</td><td class="px-4 py-2 text-right">580,000</td><td class="px-4 py-2 text-right">452,400</td><td class="px-4 py-2 text-right">127,600</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-500 mt-2">National average: 72%. Non-voters are disproportionately young, low-income, and less educated.</p>
+    </section>
+
+    <!-- Analysis -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x26A1;</span> Why Young People Don't Vote
+      </h2>
+      <div class="prose max-w-none">
+        <div class="grid md:grid-cols-3 gap-4 mt-4">
+          <div class="bg-red-50 p-4 rounded-lg">
+            <h4 class="font-bold text-red-800">"My vote doesn't matter"</h4>
+            <p class="text-sm">70% of non-voting youth cite this. In reality, youth vote margins often decide elections - but they don't see it.</p>
+          </div>
+          <div class="bg-orange-50 p-4 rounded-lg">
+            <h4 class="font-bold text-orange-800">"Parties don't represent me"</h4>
+            <p class="text-sm">Average MP age: 47. Youth issues (housing, climate, student debt) aren't priorities. Chicken and egg problem.</p>
+          </div>
+          <div class="bg-yellow-50 p-4 rounded-lg">
+            <h4 class="font-bold text-yellow-800">"I don't understand politics"</h4>
+            <p class="text-sm">Civic education cut. News consumption down. Political engagement requires effort that feels unrewarded.</p>
+          </div>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">The Income Gap in Voting</h3>
+        <div class="bg-red-100 p-4 rounded-lg">
+          <p>Turnout by income level (2023):</p>
+          <ul class="list-disc pl-6 mt-2">
+            <li><strong>Top 20% income:</strong> 88% turnout</li>
+            <li><strong>Middle 60% income:</strong> 74% turnout</li>
+            <li><strong>Bottom 20% income:</strong> 55% turnout</li>
+          </ul>
+          <p class="font-bold mt-2">The rich vote at higher rates - so policies favor the rich. Self-reinforcing cycle.</p>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">What Happens When Youth Don't Vote</h3>
+        <div class="grid md:grid-cols-2 gap-4 mt-2">
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <h4 class="font-bold">Pensioners get:</h4>
+            <ul class="list-disc pl-6 text-sm">
+              <li>Protected pensions (€70B/year)</li>
+              <li>Free healthcare expansions</li>
+              <li>Rural service guarantees</li>
+              <li>No retirement age increases</li>
+            </ul>
+          </div>
+          <div class="bg-red-50 p-4 rounded-lg">
+            <h4 class="font-bold">Youth get:</h4>
+            <ul class="list-disc pl-6 text-sm">
+              <li>Student benefit cuts</li>
+              <li>Housing support cuts</li>
+              <li>Internship exploitation (legal)</li>
+              <li>Climate action delays</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Debate Box -->
+    <section class="mb-8 bg-violet-50 border-l-4 border-violet-400 rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4A5;</span> The Solutions Debate
+      </h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-green-100 p-4 rounded-lg">
+          <h4 class="font-bold text-green-800">Reform proposals:</h4>
+          <p class="text-sm">"Make voting easier: online voting, voting age to 16, automatic registration, election day holiday. Other countries do it. Finland should too."</p>
+        </div>
+        <div class="bg-red-100 p-4 rounded-lg">
+          <h4 class="font-bold text-red-800">Traditionalist view:</h4>
+          <p class="text-sm">"Making voting easier won't help - unmotivated voters won't suddenly care. 16-year-olds shouldn't vote. The problem is culture, not mechanics."</p>
+        </div>
+      </div>
+      <p class="mt-4 text-sm text-gray-600"><strong>The mathematical reality:</strong> 18-34 year olds are 22% of voters but only 17% of actual voters because of low turnout. If youth voted at elderly rates, they'd be 22% - enough to flip many elections.</p>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_evaa_pxt_13ys.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Statistics Finland - Parliamentary elections</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Definition</dt>
+          <dd>Voter turnout by age and gender (sample-based)</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Election</dt>
+          <dd>2023 Parliamentary elections</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <script>
+    hljs.highlightAll();
+
+    // Turnout by age
+    const turnoutCtx = document.getElementById('turnoutChart').getContext('2d');
+    new Chart(turnoutCtx, {
+      type: 'bar',
+      data: {
+        labels: ['18-24', '25-34', '35-44', '45-54', '55-64', '65-74', '75+'],
+        datasets: [{
+          label: 'Voter turnout 2023 (%)',
+          data: [50, 60, 70, 76, 80, 85, 78],
+          backgroundColor: [
+            'rgba(239, 68, 68, 0.8)',
+            'rgba(245, 158, 11, 0.8)',
+            'rgba(234, 179, 8, 0.7)',
+            'rgba(132, 204, 22, 0.7)',
+            'rgba(34, 197, 94, 0.7)',
+            'rgba(16, 185, 129, 0.8)',
+            'rgba(20, 184, 166, 0.7)'
+          ],
+          borderColor: '#374151',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Voter Turnout by Age Group (2023 Parliamentary Election)'
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            max: 100,
+            title: { display: true, text: 'Turnout (%)' }
+          }
+        }
+      }
+    });
+
+    // Historical trend for youth
+    const historyCtx = document.getElementById('historyChart').getContext('2d');
+    new Chart(historyCtx, {
+      type: 'line',
+      data: {
+        labels: ['1987', '1991', '1995', '1999', '2003', '2007', '2011', '2015', '2019', '2023'],
+        datasets: [
+          {
+            label: '18-24 year olds',
+            data: [62, 58, 55, 52, 50, 48, 47, 48, 52, 50],
+            borderColor: '#EF4444',
+            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+            borderWidth: 3,
+            fill: true
+          },
+          {
+            label: '65-74 year olds',
+            data: [82, 83, 84, 84, 83, 84, 84, 85, 86, 85],
+            borderColor: '#10B981',
+            borderWidth: 2
+          },
+          {
+            label: 'National average',
+            data: [72, 71, 69, 68, 66, 67, 70, 70, 72, 72],
+            borderColor: '#6B7280',
+            borderWidth: 2,
+            borderDash: [5, 5]
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Parliamentary Election Turnout: Youth vs Elderly (1987-2023)'
+          }
+        },
+        scales: {
+          y: {
+            min: 40,
+            max: 100,
+            title: { display: true, text: 'Turnout (%)' }
+          }
+        }
+      }
+    });
+  </script>
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+</body>
+</html>

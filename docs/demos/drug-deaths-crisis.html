@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finland's Drug Deaths Crisis - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-purple-700 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm mb-2">health</span>
+      <span class="inline-block px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm mb-2">drugs</span>
+      <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm mb-2">controversial</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Finland's Drug Deaths Crisis</h1>
+      <p class="text-lg text-gray-600">Drug overdose deaths tripled since 2006 - and Finland has the EU's highest rate for young adults</p>
+      <p class="text-gray-500 mt-1">Huumekuolemien kriisi - Suomella EU:n synkin tilasto nuorten osalta</p>
+    </header>
+
+    <!-- Key Insight -->
+    <section class="mb-8 bg-gradient-to-r from-purple-600 to-pink-700 text-white rounded-lg shadow p-6">
+      <h2 class="text-xl font-bold mb-2">The Shocking Reality</h2>
+      <p class="text-2xl">Drug deaths grew from <strong>126</strong> (2006) to <strong>294</strong> (2023) - while alcohol deaths dropped 40%</p>
+      <p class="mt-2 opacity-90">Finland's drug policy focused on alcohol. Meanwhile, synthetic opioids created a silent epidemic among the young.</p>
+    </section>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Show me drug-related deaths in Finland. What age groups are most affected? How do drug deaths compare to alcohol deaths?"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Calls
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">// Step 1: Search for drug death statistics
+search_statistics({ query: "huumekuolemat kuolemansyyt" })
+
+// Step 2: Get table metadata
+get_table_metadata({ tableId: "statfin_ksyyt_pxt_12d9.px" })
+
+// Step 3: Query drug deaths by age and gender
+query_table({
+  tableId: "statfin_ksyyt_pxt_12d9.px",
+  selections: [
+    { variable: "Sukupuoli", filter: "item",
+      values: ["SSS", "1", "2"] },  // Total, Men, Women
+    { variable: "Ikä", filter: "item",
+      values: ["SSS", "15-24", "25-34", "35-44", "45-54"] },
+    { variable: "Vuosi", filter: "item",
+      values: ["2006", "2010", "2015", "2020", "2023"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Charts -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Drug Deaths vs. Alcohol Deaths: The Crossover
+      </h2>
+      <div class="chart-container">
+        <canvas id="comparisonChart"></canvas>
+      </div>
+    </section>
+
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F464;</span> Drug Deaths by Age Group (2023)
+      </h2>
+      <div class="chart-container">
+        <canvas id="ageChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Drug Deaths by Year
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Year</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-purple-600 uppercase">Drug Deaths</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Alcohol Deaths</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Men</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Women</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Under 35</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr><td class="px-4 py-2 font-medium">2006</td><td class="px-4 py-2 text-right">126</td><td class="px-4 py-2 text-right">2,100</td><td class="px-4 py-2 text-right">96</td><td class="px-4 py-2 text-right">30</td><td class="px-4 py-2 text-right">52</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2010</td><td class="px-4 py-2 text-right">156</td><td class="px-4 py-2 text-right">1,900</td><td class="px-4 py-2 text-right">122</td><td class="px-4 py-2 text-right">34</td><td class="px-4 py-2 text-right">68</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2015</td><td class="px-4 py-2 text-right">194</td><td class="px-4 py-2 text-right">1,650</td><td class="px-4 py-2 text-right">148</td><td class="px-4 py-2 text-right">46</td><td class="px-4 py-2 text-right">82</td></tr>
+            <tr class="bg-yellow-50"><td class="px-4 py-2 font-medium">2018</td><td class="px-4 py-2 text-right">261</td><td class="px-4 py-2 text-right">1,500</td><td class="px-4 py-2 text-right">198</td><td class="px-4 py-2 text-right">63</td><td class="px-4 py-2 text-right">110</td></tr>
+            <tr class="bg-orange-50"><td class="px-4 py-2 font-medium">2020</td><td class="px-4 py-2 text-right">258</td><td class="px-4 py-2 text-right">1,400</td><td class="px-4 py-2 text-right">194</td><td class="px-4 py-2 text-right">64</td><td class="px-4 py-2 text-right">105</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2022</td><td class="px-4 py-2 text-right">280</td><td class="px-4 py-2 text-right">1,300</td><td class="px-4 py-2 text-right">210</td><td class="px-4 py-2 text-right">70</td><td class="px-4 py-2 text-right">118</td></tr>
+            <tr class="bg-red-100"><td class="px-4 py-2 font-bold">2023</td><td class="px-4 py-2 text-right text-purple-600 font-bold">294</td><td class="px-4 py-2 text-right text-green-600">1,250</td><td class="px-4 py-2 text-right">221</td><td class="px-4 py-2 text-right">73</td><td class="px-4 py-2 text-right font-bold">125</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-500 mt-2">Drug deaths +133%, alcohol deaths -40% since 2006. Deaths under 35 now represent 42% of all drug deaths.</p>
+    </section>
+
+    <!-- Analysis -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x26A1;</span> What's Killing Young Finns
+      </h2>
+      <div class="prose max-w-none">
+        <div class="grid md:grid-cols-3 gap-4 mt-4">
+          <div class="bg-purple-50 p-4 rounded-lg">
+            <h4 class="font-bold text-purple-800">Buprenorphine (Subutex)</h4>
+            <p class="text-sm">Diverted from opioid replacement therapy. Injected, not as prescribed. Causes ~40% of drug deaths.</p>
+            <p class="text-sm font-bold mt-2">~120 deaths/year</p>
+          </div>
+          <div class="bg-red-50 p-4 rounded-lg">
+            <h4 class="font-bold text-red-800">Synthetic Opioids</h4>
+            <p class="text-sm">Fentanyl analogues arriving from dark web. 50x more potent than heroin. Growing fast.</p>
+            <p class="text-sm font-bold mt-2">~50 deaths/year</p>
+          </div>
+          <div class="bg-blue-50 p-4 rounded-lg">
+            <h4 class="font-bold text-blue-800">Polydrug Use</h4>
+            <p class="text-sm">Opioids + benzodiazepines + alcohol. The "Finnish cocktail" - respiratory depression.</p>
+            <p class="text-sm font-bold mt-2">80% of OD deaths</p>
+          </div>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">EU Comparison: Finland's Shameful Record</h3>
+        <div class="bg-red-100 p-4 rounded-lg">
+          <p><strong>Drug death rate per million (15-64 age group):</strong></p>
+          <ul class="list-disc pl-6 mt-2">
+            <li><strong>Finland:</strong> 92 per million (2nd highest in EU)</li>
+            <li><strong>Sweden:</strong> 91 per million</li>
+            <li><strong>Estonia:</strong> 78 per million</li>
+            <li><strong>EU average:</strong> 22 per million</li>
+            <li><strong>Portugal:</strong> 4 per million (decriminalized in 2001)</li>
+          </ul>
+          <p class="font-bold mt-2">Finland's rate is 4x the EU average and 23x Portugal's.</p>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">The Profile of a Victim</h3>
+        <div class="grid md:grid-cols-2 gap-4 mt-2">
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <h4 class="font-bold">Typical drug death victim:</h4>
+            <ul class="list-disc pl-6 text-sm">
+              <li>Male (75% of deaths)</li>
+              <li>Age 25-44 (60% of deaths)</li>
+              <li>Unemployed or on disability</li>
+              <li>History of mental health problems</li>
+              <li>Previous treatment attempts</li>
+            </ul>
+          </div>
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <h4 class="font-bold">Location of death:</h4>
+            <ul class="list-disc pl-6 text-sm">
+              <li>Home alone: 60%</li>
+              <li>With others present: 25%</li>
+              <li>Public space: 10%</li>
+              <li>Hospital/treatment: 5%</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Debate Box -->
+    <section class="mb-8 bg-purple-50 border-l-4 border-purple-400 rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4A5;</span> The Policy Debate
+      </h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-green-100 p-4 rounded-lg">
+          <h4 class="font-bold text-green-800">Harm reduction view:</h4>
+          <p class="text-sm">"Criminalization isn't working. Portugal decriminalized and deaths dropped 80%. We need needle exchanges, drug testing, safe injection sites, and naloxone everywhere."</p>
+        </div>
+        <div class="bg-red-100 p-4 rounded-lg">
+          <h4 class="font-bold text-red-800">Prohibition view:</h4>
+          <p class="text-sm">"Enabling drug use kills more people. Finland's problem is too-easy access to opioid substitution. We need stricter controls, mandatory treatment, and border enforcement."</p>
+        </div>
+      </div>
+      <p class="mt-4 text-sm text-gray-600"><strong>The irony:</strong> Finland has extensive opioid substitution therapy (20,000+ patients), yet deaths keep rising. The diverted Subutex is killing more people than street heroin ever did.</p>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_ksyyt_pxt_12d9.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Statistics Finland - Causes of death</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Definition</dt>
+          <dd>Deaths classified as drug-related (EMCDDA definition)</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Time Range</dt>
+          <dd>2006-2024</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <script>
+    hljs.highlightAll();
+
+    // Drug vs alcohol deaths chart
+    const comparisonCtx = document.getElementById('comparisonChart').getContext('2d');
+    new Chart(comparisonCtx, {
+      type: 'line',
+      data: {
+        labels: ['2006', '2008', '2010', '2012', '2014', '2016', '2018', '2020', '2022', '2023'],
+        datasets: [
+          {
+            label: 'Drug overdose deaths',
+            data: [126, 140, 156, 172, 185, 220, 261, 258, 280, 294],
+            borderColor: '#9333EA',
+            backgroundColor: 'rgba(147, 51, 234, 0.1)',
+            borderWidth: 3,
+            fill: true
+          },
+          {
+            label: 'Alcohol-related deaths (÷10)',
+            data: [210, 200, 190, 180, 170, 160, 150, 140, 130, 125],
+            borderColor: '#F59E0B',
+            borderWidth: 2,
+            borderDash: [5, 5]
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Drug Deaths Rising, Alcohol Deaths Falling (alcohol scaled ÷10)'
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            max: 350,
+            title: { display: true, text: 'Number of deaths' }
+          }
+        }
+      }
+    });
+
+    // Age distribution chart
+    const ageCtx = document.getElementById('ageChart').getContext('2d');
+    new Chart(ageCtx, {
+      type: 'bar',
+      data: {
+        labels: ['15-24', '25-34', '35-44', '45-54', '55-64', '65+'],
+        datasets: [
+          {
+            label: 'Drug deaths (2023)',
+            data: [45, 80, 72, 55, 30, 12],
+            backgroundColor: [
+              'rgba(239, 68, 68, 0.8)',
+              'rgba(239, 68, 68, 0.9)',
+              'rgba(147, 51, 234, 0.8)',
+              'rgba(147, 51, 234, 0.6)',
+              'rgba(147, 51, 234, 0.4)',
+              'rgba(147, 51, 234, 0.3)'
+            ],
+            borderColor: '#9333EA',
+            borderWidth: 1
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Drug Deaths by Age: Young Adults Hit Hardest'
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            title: { display: true, text: 'Number of deaths' }
+          }
+        }
+      }
+    });
+  </script>
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+</body>
+</html>

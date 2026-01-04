@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Shrinking Workforce - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-blue-600 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm mb-2">employment</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">The Shrinking Workforce</h1>
+      <p class="text-lg text-gray-600">Finland has lost 136,000 working-age people since 2010 - tracking the workforce decline</p>
+      <p class="text-gray-500 mt-1">Kutistuva työvoima - Suomi on menettänyt 136 000 työikäistä vuodesta 2010 - työvoimapula kasvaa</p>
+    </header>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Show the decline in working-age population (15-64) and how it affects the labor force"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Call
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">query_table({
+  tableId: "statfin_tyti_pxt_135y.px",
+  selections: [
+    { variable: "Kuukausi", filter: "item", values: ["2010M01", "2012M01", "2014M01", /* ... 8 values */] },
+    { variable: "Sukupuoli", filter: "item", values: ["SSS"] },
+    { variable: "Ikäluokka", filter: "item", values: ["15-64"] },
+    { variable: "Tiedot", filter: "item", values: ["Vaesto", "Tyovoima", "Tyolliset"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Chart -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Visualization
+      </h2>
+      <div class="chart-container">
+        <canvas id="chart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Data (24 of 24 rows)
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kuukausi</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sukupuoli</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ikäluokka</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tiedot</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">value</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2010M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">3552</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2010M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Työvoima, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2542</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2010M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Työlliset, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2288</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2012M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">3532</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2012M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Työvoima, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2525</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2012M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Työlliset, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2316</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2014M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">3499</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2014M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Työvoima, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2544</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2014M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Työlliset, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2322</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2016M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">3468</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2016M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Työvoima, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2528</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2016M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Työlliset, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2284</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2018M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">3447</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2018M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Työvoima, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2579</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2018M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Työlliset, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2340</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2020M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">3425</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2020M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Työvoima, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2632</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2020M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Työlliset, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2441</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2022M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">3419</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2022M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Työvoima, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2646</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2022M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Työlliset, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2444</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2024M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">3463</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2024M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Työvoima, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2699</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2024M01</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Työlliset, 1000 henkilöä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2474</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_tyti_pxt_135y.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Total Rows</dt>
+          <dd>24</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Tilastokeskus, työvoimatutkimus</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Updated</dt>
+          <dd>2025-12-23T06:00:00Z</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+  <script>
+    hljs.highlightAll();
+    const ctx = document.getElementById('chart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ["2010M01","2012M01","2014M01","2016M01","2018M01","2020M01","2022M01","2024M01"],
+        datasets: [{"label":"Väestö, 1000 henkilöä","data":[3552,3532,3499,3468,3447,3425,3419,3463],"borderColor":"rgb(59, 130, 246)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"Työvoima, 1000 henkilöä","data":[2542,2525,2544,2528,2579,2632,2646,2699],"borderColor":"rgb(239, 68, 68)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"Työlliset, 1000 henkilöä","data":[2288,2316,2322,2284,2340,2441,2444,2474],"borderColor":"rgb(34, 197, 94)","backgroundColor":"transparent","fill":false,"tension":0.1}]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true, position: 'top' },
+          title: { display: true, text: 'The Shrinking Workforce' }
+        },
+        scales: {
+          y: { beginAtZero: false }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

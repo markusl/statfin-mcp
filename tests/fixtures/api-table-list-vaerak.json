@@ -1,0 +1,182 @@
+[
+  {
+    "id": "statfin_vaerak_pxt_11ra.px",
+    "type": "t",
+    "text": "11ra -- Tunnuslukuja väestöstä alueittain, 1990-2024",
+    "updated": "2025-05-27T15:25:12"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rb.px",
+    "type": "t",
+    "text": "11rb -- Väkiluku ja väestömäärän muutos sukupuolen mukaan, 1750-2024",
+    "updated": "2025-09-04T09:10:37"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rc.px",
+    "type": "t",
+    "text": "11rc -- Väestö iän (5-v.) ja sukupuolen mukaan, 1865-2024",
+    "updated": "2025-04-03T15:46:57"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rd.px",
+    "type": "t",
+    "text": "11rd -- Väestö iän (1-v. 0-112) ja sukupuolen mukaan, 1972-2024",
+    "updated": "2025-04-03T15:46:57"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11re.px",
+    "type": "t",
+    "text": "11re -- Väestö iän (1-v.) ja sukupuolen mukaan alueittain, 1972-2024",
+    "updated": "2025-04-03T15:47:01"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rf.px",
+    "type": "t",
+    "text": "11rf -- Väestö iän (1-v.) ja sukupuolen mukaan alueittain kunkin tilastovuoden aluejaolla, 2003-2024",
+    "updated": "2025-04-03T15:47:02"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rg.px",
+    "type": "t",
+    "text": "11rg -- Kansalaisuus iän ja sukupuolen mukaan maakunnittain, 1990-2024",
+    "updated": "2025-04-03T15:47:04"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rh.px",
+    "type": "t",
+    "text": "11rh -- Kansalaisuus sukupuolen mukaan kunnittain, 1990-2024",
+    "updated": "2025-04-03T15:47:07"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rk.px",
+    "type": "t",
+    "text": "11rk -- Suomen kansalaiset, joilla kaksoiskansalaisuus iän ja toisen kansalaisuuden mukaan, 2000-2024",
+    "updated": "2025-04-03T15:47:08"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rl.px",
+    "type": "t",
+    "text": "11rl -- Kieli iän ja sukupuolen mukaan maakunnittain, 1990-2024",
+    "updated": "2025-04-03T15:47:10"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rm.px",
+    "type": "t",
+    "text": "11rm -- Kieli sukupuolen mukaan kunnittain, 1990-2024",
+    "updated": "2025-04-03T15:47:12"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rp.px",
+    "type": "t",
+    "text": "11rp -- Syntymävaltio iän ja sukupuolen mukaan maakunnittain, 1990-2024",
+    "updated": "2025-04-03T15:47:14"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rq.px",
+    "type": "t",
+    "text": "11rq -- Syntymävaltio sukupuolen mukaan kunnittain, 1990-2024",
+    "updated": "2025-04-03T15:47:17"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rs.px",
+    "type": "t",
+    "text": "11rs -- Syntyperä ja taustamaa kielen, iän (1-v.) ja sukupuolen mukaan, 1990-2024",
+    "updated": "2025-04-03T15:47:22"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rt.px",
+    "type": "t",
+    "text": "11rt -- Syntyperä ja taustamaa ikäryhmän ja sukupuolen mukaan maakunnittain, 1990-2024",
+    "updated": "2025-04-03T15:47:29"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11ru.px",
+    "type": "t",
+    "text": "11ru -- Syntyperä taustamaanosittain sukupuolen mukaan alueittain, 1990-2024",
+    "updated": "2025-04-03T15:47:30"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rv.px",
+    "type": "t",
+    "text": "11rv -- Syntyperä ja taustamaa sukupuolen mukaan kunnittain, 1990-2024",
+    "updated": "2025-04-03T15:47:33"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rx.px",
+    "type": "t",
+    "text": "11rx -- Uskonnolliseen yhdyskuntaan kuuluminen iän ja sukupuolen mukaan, 1990-2024",
+    "updated": "2025-04-03T15:47:33"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11ry.px",
+    "type": "t",
+    "text": "11ry -- Siviilisääty iän (1-v. 0-112) ja sukupuolen mukaan, 1990-2024",
+    "updated": "2025-04-03T15:47:34"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rz.px",
+    "type": "t",
+    "text": "11rz -- Siviilisääty iän (1-v.), kielen ja sukupuolen mukaan alueittain, 1990-2024",
+    "updated": "2025-04-03T15:47:48"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11s1.px",
+    "type": "t",
+    "text": "11s1 -- Keskiväkiluku iän ja sukupuolen mukaan alueittain, 1981-2024",
+    "updated": "2025-04-03T15:47:52"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11s2.px",
+    "type": "t",
+    "text": "11s2 -- Suomen- ja ruotsinkielinen väestö ikäryhmän ja sukupuolen mukaan alueittain, 1990-2024",
+    "updated": "2025-04-03T15:47:54"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11s3.px",
+    "type": "t",
+    "text": "11s3 -- Väestö asuinpaikan kaupunki-maaseutu-luokituksen sekä sukupuolen ja iän mukaan, 2000-2024",
+    "updated": "2025-05-27T15:25:10"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11s5.px",
+    "type": "t",
+    "text": "11s5 -- Väkiluku kuukausittain ja alueittain, 1990M01-2024M12",
+    "updated": "2025-05-27T15:25:11"
+  },
+  {
+    "id": "statfin_vaerak_pxt_14x3.px",
+    "type": "t",
+    "text": "14x3 -- Taajama-aste alueittain, 2023",
+    "updated": "2024-10-23T12:06:53"
+  },
+  {
+    "id": "statfin_vaerak_pxt_14x4.px",
+    "type": "t",
+    "text": "14x4 -- Taajama- ja haja-asutusalueväestö iän ja sukupuolen mukaan kunnittain, 2023",
+    "updated": "2024-10-23T12:06:54"
+  },
+  {
+    "id": "statfin_vaerak_pxt_14x5.px",
+    "type": "t",
+    "text": "14x5 -- Taajamat väkiluvun ja väestöntiheyden mukaan, 2023",
+    "updated": "2024-10-23T12:06:54"
+  },
+  {
+    "id": "statfin_vaerak_pxt_15al.px",
+    "type": "t",
+    "text": "15al -- Taajama-aste alueittain, 2024",
+    "updated": "2025-10-29T15:33:29"
+  },
+  {
+    "id": "statfin_vaerak_pxt_15am.px",
+    "type": "t",
+    "text": "15am -- Taajama- ja haja-asutusalueväestö iän ja sukupuolen mukaan kunnittain, 2024",
+    "updated": "2025-10-29T15:33:29"
+  },
+  {
+    "id": "statfin_vaerak_pxt_15an.px",
+    "type": "t",
+    "text": "15an -- Taajamat väkiluvun ja väestöntiheyden mukaan, 2024",
+    "updated": "2025-10-29T15:33:30"
+  }
+]

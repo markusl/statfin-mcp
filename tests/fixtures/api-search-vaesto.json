@@ -1,0 +1,422 @@
+[
+  {
+    "id": "statfin_vaenn_pxt_128t.px",
+    "path": "/vaenn",
+    "title": "128t -- Väestö iän ja sukupuolen mukaan eri vuosien väestöennusteissa, koko maa",
+    "score": 0.3707985,
+    "published": "2024-10-23T15:00:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_135y.px",
+    "path": "/tyti",
+    "title": "135y -- Väestö työmarkkina-aseman, sukupuolen ja iän mukaan, kuukausitiedot, 2009M01-2025M11",
+    "score": 0.351372719,
+    "published": "2025-12-22T11:31:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_137h.px",
+    "path": "/tyti",
+    "title": "137h -- Väestö työmarkkina-aseman, sukupuolen ja iän mukaan, neljännesvuositiedot, 2009Q1-2025Q3",
+    "score": 0.351372719,
+    "published": "2025-10-20T11:52:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_13ak.px",
+    "path": "/tyti",
+    "title": "13ak -- Väestö työmarkkina-aseman, sukupuolen ja suuralueen mukaan, 15-74-vuotiaat, 2012-2024",
+    "score": 0.351372719,
+    "published": "2025-01-23T11:55:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rc.px",
+    "path": "/vaerak",
+    "title": "11rc -- Väestö iän (5-v.) ja sukupuolen mukaan, 1865-2024",
+    "score": 0.351372719,
+    "published": "2025-04-03T15:46:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_13aj.px",
+    "path": "/tyti",
+    "title": "13aj -- Väestö työmarkkina-aseman, sukupuolen ja iän mukaan, 2009-2024",
+    "score": 0.340942442,
+    "published": "2025-01-23T11:55:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_13al.px",
+    "path": "/tyti",
+    "title": "13al -- Väestö työmarkkina-aseman ja maakunnan mukaan, 15-74-vuotiaat, 2009-2024",
+    "score": 0.340942442,
+    "published": "2025-01-23T11:55:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_13lx.px",
+    "path": "/tyti",
+    "title": "13lx -- Väestö työmarkkina-aseman ja maakunnan mukaan, 15-74-vuotiaat, neljännesvuositiedot, 2009Q1-2025Q3",
+    "score": 0.340942442,
+    "published": "2025-10-20T11:52:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rd.px",
+    "path": "/vaerak",
+    "title": "11rd -- Väestö iän (1-v. 0-112) ja sukupuolen mukaan, 1972-2024",
+    "score": 0.320081919,
+    "published": "2025-04-03T15:46:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_137i.px",
+    "path": "/tyti",
+    "title": "137i -- Väestö työmarkkina-aseman, sukupuolen ja suuralueen mukaan, 15-74-vuotiaat, neljännesvuositiedot, 2012Q1-2025Q3",
+    "score": 0.318647146,
+    "published": "2025-10-20T11:52:00"
+  },
+  {
+    "id": "statfin_opiskt_pxt_11c5.px",
+    "path": "/opiskt",
+    "title": "11c5 -- Väestö ja tutkintotavoitteisen koulutuksen opiskelijat ja tutkinnot koulutusryhmän ja iän mukaan, 2004-2024",
+    "score": 0.304673225,
+    "published": "2025-10-07T10:37:00"
+  },
+  {
+    "id": "statfin_vaenn_pxt_14wx.px",
+    "path": "/vaenn",
+    "title": "14wx -- Väestöennuste 2024: Väestö iän ja sukupuolen mukaan alueittain, 2024-2045",
+    "score": 0.299221367,
+    "published": "2024-10-23T14:59:00"
+  },
+  {
+    "id": "statfin_vaenn_pxt_14x1.px",
+    "path": "/vaenn",
+    "title": "14x1 -- Omavaraisennuste 2024: Väestö iän ja sukupuolen mukaan alueittain, 2024-2045",
+    "score": 0.299221367,
+    "published": "2024-10-23T14:59:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11re.px",
+    "path": "/vaerak",
+    "title": "11re -- Väestö iän (1-v.) ja sukupuolen mukaan alueittain, 1972-2024",
+    "score": 0.299221367,
+    "published": "2025-04-03T15:47:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_13ge.px",
+    "path": "/tyti",
+    "title": "13ge -- Väestö työmarkkina-aseman ja aluehallintovirastojen (AVI) mukaan, 15-74-vuotiaat, kuukausitiedot, 2010M01-2025M11",
+    "score": 0.2977866,
+    "published": "2025-12-22T11:31:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_13lw.px",
+    "path": "/tyti",
+    "title": "13lw -- Väestö työmarkkina-aseman ja aluehallintovirastojen (AVI) mukaan, 15-74-vuotiaat, neljännesvuositiedot, 2010Q1-2025Q3",
+    "score": 0.2977866,
+    "published": "2025-10-20T11:52:00"
+  },
+  {
+    "id": "statfin_vkour_pxt_12bs.px",
+    "path": "/vkour",
+    "title": "12bs -- 15 vuotta täyttänyt väestö koulutusasteen, maakunnan, kunnan, sukupuolen ja ikäryhmän mukaan, 2007-2024",
+    "score": 0.296802968,
+    "published": "2025-09-15T13:16:00"
+  },
+  {
+    "id": "statfin_tyokay_pxt_115d.px",
+    "path": "/tyokay",
+    "title": "115d -- Väestö alueen, pääasiallisen toiminnan, koulutusasteen, sukupuolen, iän ja vuoden mukaan, 1987-2024",
+    "score": 0.27692607,
+    "published": "2025-12-16T08:20:00"
+  },
+  {
+    "id": "statfin_tyokay_pxt_115f.px",
+    "path": "/tyokay",
+    "title": "115f -- Väestö alueen, pääasiallisen toiminnan, kansalaisuuden, sukupuolen, iän ja vuoden mukaan, 2000-2024",
+    "score": 0.27692607,
+    "published": "2025-12-16T08:20:00"
+  },
+  {
+    "id": "statfin_tyokay_pxt_115u.px",
+    "path": "/tyokay",
+    "title": "115u -- Väestö sosioekonomisen aseman, alueen, pääasiallisen toiminnan, sukupuolen ja vuoden mukaan, 2010-2023",
+    "score": 0.27692607,
+    "published": "2025-06-02T10:04:00"
+  },
+  {
+    "id": "statfin_tyokay_pxt_115w.px",
+    "path": "/tyokay",
+    "title": "115w -- Väestö alueen, pääasiallisen toiminnan, iän (5-v), sukupuolen ja vuoden mukaan, 1987-2024",
+    "score": 0.27692607,
+    "published": "2025-12-16T08:20:00"
+  },
+  {
+    "id": "statfin_tyokay_pxt_115v.px",
+    "path": "/tyokay",
+    "title": "115v -- Väestö sosioekonomisen aseman, pääasiallisen toiminnan, sukupuolen, iän ja vuoden mukaan, 2010-2023",
+    "score": 0.27692607,
+    "published": "2025-06-02T10:04:00"
+  },
+  {
+    "id": "statfin_perh_pxt_12c6.px",
+    "path": "/perh",
+    "title": "12c6 -- Väestö perheaseman, iän (1-v.) ja sukupuolen mukaan alueittain, 1992-2024",
+    "score": 0.267930567,
+    "published": "2025-06-04T12:58:00"
+  },
+  {
+    "id": "statfin_tyokay_pxt_115c.px",
+    "path": "/tyokay",
+    "title": "115c -- Väestö pääasiallisen toiminnan, sukupuolen, iän (1-v) ja vuoden mukaan, 1987-2024",
+    "score": 0.2664958,
+    "published": "2025-12-16T08:20:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11s2.px",
+    "path": "/vaerak",
+    "title": "11s2 -- Suomen- ja ruotsinkielinen väestö ikäryhmän ja sukupuolen mukaan alueittain, 1990-2024",
+    "score": 0.258596331,
+    "published": "2025-04-03T15:47:00"
+  },
+  {
+    "id": "statfin_tyokay_pxt_115e.px",
+    "path": "/tyokay",
+    "title": "115e -- Väestö pääasiallisen toiminnan, kansalaisuuden, ammattiaseman, sukupuolen, iän ja vuoden mukaan, 2000-2024",
+    "score": 0.256065518,
+    "published": "2025-12-16T08:20:00"
+  },
+  {
+    "id": "statfin_tyokay_pxt_115g.px",
+    "path": "/tyokay",
+    "title": "115g -- Väestö pääasiallisen toiminnan, kielen, ammattiaseman, sukupuolen, iän ja vuoden mukaan, 2000-2024",
+    "score": 0.256065518,
+    "published": "2025-12-16T08:20:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rb.px",
+    "path": "/vaerak",
+    "title": "11rb -- Väkiluku ja väestömäärän muutos sukupuolen mukaan, 1750-2024",
+    "score": 0.250326484,
+    "published": "2025-09-04T09:10:00"
+  },
+  {
+    "id": "statfin_ksyyt_pxt_11ay.px",
+    "path": "/ksyyt",
+    "title": "11ay -- Kuolleet, ikävakioitu ja yleinen kuolleisuusluku tilaston peruskuolemansyyn (aikasarjaluokitus) ja sukupuolen mukaan, koko väestö ja 15-64 -vuotiaat, 1971-2024",
+    "score": 0.250133,
+    "published": "2025-10-28T10:37:00"
+  },
+  {
+    "id": "statfin_tyokay_pxt_115b.px",
+    "path": "/tyokay",
+    "title": "115b -- Väestö alueen, pääasiallisen toiminnan, sukupuolen, iän ja vuoden mukaan, 1987-2024",
+    "score": 0.245635256,
+    "published": "2025-12-16T08:20:00"
+  },
+  {
+    "id": "statfin_vkour_pxt_12bq.px",
+    "path": "/vkour",
+    "title": "12bq -- 15 vuotta täyttänyt väestö koulutusasteen, kunnan, sukupuolen ja ikäryhmän mukaan, 1970-2024",
+    "score": 0.245635256,
+    "published": "2025-09-11T11:35:00"
+  },
+  {
+    "id": "statfin_vkour_pxt_12br.px",
+    "path": "/vkour",
+    "title": "12br -- 15 vuotta täyttänyt väestö koulutusalan, kunnan, sukupuolen ja ikäryhmän mukaan, 1970-2024",
+    "score": 0.245635256,
+    "published": "2025-11-21T15:11:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11s3.px",
+    "path": "/vaerak",
+    "title": "11s3 -- Väestö asuinpaikan kaupunki-maaseutu-luokituksen sekä sukupuolen ja iän mukaan, 2000-2024",
+    "score": 0.245635256,
+    "published": "2025-05-27T15:25:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rf.px",
+    "path": "/vaerak",
+    "title": "11rf -- Väestö iän (1-v.) ja sukupuolen mukaan alueittain kunkin tilastovuoden aluejaolla, 2003-2024",
+    "score": 0.240420118,
+    "published": "2025-04-03T15:47:00"
+  },
+  {
+    "id": "statfin_vaenn_pxt_139e.px",
+    "path": "/vaenn",
+    "title": "139e -- Väestönmuutokset sukupuolen mukaan eri vuosien väestöennusteissa, koko maa",
+    "score": 0.1043027,
+    "published": "2025-02-26T08:47:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_13nx.px",
+    "path": "/tyti",
+    "title": "13nx -- Väestön työmarkkina-asema sukupuolen ja nuorimman lapsen iän mukaan, 20-59-vuotiaat, 2013-2024",
+    "score": 0.08344216,
+    "published": "2025-06-10T09:05:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_13ny.px",
+    "path": "/tyti",
+    "title": "13ny -- Väestön työmarkkina-asema sukupuolen ja lasten lukumäärän mukaan, 20-59-vuotiaat, 2013-2024",
+    "score": 0.08344216,
+    "published": "2025-06-10T09:05:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rx.px",
+    "path": "/vaerak",
+    "title": "11rx -- Uskonnolliseen yhdyskuntaan kuuluminen iän ja sukupuolen mukaan, 1990-2024",
+    "score": 0.08344216,
+    "published": "2025-04-03T15:47:00"
+  },
+  {
+    "id": "statfin_tyti_pxt_13am.px",
+    "path": "/tyti",
+    "title": "13am -- Nuorten 15-29-vuotiaiden osallistuminen työmarkkinoille ja koulutukseen sukupuolen ja iän mukaan, 2009-2024",
+    "score": 0.07301189,
+    "published": "2025-01-23T11:56:00"
+  },
+  {
+    "id": "statfin_vaka_pxt_158w.px",
+    "path": "/vaka",
+    "title": "158w -- Vieraskielisten ja ulkomaalaisten lasten varhaiskasvatukseen osallistumisen prosenttiosuudet iän ja maakunnan mukaan, 2021-2024",
+    "score": 0.05215135,
+    "published": "2025-10-08T11:34:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11ry.px",
+    "path": "/vaerak",
+    "title": "11ry -- Siviilisääty iän (1-v. 0-112) ja sukupuolen mukaan, 1990-2024",
+    "score": 0.05215135,
+    "published": "2025-04-03T15:47:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_14x3.px",
+    "path": "/vaerak",
+    "title": "14x3 -- Taajama-aste alueittain, 2023",
+    "score": 0.04172108,
+    "published": "2024-10-23T12:06:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rl.px",
+    "path": "/vaerak",
+    "title": "11rl -- Kieli iän ja sukupuolen mukaan maakunnittain, 1990-2024",
+    "score": 0.036505945,
+    "published": "2025-04-03T15:47:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_15al.px",
+    "path": "/vaerak",
+    "title": "15al -- Taajama-aste alueittain, 2024",
+    "score": 0.036505945,
+    "published": "2025-10-29T15:33:00"
+  },
+  {
+    "id": "statfin_vaenn_pxt_14wy.px",
+    "path": "/vaenn",
+    "title": "14wy -- Väestöennuste 2024: Väestönmuutokset sukupuolen mukaan alueittain, 2024-2045",
+    "score": 0.03129081,
+    "published": "2024-10-23T14:59:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rg.px",
+    "path": "/vaerak",
+    "title": "11rg -- Kansalaisuus iän ja sukupuolen mukaan maakunnittain, 1990-2024",
+    "score": 0.03129081,
+    "published": "2025-04-03T15:47:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rp.px",
+    "path": "/vaerak",
+    "title": "11rp -- Syntymävaltio iän ja sukupuolen mukaan maakunnittain, 1990-2024",
+    "score": 0.03129081,
+    "published": "2025-04-03T15:47:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rs.px",
+    "path": "/vaerak",
+    "title": "11rs -- Syntyperä ja taustamaa kielen, iän (1-v.) ja sukupuolen mukaan, 1990-2024",
+    "score": 0.03129081,
+    "published": "2025-04-03T15:47:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rt.px",
+    "path": "/vaerak",
+    "title": "11rt -- Syntyperä ja taustamaa ikäryhmän ja sukupuolen mukaan maakunnittain, 1990-2024",
+    "score": 0.03129081,
+    "published": "2025-04-03T15:47:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11ru.px",
+    "path": "/vaerak",
+    "title": "11ru -- Syntyperä taustamaanosittain sukupuolen mukaan alueittain, 1990-2024",
+    "score": 0.03129081,
+    "published": "2025-04-03T15:47:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rz.px",
+    "path": "/vaerak",
+    "title": "11rz -- Siviilisääty iän (1-v.), kielen ja sukupuolen mukaan alueittain, 1990-2024",
+    "score": 0.03129081,
+    "published": "2025-04-03T15:47:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rh.px",
+    "path": "/vaerak",
+    "title": "11rh -- Kansalaisuus sukupuolen mukaan kunnittain, 1990-2024",
+    "score": 0.0260756742,
+    "published": "2025-04-03T15:47:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rm.px",
+    "path": "/vaerak",
+    "title": "11rm -- Kieli sukupuolen mukaan kunnittain, 1990-2024",
+    "score": 0.0260756742,
+    "published": "2025-04-03T15:47:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rq.px",
+    "path": "/vaerak",
+    "title": "11rq -- Syntymävaltio sukupuolen mukaan kunnittain, 1990-2024",
+    "score": 0.0260756742,
+    "published": "2025-04-03T15:47:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11rv.px",
+    "path": "/vaerak",
+    "title": "11rv -- Syntyperä ja taustamaa sukupuolen mukaan kunnittain, 1990-2024",
+    "score": 0.0260756742,
+    "published": "2025-04-03T15:47:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_11ra.px",
+    "path": "/vaerak",
+    "title": "11ra -- Tunnuslukuja väestöstä alueittain, 1990-2024",
+    "score": 0.0182529725,
+    "published": "2025-05-27T15:25:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_14x5.px",
+    "path": "/vaerak",
+    "title": "14x5 -- Taajamat väkiluvun ja väestöntiheyden mukaan, 2023",
+    "score": 0.0182529725,
+    "published": "2024-10-23T12:06:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_15an.px",
+    "path": "/vaerak",
+    "title": "15an -- Taajamat väkiluvun ja väestöntiheyden mukaan, 2024",
+    "score": 0.0182529725,
+    "published": "2025-10-29T15:33:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_14x4.px",
+    "path": "/vaerak",
+    "title": "14x4 -- Taajama- ja haja-asutusalueväestö iän ja sukupuolen mukaan kunnittain, 2023",
+    "score": 0.009126486,
+    "published": "2024-10-23T12:06:00"
+  },
+  {
+    "id": "statfin_vaerak_pxt_15am.px",
+    "path": "/vaerak",
+    "title": "15am -- Taajama- ja haja-asutusalueväestö iän ja sukupuolen mukaan kunnittain, 2024",
+    "score": 0.009126486,
+    "published": "2025-10-29T15:33:00"
+  }
+]

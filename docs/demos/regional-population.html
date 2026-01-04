@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regional Population Comparison - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-blue-600 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm mb-2">regional</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Regional Population Comparison</h1>
+      <p class="text-lg text-gray-600">Population in major Finnish cities</p>
+      <p class="text-gray-500 mt-1">Alueellinen väestövertailu - Väestö suurimmissa Suomen kaupungeissa</p>
+    </header>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Compare population in Helsinki, Espoo, Tampere, Vantaa, and Oulu"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Call
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">query_table({
+  tableId: "statfin_vaerak_pxt_11re.px",
+  selections: [
+    { variable: "Alue", filter: "item", values: ["KU091", "KU049", "KU837", "KU092", "KU564"] },
+    { variable: "Ikä", filter: "item", values: ["SSS"] },
+    { variable: "Sukupuoli", filter: "item", values: ["SSS"] },
+    { variable: "Vuosi", filter: "item", values: ["2010", "2015", "2020", "2024"] },
+    { variable: "Tiedot", filter: "item", values: ["vaesto"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Chart -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Visualization
+      </h2>
+      <div class="chart-container">
+        <canvas id="chart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Data (20 of 20 rows)
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Alue</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ikä</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sukupuoli</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vuosi</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tiedot</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">value</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Espoo</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2010</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">247970</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Espoo</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2015</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">269802</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Espoo</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2020</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">292796</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Espoo</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2024</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">320931</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Helsinki</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2010</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">588549</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Helsinki</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2015</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">628208</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Helsinki</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2020</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">656920</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Helsinki</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2024</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">684018</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Oulu</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2010</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">185419</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Oulu</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2015</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">198525</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Oulu</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2020</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">207327</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Oulu</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2024</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">216152</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Tampere</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2010</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">213217</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Tampere</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2015</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">225118</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Tampere</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2020</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">241009</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Tampere</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2024</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">260180</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Vantaa</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2010</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">200055</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Vantaa</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2015</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">214605</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Vantaa</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2020</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">237231</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Vantaa</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2024</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">251269</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_vaerak_pxt_11re.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Total Rows</dt>
+          <dd>20</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Tilastokeskus, väestörakenne</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Updated</dt>
+          <dd>2025-04-04T05:00:00Z</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+  <script>
+    hljs.highlightAll();
+    const ctx = document.getElementById('chart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ["2010","2015","2020","2024"],
+        datasets: [{"label":"Espoo","data":[247970,269802,292796,320931],"borderColor":"rgb(59, 130, 246)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"Helsinki","data":[588549,628208,656920,684018],"borderColor":"rgb(239, 68, 68)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"Oulu","data":[185419,198525,207327,216152],"borderColor":"rgb(34, 197, 94)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"Tampere","data":[213217,225118,241009,260180],"borderColor":"rgb(168, 85, 247)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"Vantaa","data":[200055,214605,237231,251269],"borderColor":"rgb(249, 115, 22)","backgroundColor":"transparent","fill":false,"tension":0.1}]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true, position: 'top' },
+          title: { display: true, text: 'Regional Population Comparison' }
+        },
+        scales: {
+          y: { beginAtZero: false }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

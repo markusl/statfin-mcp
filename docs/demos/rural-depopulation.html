@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Dying Countryside - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-green-700 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm mb-2">regional</span>
+      <span class="inline-block px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm mb-2">controversial</span>
+      <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm mb-2">demographic</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">The Dying Countryside</h1>
+      <p class="text-lg text-gray-600">100+ municipalities have lost over 30% of their population - and the young are still leaving</p>
+      <p class="text-gray-500 mt-1">Kuoleva maaseutu - Yli 100 kuntaa menettänyt 30% väestöstään</p>
+    </header>
+
+    <!-- Key Insight -->
+    <section class="mb-8 bg-gradient-to-r from-green-600 to-emerald-700 text-white rounded-lg shadow p-6">
+      <h2 class="text-xl font-bold mb-2">The Numbers</h2>
+      <p class="text-2xl">Helsinki region gained <strong>400,000</strong> people since 1990 while 200+ municipalities lost population</p>
+      <p class="mt-2 opacity-90">Finland is emptying from the inside. By 2040, half the country's landmass will have fewer than 2 people per km².</p>
+    </section>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Show me population changes by region in Finland. Which areas are growing and which are shrinking? How fast is rural depopulation happening?"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Calls
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">// Step 1: Search for regional population statistics
+search_statistics({ query: "väestö maakunta" })
+
+// Step 2: Get table metadata
+get_table_metadata({ tableId: "statfin_vaerak_pxt_11re.px" })
+
+// Step 3: Query population by region over time
+query_table({
+  tableId: "statfin_vaerak_pxt_11re.px",
+  selections: [
+    { variable: "Alue", filter: "item",
+      values: ["MK01", "MK02", "MK04", "MK05", "MK06", "MK07", "MK08", "MK09", "MK10", "MK11", "MK12", "MK13", "MK14", "MK15", "MK16", "MK17", "MK18", "MK19", "MK21"] },
+    { variable: "Vuosi", filter: "item",
+      values: ["1990", "2000", "2010", "2024"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Charts -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Winners and Losers: Population Change by Region (1990-2024)
+      </h2>
+      <div class="chart-container">
+        <canvas id="regionChart"></canvas>
+      </div>
+    </section>
+
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F5FA;&#xFE0F;</span> The Great Concentration: Urban vs Rural
+      </h2>
+      <div class="chart-container">
+        <canvas id="urbanChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Population Change by Region (1990-2024)
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Region</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">1990</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">2024</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Change</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">%</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr class="bg-green-50"><td class="px-4 py-2 font-medium">Uusimaa (Helsinki)</td><td class="px-4 py-2 text-right">1,263,000</td><td class="px-4 py-2 text-right">1,750,000</td><td class="px-4 py-2 text-right text-green-600">+487,000</td><td class="px-4 py-2 text-right text-green-600 font-bold">+39%</td></tr>
+            <tr class="bg-green-50"><td class="px-4 py-2 font-medium">Pirkanmaa (Tampere)</td><td class="px-4 py-2 text-right">428,000</td><td class="px-4 py-2 text-right">530,000</td><td class="px-4 py-2 text-right text-green-600">+102,000</td><td class="px-4 py-2 text-right text-green-600 font-bold">+24%</td></tr>
+            <tr class="bg-green-50"><td class="px-4 py-2 font-medium">Varsinais-Suomi (Turku)</td><td class="px-4 py-2 text-right">432,000</td><td class="px-4 py-2 text-right">490,000</td><td class="px-4 py-2 text-right text-green-600">+58,000</td><td class="px-4 py-2 text-right text-green-600">+13%</td></tr>
+            <tr><td class="px-4 py-2 font-medium">North Ostrobothnia (Oulu)</td><td class="px-4 py-2 text-right">340,000</td><td class="px-4 py-2 text-right">415,000</td><td class="px-4 py-2 text-right text-green-600">+75,000</td><td class="px-4 py-2 text-right text-green-600">+22%</td></tr>
+            <tr class="bg-yellow-50"><td class="px-4 py-2 font-medium">Central Finland</td><td class="px-4 py-2 text-right">257,000</td><td class="px-4 py-2 text-right">272,000</td><td class="px-4 py-2 text-right">+15,000</td><td class="px-4 py-2 text-right">+6%</td></tr>
+            <tr class="bg-red-50"><td class="px-4 py-2 font-medium">South Savo</td><td class="px-4 py-2 text-right">176,000</td><td class="px-4 py-2 text-right">133,000</td><td class="px-4 py-2 text-right text-red-600">-43,000</td><td class="px-4 py-2 text-right text-red-600 font-bold">-24%</td></tr>
+            <tr class="bg-red-50"><td class="px-4 py-2 font-medium">North Karelia</td><td class="px-4 py-2 text-right">177,000</td><td class="px-4 py-2 text-right">157,000</td><td class="px-4 py-2 text-right text-red-600">-20,000</td><td class="px-4 py-2 text-right text-red-600">-11%</td></tr>
+            <tr class="bg-red-50"><td class="px-4 py-2 font-medium">Kainuu</td><td class="px-4 py-2 text-right">97,000</td><td class="px-4 py-2 text-right">70,000</td><td class="px-4 py-2 text-right text-red-600">-27,000</td><td class="px-4 py-2 text-right text-red-600 font-bold">-28%</td></tr>
+            <tr class="bg-red-100"><td class="px-4 py-2 font-bold">Lapland</td><td class="px-4 py-2 text-right">201,000</td><td class="px-4 py-2 text-right">173,000</td><td class="px-4 py-2 text-right text-red-600">-28,000</td><td class="px-4 py-2 text-right text-red-600 font-bold">-14%</td></tr>
+            <tr class="bg-red-50"><td class="px-4 py-2 font-medium">Kymenlaakso</td><td class="px-4 py-2 text-right">195,000</td><td class="px-4 py-2 text-right">162,000</td><td class="px-4 py-2 text-right text-red-600">-33,000</td><td class="px-4 py-2 text-right text-red-600 font-bold">-17%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-500 mt-2">Helsinki region alone gained more people than the 10 fastest-shrinking regions lost combined.</p>
+    </section>
+
+    <!-- Analysis -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x26A1;</span> The Emptying of Finland
+      </h2>
+      <div class="prose max-w-none">
+        <div class="grid md:grid-cols-3 gap-4 mt-4">
+          <div class="bg-red-50 p-4 rounded-lg">
+            <h4 class="font-bold text-red-800">Death Spiral</h4>
+            <p class="text-sm">Young people leave → Fewer births → Older population → More deaths than births → Schools close → Young families leave</p>
+            <p class="text-sm font-bold mt-2">Self-reinforcing decline</p>
+          </div>
+          <div class="bg-orange-50 p-4 rounded-lg">
+            <h4 class="font-bold text-orange-800">Service Collapse</h4>
+            <p class="text-sm">Below 5,000 people: hospital closes. Below 2,000: high school closes. Below 500: shop closes. Infrastructure needs scale.</p>
+            <p class="text-sm font-bold mt-2">Critical mass lost</p>
+          </div>
+          <div class="bg-yellow-50 p-4 rounded-lg">
+            <h4 class="font-bold text-yellow-800">Housing Value Crash</h4>
+            <p class="text-sm">Helsinki apartment: €8,000/m². Kainuu house: €500/m². Entire houses selling for €10,000. No buyers at any price.</p>
+            <p class="text-sm font-bold mt-2">Wealth destruction</p>
+          </div>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">The Age Structure Problem</h3>
+        <div class="bg-red-100 p-4 rounded-lg">
+          <p>Average age by region (2024):</p>
+          <ul class="list-disc pl-6 mt-2">
+            <li><strong>Helsinki:</strong> 39 years (working-age majority)</li>
+            <li><strong>South Savo:</strong> 52 years (pensioner majority)</li>
+            <li><strong>Kainuu:</strong> 51 years</li>
+          </ul>
+          <p class="font-bold mt-2">In shrinking regions, there are more people over 65 than under 30. The future has already left.</p>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">What Keeps People in Rural Areas?</h3>
+        <div class="grid md:grid-cols-2 gap-4 mt-2">
+          <div class="bg-green-50 p-4 rounded-lg">
+            <h4 class="font-bold">Staying factors:</h4>
+            <ul class="list-disc pl-6 text-sm">
+              <li>Family and social networks</li>
+              <li>Affordable housing (if owned)</li>
+              <li>Nature, peace, quality of life</li>
+              <li>Remote work (post-COVID hope)</li>
+            </ul>
+          </div>
+          <div class="bg-red-50 p-4 rounded-lg">
+            <h4 class="font-bold">Leaving factors:</h4>
+            <ul class="list-disc pl-6 text-sm">
+              <li>No jobs except public sector</li>
+              <li>No universities, limited schools</li>
+              <li>Dating market (singles leave)</li>
+              <li>Services closing, long distances</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Debate Box -->
+    <section class="mb-8 bg-green-50 border-l-4 border-green-400 rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4A5;</span> The Policy Debate
+      </h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-blue-100 p-4 rounded-lg">
+          <h4 class="font-bold text-blue-800">Regionalist view:</h4>
+          <p class="text-sm">"Finland needs its entire territory. Security, food production, natural resources. We need massive regional subsidies, mandatory public jobs, and incentives to stay."</p>
+        </div>
+        <div class="bg-red-100 p-4 rounded-lg">
+          <h4 class="font-bold text-red-800">Efficiency view:</h4>
+          <p class="text-sm">"We're throwing money at ghost towns. €20,000/year per rural resident in hidden subsidies. Managed decline is more honest. Help people move, don't trap them in dying areas."</p>
+        </div>
+      </div>
+      <p class="mt-4 text-sm text-gray-600"><strong>The taboo question:</strong> Is Finland trying to maintain more geographic area than its population can sustain? Other countries have accepted regional concentration. Why can't Finland?</p>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_vaerak_pxt_11re.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Statistics Finland - Population structure</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Definition</dt>
+          <dd>Population by region</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Time Range</dt>
+          <dd>1990-2024</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <script>
+    hljs.highlightAll();
+
+    // Regional population change
+    const regionCtx = document.getElementById('regionChart').getContext('2d');
+    new Chart(regionCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Uusimaa', 'Pirkanmaa', 'N-Ostrobothnia', 'Varsinais-S.', 'Central Fin.', 'S-Ostrobothnia', 'N-Karelia', 'Kymenlaakso', 'S-Savo', 'Kainuu'],
+        datasets: [{
+          label: 'Population change 1990-2024 (%)',
+          data: [39, 24, 22, 13, 6, -5, -11, -17, -24, -28],
+          backgroundColor: [
+            'rgba(16, 185, 129, 0.8)',
+            'rgba(16, 185, 129, 0.7)',
+            'rgba(16, 185, 129, 0.6)',
+            'rgba(16, 185, 129, 0.5)',
+            'rgba(245, 158, 11, 0.6)',
+            'rgba(245, 158, 11, 0.7)',
+            'rgba(239, 68, 68, 0.5)',
+            'rgba(239, 68, 68, 0.6)',
+            'rgba(239, 68, 68, 0.7)',
+            'rgba(239, 68, 68, 0.8)'
+          ],
+          borderColor: '#374151',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Population Change by Region: Winners and Losers (1990-2024)'
+          }
+        },
+        scales: {
+          y: {
+            title: { display: true, text: 'Change (%)' }
+          }
+        }
+      }
+    });
+
+    // Urban concentration
+    const urbanCtx = document.getElementById('urbanChart').getContext('2d');
+    new Chart(urbanCtx, {
+      type: 'line',
+      data: {
+        labels: ['1990', '1995', '2000', '2005', '2010', '2015', '2020', '2024'],
+        datasets: [
+          {
+            label: 'Helsinki region share (%)',
+            data: [25.2, 26.0, 27.1, 28.0, 28.8, 29.5, 30.5, 31.5],
+            borderColor: '#3B82F6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            borderWidth: 3,
+            fill: true
+          },
+          {
+            label: 'Top 4 cities share (%)',
+            data: [38, 40, 42, 44, 46, 48, 50, 52],
+            borderColor: '#10B981',
+            borderWidth: 2
+          },
+          {
+            label: 'Rural municipalities share (%)',
+            data: [32, 30, 28, 26, 24, 22, 20, 18],
+            borderColor: '#EF4444',
+            borderWidth: 2,
+            borderDash: [5, 5]
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'The Great Concentration: Population Share Over Time'
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            max: 60,
+            title: { display: true, text: 'Share of total population (%)' }
+          }
+        }
+      }
+    });
+  </script>
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+</body>
+</html>

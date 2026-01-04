@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dependency Ratio Crisis - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-blue-600 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm mb-2">population</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Dependency Ratio Crisis</h1>
+      <p class="text-lg text-gray-600">Working-age population shrinking while elderly grow: Finland's demographic time bomb visualized</p>
+      <p class="text-gray-500 mt-1">Huoltosuhteen kriisi - Työikäinen väestö supistuu samalla kun ikääntyneiden määrä kasvaa: Suomen demografinen aikapommi</p>
+    </header>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Show the changing balance between working-age (15-64) and elderly (65+) population over 25 years"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Call
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">query_table({
+  tableId: "statfin_vaerak_pxt_11rc.px",
+  selections: [
+    { variable: "Vuosi", filter: "item", values: ["2000", "2005", "2010", /* ... 6 values */] },
+    { variable: "Sukupuoli", filter: "item", values: ["SSS"] },
+    { variable: "Ikä", filter: "item", values: ["15-19", "20-24", "25-29", /* ... 15 values */] },
+    { variable: "Tiedot", filter: "item", values: ["vaesto"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Chart -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Visualization
+      </h2>
+      <div class="chart-container">
+        <canvas id="chart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Data (25 of 90 rows)
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vuosi</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sukupuoli</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ikä</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tiedot</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">value</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2000</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 19</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">331778</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2000</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">20 - 24</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">327230</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2000</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">25 - 29</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">306202</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2000</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">30 - 34</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">346890</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2000</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">35 - 39</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">378646</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2000</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">40 - 44</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">382265</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2000</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">45 - 49</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">399427</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2000</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">50 - 54</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">428147</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2000</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">55 - 59</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">310083</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2000</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">60 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">256916</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2000</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">65 - 69</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">225524</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2000</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">70 - 74</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">211265</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2000</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">75 - 79</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">163283</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2000</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">80 - 84</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">98731</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2000</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">85 -</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">78395</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2005</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15 - 19</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">320942</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2005</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">20 - 24</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">333936</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2005</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">25 - 29</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">331174</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2005</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">30 - 34</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">308990</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2005</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">35 - 39</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">347754</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2005</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">40 - 44</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">377782</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2005</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">45 - 49</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">379095</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2005</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">50 - 54</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">392973</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2005</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">55 - 59</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">416888</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2005</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Yhteensä</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">60 - 64</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Väestö 31.12.</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">297977</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_vaerak_pxt_11rc.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Total Rows</dt>
+          <dd>90</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Tilastokeskus, väestörakenne</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Updated</dt>
+          <dd>2025-04-04T05:00:00Z</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+  <script>
+    hljs.highlightAll();
+    const ctx = document.getElementById('chart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ["2000","2005","2010","2015","2020","2024"],
+        datasets: [{"label":"15 - 19","data":[331778,320942,332084,301171,298232,320688],"borderColor":"rgb(59, 130, 246)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"20 - 24","data":[327230,333936,327780,339216,308410,312229],"borderColor":"rgb(239, 68, 68)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"25 - 29","data":[306202,331174,346063,342528,352990,339824],"borderColor":"rgb(34, 197, 94)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"30 - 34","data":[346890,308990,339277,356932,355067,383005],"borderColor":"rgb(168, 85, 247)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"35 - 39","data":[378646,347754,313917,345816,363694,374123],"borderColor":"rgb(249, 115, 22)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"40 - 44","data":[382265,377782,349683,317879,348531,375156],"borderColor":"rgb(14, 165, 233)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"45 - 49","data":[399427,379095,377077,350369,317890,353386],"borderColor":"rgb(59, 130, 246)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"50 - 54","data":[428147,392973,374857,374501,347146,316054],"borderColor":"rgb(239, 68, 68)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"55 - 59","data":[310083,416888,384108,368110,367783,352108],"borderColor":"rgb(34, 197, 94)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"60 - 64","data":[256916,297977,401712,371660,357251,360294],"borderColor":"rgb(168, 85, 247)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"65 - 69","data":[225524,242434,281997,381263,353975,343776],"borderColor":"rgb(249, 115, 22)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"70 - 74","data":[211265,205764,223495,261165,354128,332210],"borderColor":"rgb(14, 165, 233)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"75 - 79","data":[163283,180520,179637,197194,232426,310766],"borderColor":"rgb(59, 130, 246)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"80 - 84","data":[98731,123858,141752,144235,160459,172601],"borderColor":"rgb(239, 68, 68)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"85 -","data":[78395,88589,114160,139246,154950,169464],"borderColor":"rgb(34, 197, 94)","backgroundColor":"transparent","fill":false,"tension":0.1}]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true, position: 'top' },
+          title: { display: true, text: 'Dependency Ratio Crisis' }
+        },
+        scales: {
+          y: { beginAtZero: false }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

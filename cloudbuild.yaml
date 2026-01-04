@@ -1,0 +1,51 @@
+# Cloud Build configuration for deploying to Cloud Run
+substitutions:
+  _TAG: 'latest'  # Default tag, can be overridden with --substitutions=_TAG=xxx
+
+steps:
+  # Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/statfin-mcp:${_TAG}'
+      - '.'
+
+  # Push to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/statfin-mcp:${_TAG}'
+
+  # Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'statfin-mcp'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/statfin-mcp:${_TAG}'
+      - '--region'
+      - 'europe-north1'
+      - '--platform'
+      - 'managed'
+      - '--memory'
+      - '512Mi'
+      - '--cpu'
+      - '1'
+      - '--max-instances'
+      - '3'
+      - '--concurrency'
+      - '80'
+      - '--timeout'
+      - '60s'
+      - '--allow-unauthenticated'
+      - '--set-env-vars'
+      - 'NODE_ENV=production,MCP_TRANSPORT=http,LOG_LEVEL=info'
+
+images:
+  - 'gcr.io/$PROJECT_ID/statfin-mcp:${_TAG}'
+
+options:
+  logging: CLOUD_LOGGING_ONLY

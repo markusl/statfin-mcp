@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finland Birth Rate Decline - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-blue-600 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm mb-2">population</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Finland Birth Rate Decline</h1>
+      <p class="text-lg text-gray-600">Annual births in Finland showing the demographic shift</p>
+      <p class="text-gray-500 mt-1">Suomen syntyvyyden lasku - Vuosittaiset syntymät Suomessa demografisen muutoksen kuvaajana</p>
+    </header>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Show annual births in Finland for the last 30 years"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Call
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">query_table({
+  tableId: "statfin_synt_pxt_12dx.px",
+  selections: [
+    { variable: "Vuosi", filter: "item", values: ["1995", "1996", "1997", /* ... 30 values */] },
+    { variable: "Tiedot", filter: "item", values: ["vm01"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Chart -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Visualization
+      </h2>
+      <div class="chart-container">
+        <canvas id="chart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Data (25 of 30 rows)
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vuosi</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tiedot</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">value</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1995</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">63067</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1996</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">60723</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1997</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">59329</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1998</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">57108</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1999</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">57574</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2000</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">56742</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2001</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">56189</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2002</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">55555</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2003</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">56630</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2004</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">57758</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2005</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">57745</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2006</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">58840</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2007</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">58729</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2008</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">59530</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2009</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">60430</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2010</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">60980</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2011</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">59961</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2012</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">59493</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2013</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">58134</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2014</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">57232</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2015</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">55472</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2016</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">52814</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2017</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">50321</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2018</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">47577</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2019</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">45613</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_synt_pxt_12dx.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Total Rows</dt>
+          <dd>30</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Tilastokeskus, syntyneet</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Updated</dt>
+          <dd>2025-05-28T05:00:00Z</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+  <script>
+    hljs.highlightAll();
+    const ctx = document.getElementById('chart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ["1995","1996","1997","1998","1999","2000","2001","2002","2003","2004","2005","2006","2007","2008","2009","2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022","2023","2024"],
+        datasets: [{
+          label: 'Finland Birth Rate Decline',
+          data: [63067,60723,59329,57108,57574,56742,56189,55555,56630,57758,57745,58840,58729,59530,60430,60980,59961,59493,58134,57232,55472,52814,50321,47577,45613,46463,49594,44951,43383,43720],
+          borderColor: 'rgb(59, 130, 246)',
+          backgroundColor: 'rgba(59, 130, 246, 0.1)',
+          fill: true,
+          tension: 0.1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: 'Finland Birth Rate Decline' }
+        },
+        scales: {
+          y: { beginAtZero: false }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

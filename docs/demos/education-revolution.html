@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finland's Education Revolution - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-indigo-700 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm mb-2">education</span>
+      <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm mb-2">controversial</span>
+      <span class="inline-block px-3 py-1 bg-pink-100 text-pink-800 rounded-full text-sm mb-2">gender</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">The Education Gender Flip</h1>
+      <p class="text-lg text-gray-600">Women now dominate higher education - 60% of university degrees go to women while young men fall behind</p>
+      <p class="text-gray-500 mt-1">Koulutuksen sukupuolikäänne - Naiset hallitsevat korkeakouluja</p>
+    </header>
+
+    <!-- Key Insight -->
+    <section class="mb-8 bg-gradient-to-r from-indigo-600 to-violet-700 text-white rounded-lg shadow p-6">
+      <h2 class="text-xl font-bold mb-2">The Flip</h2>
+      <p class="text-2xl">1970: Men had <strong>2x</strong> more degrees than women. 2024: Women have <strong>1.5x</strong> more degrees than men</p>
+      <p class="mt-2 opacity-90">The gender education gap reversed completely in 50 years. But nobody's calling it a crisis - yet.</p>
+    </section>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Show me education levels in Finland by gender. How has the share of university-educated changed? Is there a gender gap in education?"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Calls
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">// Step 1: Search for education level statistics
+search_statistics({ query: "koulutusaste väestö sukupuoli" })
+
+// Step 2: Get table metadata
+get_table_metadata({ tableId: "statfin_vkour_pxt_12bq.px" })
+
+// Step 3: Query education by gender over time
+query_table({
+  tableId: "statfin_vkour_pxt_12bq.px",
+  selections: [
+    { variable: "Koulutusaste", filter: "item",
+      values: ["3", "5-8"] },  // Upper secondary, Tertiary
+    { variable: "Sukupuoli", filter: "item",
+      values: ["1", "2"] },  // Men, Women
+    { variable: "Vuosi", filter: "item",
+      values: ["1970", "1990", "2000", "2010", "2024"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Charts -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> University Degree Holders by Gender
+      </h2>
+      <div class="chart-container">
+        <canvas id="educationChart"></canvas>
+      </div>
+    </section>
+
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F393;</span> Current Degrees by Gender (2024)
+      </h2>
+      <div class="chart-container">
+        <canvas id="currentChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Tertiary Education by Gender (% of 25-64 year olds)
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Year</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-blue-600 uppercase">Men %</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-pink-600 uppercase">Women %</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Gap</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Total %</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr class="bg-blue-50"><td class="px-4 py-2 font-medium">1970</td><td class="px-4 py-2 text-right text-blue-600 font-bold">10%</td><td class="px-4 py-2 text-right text-pink-600">5%</td><td class="px-4 py-2 text-right">M +5pp</td><td class="px-4 py-2 text-right">7%</td></tr>
+            <tr><td class="px-4 py-2 font-medium">1980</td><td class="px-4 py-2 text-right">14%</td><td class="px-4 py-2 text-right">11%</td><td class="px-4 py-2 text-right">M +3pp</td><td class="px-4 py-2 text-right">12%</td></tr>
+            <tr><td class="px-4 py-2 font-medium">1990</td><td class="px-4 py-2 text-right">20%</td><td class="px-4 py-2 text-right">20%</td><td class="px-4 py-2 text-right text-gray-500">Equal</td><td class="px-4 py-2 text-right">20%</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2000</td><td class="px-4 py-2 text-right">28%</td><td class="px-4 py-2 text-right">32%</td><td class="px-4 py-2 text-right text-pink-600">W +4pp</td><td class="px-4 py-2 text-right">30%</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2010</td><td class="px-4 py-2 text-right">33%</td><td class="px-4 py-2 text-right">42%</td><td class="px-4 py-2 text-right text-pink-600">W +9pp</td><td class="px-4 py-2 text-right">38%</td></tr>
+            <tr class="bg-pink-50"><td class="px-4 py-2 font-bold">2024</td><td class="px-4 py-2 text-right text-blue-600">38%</td><td class="px-4 py-2 text-right text-pink-600 font-bold">52%</td><td class="px-4 py-2 text-right text-pink-600 font-bold">W +14pp</td><td class="px-4 py-2 text-right font-bold">45%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-500 mt-2">The gap crossed zero around 1990. Women have been pulling ahead ever since.</p>
+    </section>
+
+    <!-- Analysis -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x26A1;</span> Why Boys Are Falling Behind
+      </h2>
+      <div class="prose max-w-none">
+        <div class="grid md:grid-cols-3 gap-4 mt-4">
+          <div class="bg-red-50 p-4 rounded-lg">
+            <h4 class="font-bold text-red-800">School System</h4>
+            <p class="text-sm">Sitting still, reading, verbal skills - schools reward stereotypically feminine behaviors. Boys are 3x more likely to be diagnosed with learning disorders.</p>
+          </div>
+          <div class="bg-orange-50 p-4 rounded-lg">
+            <h4 class="font-bold text-orange-800">Role Models</h4>
+            <p class="text-sm">80% of teachers are women. Boys see education as "for girls." Few male mentors in schools. Father absence rising.</p>
+          </div>
+          <div class="bg-yellow-50 p-4 rounded-lg">
+            <h4 class="font-bold text-yellow-800">Alternatives</h4>
+            <p class="text-sm">Vocational paths still lead to good jobs for men (construction, tech). University isn't the only path - but earnings gap is growing.</p>
+          </div>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">The Young Generation: Even Larger Gap</h3>
+        <div class="bg-pink-100 p-4 rounded-lg">
+          <p>Among 25-34 year olds (2024):</p>
+          <ul class="list-disc pl-6 mt-2">
+            <li><strong>Women:</strong> 58% have tertiary education</li>
+            <li><strong>Men:</strong> 35% have tertiary education</li>
+            <li><strong>Gap:</strong> 23 percentage points</li>
+          </ul>
+          <p class="font-bold mt-2">Young women are almost twice as likely to have a degree as young men.</p>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">Where Are The Men?</h3>
+        <div class="grid md:grid-cols-2 gap-4 mt-2">
+          <div class="bg-blue-50 p-4 rounded-lg">
+            <h4 class="font-bold">Male-dominated fields:</h4>
+            <ul class="list-disc pl-6 text-sm">
+              <li>IT & Computing: 80% men</li>
+              <li>Engineering: 75% men</li>
+              <li>Construction: 90% men</li>
+              <li>Forestry: 85% men</li>
+            </ul>
+          </div>
+          <div class="bg-pink-50 p-4 rounded-lg">
+            <h4 class="font-bold">Female-dominated fields:</h4>
+            <ul class="list-disc pl-6 text-sm">
+              <li>Healthcare: 85% women</li>
+              <li>Education: 80% women</li>
+              <li>Social work: 90% women</li>
+              <li>Psychology: 85% women</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Debate Box -->
+    <section class="mb-8 bg-indigo-50 border-l-4 border-indigo-400 rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4A5;</span> The Uncomfortable Questions
+      </h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-blue-100 p-4 rounded-lg">
+          <h4 class="font-bold text-blue-800">Concern view:</h4>
+          <p class="text-sm">"When women lagged, we called it discrimination and fixed it. Now men lag by MORE - and we call it 'choice.' Young men are lost. We need male teachers, boy-friendly pedagogy."</p>
+        </div>
+        <div class="bg-pink-100 p-4 rounded-lg">
+          <h4 class="font-bold text-pink-800">Counter-argument:</h4>
+          <p class="text-sm">"Women STILL earn less. Men still dominate executive positions. A few decades of female majority in education isn't 'crisis' - it's catching up."</p>
+        </div>
+      </div>
+      <p class="mt-4 text-sm text-gray-600"><strong>The policy vacuum:</strong> Finland has no programs specifically targeting boys' educational underperformance. Every gender-in-education initiative focuses on getting women into STEM - not men into anything.</p>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_vkour_pxt_12bq.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Statistics Finland - Educational structure of population</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Definition</dt>
+          <dd>Population aged 15+ by highest qualification</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Time Range</dt>
+          <dd>1970-2024</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <script>
+    hljs.highlightAll();
+
+    // Education trend by gender
+    const educationCtx = document.getElementById('educationChart').getContext('2d');
+    new Chart(educationCtx, {
+      type: 'line',
+      data: {
+        labels: ['1970', '1980', '1990', '2000', '2010', '2020', '2024'],
+        datasets: [
+          {
+            label: 'Women with tertiary degree (%)',
+            data: [5, 11, 20, 32, 42, 49, 52],
+            borderColor: '#EC4899',
+            backgroundColor: 'rgba(236, 72, 153, 0.1)',
+            borderWidth: 3,
+            fill: true
+          },
+          {
+            label: 'Men with tertiary degree (%)',
+            data: [10, 14, 20, 28, 33, 36, 38],
+            borderColor: '#3B82F6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            borderWidth: 3,
+            fill: true
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Tertiary Education by Gender: The Crossover (25-64 year olds)'
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            max: 60,
+            title: { display: true, text: '% with tertiary degree' }
+          }
+        }
+      }
+    });
+
+    // Current degree distribution
+    const currentCtx = document.getElementById('currentChart').getContext('2d');
+    new Chart(currentCtx, {
+      type: 'bar',
+      data: {
+        labels: ['No post-secondary', 'Vocational', 'Bachelor', 'Master', 'PhD'],
+        datasets: [
+          {
+            label: 'Men',
+            data: [15, 47, 18, 18, 2],
+            backgroundColor: 'rgba(59, 130, 246, 0.8)'
+          },
+          {
+            label: 'Women',
+            data: [10, 38, 25, 25, 2],
+            backgroundColor: 'rgba(236, 72, 153, 0.8)'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Highest Education Level by Gender (25-64 year olds, 2024)'
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            title: { display: true, text: '% of population' }
+          }
+        }
+      }
+    });
+  </script>
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+</body>
+</html>

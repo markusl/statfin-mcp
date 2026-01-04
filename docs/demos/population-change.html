@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Population Change Components - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-blue-600 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm mb-2">population</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Population Change Components</h1>
+      <p class="text-lg text-gray-600">Births, deaths, and migration driving population change</p>
+      <p class="text-gray-500 mt-1">Väestömuutoksen osatekijät - Syntymät, kuolemat ja muuttoliike väestömuutoksen ajureina</p>
+    </header>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Show the components of population change in Finland"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Call
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">query_table({
+  tableId: "statfin_synt_pxt_12dx.px",
+  selections: [
+    { variable: "Vuosi", filter: "item", values: ["2010", "2011", "2012", /* ... 15 values */] },
+    { variable: "Tiedot", filter: "item", values: ["vm01", "vm11", "luonvalisays", "vm43_tilv"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Chart -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Visualization
+      </h2>
+      <div class="chart-container">
+        <canvas id="chart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Data (25 of 60 rows)
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vuosi</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tiedot</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">value</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2010</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">60980</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2010</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kuolleet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">50887</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2010</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Luonnollinen väestönlisäys</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">10093</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2010</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kuntien välinen muutto</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">270688</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2011</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">59961</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2011</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kuolleet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">50585</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2011</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Luonnollinen väestönlisäys</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">9376</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2011</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kuntien välinen muutto</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">281537</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2012</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">59493</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2012</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kuolleet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">51707</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2012</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Luonnollinen väestönlisäys</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">7786</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2012</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kuntien välinen muutto</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">275967</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2013</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">58134</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2013</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kuolleet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">51472</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2013</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Luonnollinen väestönlisäys</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">6662</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2013</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kuntien välinen muutto</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">267194</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2014</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">57232</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2014</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kuolleet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">52186</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2014</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Luonnollinen väestönlisäys</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">5046</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2014</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kuntien välinen muutto</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">268909</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2015</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">55472</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2015</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kuolleet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">52492</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2015</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Luonnollinen väestönlisäys</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2980</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2015</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Kuntien välinen muutto</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">280484</td></tr><tr><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2016</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">Elävänä syntyneet</td><td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">52814</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_synt_pxt_12dx.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Total Rows</dt>
+          <dd>60</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Tilastokeskus, syntyneet</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Updated</dt>
+          <dd>2025-05-28T05:00:00Z</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+  <script>
+    hljs.highlightAll();
+    const ctx = document.getElementById('chart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ["2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022","2023","2024"],
+        datasets: [{"label":"Elävänä syntyneet","data":[60980,59961,59493,58134,57232,55472,52814,50321,47577,45613,46463,49594,44951,43383,43720],"borderColor":"rgb(59, 130, 246)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"Kuolleet","data":[50887,50585,51707,51472,52186,52492,53923,53722,54527,53949,55488,57659,63219,61339,58267],"borderColor":"rgb(239, 68, 68)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"Luonnollinen väestönlisäys","data":[10093,9376,7786,6662,5046,2980,-1109,-3401,-6950,-8336,-9025,-8065,-18268,-17956,-14547],"borderColor":"rgb(34, 197, 94)","backgroundColor":"transparent","fill":false,"tension":0.1},{"label":"Kuntien välinen muutto","data":[270688,281537,275967,267194,268909,280484,282257,287839,288443,286700,296852,303935,295710,286968,288939],"borderColor":"rgb(168, 85, 247)","backgroundColor":"transparent","fill":false,"tension":0.1}]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true, position: 'top' },
+          title: { display: true, text: 'Population Change Components' }
+        },
+        scales: {
+          y: { beginAtZero: false }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

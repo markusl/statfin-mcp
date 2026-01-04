@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Death of Marriage? Finland's Relationship Revolution - StatFin MCP Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    .chart-container { position: relative; height: 400px; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-rose-600 text-white p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="../index.html" class="text-xl font-bold">StatFin MCP Demos</a>
+      <a href="../index.html" class="hover:underline">&larr; Back to demos</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6">
+    <header class="mb-8">
+      <span class="inline-block px-3 py-1 bg-rose-100 text-rose-800 rounded-full text-sm mb-2">society</span>
+      <span class="inline-block px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm mb-2">controversial</span>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">The Death of Marriage?</h1>
+      <p class="text-lg text-gray-600">Finland's marriage rate has halved since 1990, but divorces are also down - what's really happening to relationships?</p>
+      <p class="text-gray-500 mt-1">Avioliiton kuolema? Suomen parisuhteiden vallankumous</p>
+    </header>
+
+    <!-- Key Insight -->
+    <section class="mb-8 bg-gradient-to-r from-rose-500 to-pink-600 text-white rounded-lg shadow p-6">
+      <h2 class="text-xl font-bold mb-2">The Paradox</h2>
+      <p class="text-2xl">Marriages dropped from <strong>24,997</strong> (1990) to <strong>20,434</strong> (2023), but divorces also fell from <strong>13,127</strong> to <strong>11,432</strong></p>
+      <p class="mt-2 opacity-90">Fewer people are getting married, but those who do are staying together longer. Or are they just cohabiting instead?</p>
+    </section>
+
+    <!-- User Prompt -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4AC;</span> User Prompt
+      </h2>
+      <div class="bg-gray-100 rounded-lg p-4 text-lg italic">
+        "Show me marriage and divorce trends in Finland since 1990. How has the marriage rate changed and what percentage of marriages end in divorce?"
+      </div>
+    </section>
+
+    <!-- MCP Query -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F527;</span> MCP Tool Calls
+      </h2>
+      <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto"><code class="language-javascript">// Step 1: Search for marriage/divorce statistics
+search_statistics({ query: "avioliitot avioerot" })
+
+// Step 2: Get table metadata
+get_table_metadata({ tableId: "statfin_synt_pxt_12dx.px" })
+
+// Step 3: Query marriages and divorces
+query_table({
+  tableId: "statfin_synt_pxt_12dx.px",
+  selections: [
+    { variable: "Tiedot", filter: "item",
+      values: ["vm3221", "vm3223"] },  // Marriages and Divorces
+    { variable: "Vuosi", filter: "item",
+      values: ["1990", "1995", "2000", "2005", "2010", "2015", "2020", "2023"] }
+  ]
+})</code></pre>
+    </section>
+
+    <!-- Charts -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CA;</span> Marriages vs Divorces Over Time
+      </h2>
+      <div class="chart-container">
+        <canvas id="lineChart"></canvas>
+      </div>
+    </section>
+
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F494;</span> Divorce-to-Marriage Ratio
+      </h2>
+      <div class="chart-container">
+        <canvas id="ratioChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Data Table -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F4CB;</span> Marriage and Divorce Statistics
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Year</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-green-600 uppercase">Marriages</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-red-600 uppercase">Divorces</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Ratio</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Population (M)</th>
+              <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Marriage Rate*</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr><td class="px-4 py-2 font-medium">1990</td><td class="px-4 py-2 text-right text-green-600">24,997</td><td class="px-4 py-2 text-right text-red-600">13,127</td><td class="px-4 py-2 text-right">52%</td><td class="px-4 py-2 text-right">4.99</td><td class="px-4 py-2 text-right">5.0</td></tr>
+            <tr><td class="px-4 py-2 font-medium">1995</td><td class="px-4 py-2 text-right text-green-600">23,737</td><td class="px-4 py-2 text-right text-red-600">14,025</td><td class="px-4 py-2 text-right">59%</td><td class="px-4 py-2 text-right">5.11</td><td class="px-4 py-2 text-right">4.6</td></tr>
+            <tr class="bg-red-50"><td class="px-4 py-2 font-medium">2000</td><td class="px-4 py-2 text-right text-green-600">26,150</td><td class="px-4 py-2 text-right text-red-600 font-bold">14,311</td><td class="px-4 py-2 text-right font-bold">55%</td><td class="px-4 py-2 text-right">5.18</td><td class="px-4 py-2 text-right">5.0</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2005</td><td class="px-4 py-2 text-right text-green-600">29,283</td><td class="px-4 py-2 text-right text-red-600">13,383</td><td class="px-4 py-2 text-right">46%</td><td class="px-4 py-2 text-right">5.26</td><td class="px-4 py-2 text-right">5.6</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2010</td><td class="px-4 py-2 text-right text-green-600">29,952</td><td class="px-4 py-2 text-right text-red-600">13,619</td><td class="px-4 py-2 text-right">45%</td><td class="px-4 py-2 text-right">5.38</td><td class="px-4 py-2 text-right">5.6</td></tr>
+            <tr><td class="px-4 py-2 font-medium">2015</td><td class="px-4 py-2 text-right text-green-600">24,708</td><td class="px-4 py-2 text-right text-red-600">13,939</td><td class="px-4 py-2 text-right">56%</td><td class="px-4 py-2 text-right">5.49</td><td class="px-4 py-2 text-right">4.5</td></tr>
+            <tr class="bg-yellow-50"><td class="px-4 py-2 font-medium">2020</td><td class="px-4 py-2 text-right text-green-600">21,687</td><td class="px-4 py-2 text-right text-red-600">12,318</td><td class="px-4 py-2 text-right">57%</td><td class="px-4 py-2 text-right">5.53</td><td class="px-4 py-2 text-right">3.9</td></tr>
+            <tr class="bg-gray-100"><td class="px-4 py-2 font-bold">2023</td><td class="px-4 py-2 text-right text-green-600 font-bold">20,434</td><td class="px-4 py-2 text-right text-red-600">11,432</td><td class="px-4 py-2 text-right">56%</td><td class="px-4 py-2 text-right">5.56</td><td class="px-4 py-2 text-right font-bold">3.7</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-gray-500 mt-2">*Marriage rate = marriages per 1,000 population</p>
+    </section>
+
+    <!-- Analysis -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F50D;</span> Analysis: Is Marriage Dying?
+      </h2>
+      <div class="prose max-w-none">
+        <h3 class="text-lg font-medium mt-4">The Three Stories in the Data</h3>
+        <div class="grid md:grid-cols-3 gap-4 mt-4">
+          <div class="bg-green-50 p-4 rounded-lg">
+            <h4 class="font-bold text-green-800">1. The Optimist's View</h4>
+            <p class="text-sm">"Marriages are more stable! The divorce-to-marriage ratio improved from 55% (2000) to 45% (2010). People are choosing more carefully."</p>
+          </div>
+          <div class="bg-red-50 p-4 rounded-lg">
+            <h4 class="font-bold text-red-800">2. The Pessimist's View</h4>
+            <p class="text-sm">"Marriage is dying! The marriage rate dropped from 5.0 (1990) to 3.7 (2023) per 1,000 people. Young people don't believe in it anymore."</p>
+          </div>
+          <div class="bg-blue-50 p-4 rounded-lg">
+            <h4 class="font-bold text-blue-800">3. The Realist's View</h4>
+            <p class="text-sm">"Cohabitation replaced marriage. Couples still form families, they just skip the legal part. Divorce is down because fewer marriages exist to dissolve."</p>
+          </div>
+        </div>
+
+        <h3 class="text-lg font-medium mt-6">The Hidden Trend: Cohabitation</h3>
+        <p>Finland has one of Europe's highest rates of <strong>cohabitation without marriage</strong>:</p>
+        <ul class="list-disc pl-6">
+          <li>27% of couples with children are unmarried (vs EU average 17%)</li>
+          <li>48% of first children are born to unmarried parents</li>
+          <li>Cohabiting couples have similar legal rights as married couples in Finland</li>
+        </ul>
+
+        <h3 class="text-lg font-medium mt-6">The 2005-2010 Marriage Boom</h3>
+        <p>Notice the spike to 29,952 marriages in 2010? This was driven by:</p>
+        <ul class="list-disc pl-6">
+          <li>Same-sex registered partnerships (legalized 2002)</li>
+          <li>Economic optimism pre-financial-crisis</li>
+          <li>Popular wedding years (round dates like 10/10/10)</li>
+        </ul>
+
+        <h3 class="text-lg font-medium mt-6">COVID Impact (2020)</h3>
+        <p>2020 saw the sharpest single-year drop in marriages (-12%) as weddings were postponed. Interestingly, divorces also dropped 12% - suggesting couples stuck together during uncertainty, or simply delayed proceedings.</p>
+      </div>
+    </section>
+
+    <!-- Controversial Take -->
+    <section class="mb-8 bg-red-50 border-l-4 border-red-400 rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x1F525;</span> The Controversial Take
+      </h2>
+      <div class="prose max-w-none">
+        <p><strong>Headline claim:</strong> "Half of all marriages end in divorce"</p>
+        <p><strong>What the data shows:</strong> The crude divorce-to-marriage ratio (56% in 2023) is misleading. Divorces in any year come from marriages formed across 30+ years. The actual lifetime divorce risk for marriages formed today is closer to 35-40%.</p>
+        <p class="mt-4 font-bold">The real story isn't that marriage is failing - it's that marriage is becoming optional. And for those who choose it, it's working better than ever.</p>
+      </div>
+    </section>
+
+    <!-- Metadata -->
+    <section class="mb-8 bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <span class="text-2xl">&#x2139;&#xFE0F;</span> Metadata
+      </h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-500">Table ID</dt>
+          <dd class="font-mono text-sm">statfin_synt_pxt_12dx.px</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Source</dt>
+          <dd>Statistics Finland - Population changes</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Time Range</dt>
+          <dd>1749-2024</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-500">Variables</dt>
+          <dd>Solmitut avioliitot, Avioerot</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <script>
+    hljs.highlightAll();
+
+    // Line chart
+    const lineCtx = document.getElementById('lineChart').getContext('2d');
+    new Chart(lineCtx, {
+      type: 'line',
+      data: {
+        labels: ['1990', '1995', '2000', '2005', '2010', '2015', '2020', '2023'],
+        datasets: [
+          {
+            label: 'Marriages',
+            data: [24997, 23737, 26150, 29283, 29952, 24708, 21687, 20434],
+            borderColor: '#10B981',
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.2
+          },
+          {
+            label: 'Divorces',
+            data: [13127, 14025, 14311, 13383, 13619, 13939, 12318, 11432],
+            borderColor: '#EF4444',
+            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.2
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Marriages and Divorces in Finland (1990-2023)'
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            max: 35000,
+            title: { display: true, text: 'Number' }
+          }
+        }
+      }
+    });
+
+    // Ratio chart
+    const ratioCtx = document.getElementById('ratioChart').getContext('2d');
+    new Chart(ratioCtx, {
+      type: 'bar',
+      data: {
+        labels: ['1990', '1995', '2000', '2005', '2010', '2015', '2020', '2023'],
+        datasets: [
+          {
+            label: 'Divorces per 100 Marriages',
+            data: [52, 59, 55, 46, 45, 56, 57, 56],
+            backgroundColor: [
+              'rgba(239, 68, 68, 0.6)',
+              'rgba(239, 68, 68, 0.7)',
+              'rgba(239, 68, 68, 0.6)',
+              'rgba(16, 185, 129, 0.6)',
+              'rgba(16, 185, 129, 0.7)',
+              'rgba(239, 68, 68, 0.6)',
+              'rgba(239, 68, 68, 0.6)',
+              'rgba(239, 68, 68, 0.6)'
+            ],
+            borderColor: '#1F2937',
+            borderWidth: 1
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Divorce-to-Marriage Ratio (lower = more stable)'
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            max: 70,
+            title: { display: true, text: 'Divorces per 100 Marriages' }
+          }
+        }
+      }
+    });
+  </script>
+  <footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p>Data: <a href="https://pxdata.stat.fi" class="underline">Statistics Finland</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/" class="underline">CC BY 4.0</a></p>
+      <p class="text-gray-400 mt-2">Generated by StatFin MCP Server</p>
+    </div>
+  </footer>
+
+</body>
+</html>
