@@ -38,12 +38,20 @@ export class RateLimiter {
   private refill(): void {
     const now = Date.now();
     const elapsed = now - this.lastRefill;
-    const intervalsElapsed = Math.floor(elapsed / this.refillIntervalMs);
 
-    if (intervalsElapsed > 0) {
-      const tokensToAdd = intervalsElapsed * this.refillRate;
+    // Tokens refill individually at evenly spaced intervals (one every
+    // refillIntervalMs / refillRate ms), not all-at-once after the full
+    // interval. Flooring on the full interval would mean a consumed burst
+    // only replenishes after refillIntervalMs (60s), so queued requests with
+    // a shorter timeout (30s) would always expire before a token returned.
+    const msPerToken = this.refillIntervalMs / this.refillRate;
+    const tokensToAdd = Math.floor(elapsed / msPerToken);
+
+    if (tokensToAdd > 0) {
       this.tokens = Math.min(this.capacity, this.tokens + tokensToAdd);
-      this.lastRefill = now - (elapsed % this.refillIntervalMs);
+      // Advance lastRefill by the consumed whole-token intervals only, so the
+      // sub-token remainder carries forward to the next refill.
+      this.lastRefill += tokensToAdd * msPerToken;
 
       // Process queued requests
       this.processQueue();
