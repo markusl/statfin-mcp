@@ -304,26 +304,32 @@ describe('MCP SDK Integration', () => {
 
     it('should verify server.ts includes structuredContent for all tools with outputSchema', () => {
       // This test reads the actual server.ts source code and verifies
-      // that every tool with outputSchema also returns structuredContent
+      // that every tool with outputSchema also returns structuredContent.
+      // All tools route their results through the shared toolHandler wrapper,
+      // so the invariant holds if (a) every registration uses toolHandler and
+      // (b) toolHandler returns structuredContent.
       const serverPath = join(import.meta.dirname, '../../src/server.ts');
       const serverSource = readFileSync(serverPath, 'utf-8');
 
       // Find all outputSchema definitions
       const outputSchemaMatches = serverSource.match(/outputSchema:\s*\w+\.shape/g) || [];
 
-      // Find all structuredContent returns
-      const structuredContentMatches = serverSource.match(/structuredContent:\s*result/g) || [];
+      // Find all tool handlers wired through the shared wrapper
+      const toolHandlerMatches = serverSource.match(/toolHandler\(['"]/g) || [];
 
-      // There should be equal numbers - one structuredContent for each outputSchema
+      // Every tool with an outputSchema must be wired through toolHandler
       expect(
-        structuredContentMatches.length,
-        `Found ${outputSchemaMatches.length} outputSchema definitions but only ${structuredContentMatches.length} structuredContent returns. ` +
-        'Every tool with outputSchema must return structuredContent.'
+        toolHandlerMatches.length,
+        `Found ${outputSchemaMatches.length} outputSchema definitions but only ${toolHandlerMatches.length} toolHandler registrations. ` +
+        'Every tool with outputSchema must be registered via toolHandler.'
       ).toBe(outputSchemaMatches.length);
+
+      // The shared wrapper must return structuredContent for all of them
+      expect(serverSource).toMatch(/structuredContent:\s*result/);
 
       // We expect 7 tools
       expect(outputSchemaMatches.length).toBe(7);
-      expect(structuredContentMatches.length).toBe(7);
+      expect(toolHandlerMatches.length).toBe(7);
     });
   });
 });

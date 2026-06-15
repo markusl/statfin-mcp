@@ -32,6 +32,29 @@ import {
 } from './tools/index.js';
 
 /**
+ * Wrap a tool implementation in a registerTool handler that logs failures.
+ *
+ * Tool functions that throw are otherwise turned into `{ isError: true }`
+ * responses by the MCP SDK with no server-side trace, making upstream
+ * failures, timeouts, and rate-limit rejections invisible in the logs. This
+ * wrapper emits a `logger.error` and re-throws so client behavior is unchanged.
+ */
+function toolHandler(name: string, fn: (params: never) => Promise<unknown>) {
+  return async (params: unknown) => {
+    try {
+      const result = await fn(params as never);
+      return {
+        content: [{ type: 'text' as const, text: toCompactJson(result) }],
+        structuredContent: result as Record<string, unknown>,
+      };
+    } catch (error) {
+      logger.error({ err: error, tool: name }, `Tool '${name}' failed`);
+      throw error;
+    }
+  };
+}
+
+/**
  * Create and configure the MCP server
  */
 function createMcpServer(): McpServer {
@@ -68,13 +91,7 @@ After finding a table, use get_table_metadata to see its structure before queryi
         openWorldHint: true,
       },
     },
-    async (params) => {
-      const result = await searchStatistics(params as never);
-      return {
-        content: [{ type: 'text', text: toCompactJson(result) }],
-        structuredContent: result,
-      };
-    }
+    toolHandler('search_statistics', searchStatistics)
   );
 
   // 2. List Subject Areas
@@ -103,13 +120,7 @@ After finding an area, use list_tables to see all tables in that topic.`,
         openWorldHint: true,
       },
     },
-    async (params) => {
-      const result = await listSubjectAreas(params as never);
-      return {
-        content: [{ type: 'text', text: toCompactJson(result) }],
-        structuredContent: result,
-      };
-    }
+    toolHandler('list_subject_areas', listSubjectAreas)
   );
 
   // 3. List Tables
@@ -136,13 +147,7 @@ Use list_subject_areas first to find the area ID, or use search_statistics for d
         openWorldHint: true,
       },
     },
-    async (params) => {
-      const result = await listTables(params as never);
-      return {
-        content: [{ type: 'text', text: toCompactJson(result) }],
-        structuredContent: result,
-      };
-    }
+    toolHandler('list_tables', listTables)
   );
 
   // 4. Get Table Metadata
@@ -170,13 +175,7 @@ After understanding the structure, use query_table with specific selections.`,
         openWorldHint: true,
       },
     },
-    async (params) => {
-      const result = await getTableMetadata(params as never);
-      return {
-        content: [{ type: 'text', text: toCompactJson(result) }],
-        structuredContent: result,
-      };
-    }
+    toolHandler('get_table_metadata', getTableMetadata)
   );
 
   // 5. Get Variable Values
@@ -206,13 +205,7 @@ Use search parameter to filter: search="Helsinki" returns only matching values.`
         openWorldHint: true,
       },
     },
-    async (params) => {
-      const result = await getVariableValues(params as never);
-      return {
-        content: [{ type: 'text', text: toCompactJson(result) }],
-        structuredContent: result,
-      };
-    }
+    toolHandler('get_variable_values', getVariableValues)
   );
 
   // 6. Query Table
@@ -250,13 +243,7 @@ IMPORTANT: Use VALUE CODES (KU091, SSS, 2024), not labels (Helsinki, Total).`,
         openWorldHint: true,
       },
     },
-    async (params) => {
-      const result = await queryTable(params as never);
-      return {
-        content: [{ type: 'text', text: toCompactJson(result) }],
-        structuredContent: result,
-      };
-    }
+    toolHandler('query_table', queryTable)
   );
 
   // 7. Get API Status
@@ -281,13 +268,7 @@ Rate limit: 8 requests per minute per instance.`,
         openWorldHint: false,
       },
     },
-    async (params) => {
-      const result = await getApiStatus(params as never);
-      return {
-        content: [{ type: 'text', text: toCompactJson(result) }],
-        structuredContent: result,
-      };
-    }
+    toolHandler('get_api_status', getApiStatus)
   );
 
   return server;
