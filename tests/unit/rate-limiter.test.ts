@@ -88,6 +88,50 @@ describe('RateLimiter', () => {
     expect(limiter.getAvailableTokens()).toBe(3); // Capped at capacity
   });
 
+  it('refills incrementally so a queued request resolves before the 30s timeout (prod config)', async () => {
+    // Regression for issue #1: with capacity/refillRate 8 over 60s, a token
+    // returns every 7.5s. A 9th request queued with the default 30s timeout
+    // must be served at ~7.5s, not expire because refill only happened after
+    // the full 60s interval.
+    const limiter = createRateLimiter({
+      capacity: 8,
+      refillRate: 8,
+      refillIntervalMs: 60000,
+    });
+
+    // Drain the burst.
+    for (let i = 0; i < 8; i++) await limiter.acquire(30000);
+    expect(limiter.getAvailableTokens()).toBe(0);
+
+    // 9th request queues with the default 30s timeout.
+    const ninth = limiter.acquire(30000);
+    expect(limiter.getQueueLength()).toBe(1);
+
+    // One token interval elapses (7.5s) — the request should now resolve.
+    await vi.advanceTimersByTimeAsync(7500);
+
+    await expect(ninth).resolves.toBeUndefined();
+    expect(limiter.getQueueLength()).toBe(0);
+  });
+
+  it('carries the sub-token remainder forward across refills', async () => {
+    const limiter = createRateLimiter({
+      capacity: 8,
+      refillRate: 8,
+      refillIntervalMs: 60000, // 7.5s per token
+    });
+    for (let i = 0; i < 8; i++) await limiter.acquire();
+    expect(limiter.getAvailableTokens()).toBe(0);
+
+    // 7.4s: not enough for a token yet.
+    vi.advanceTimersByTime(7400);
+    expect(limiter.getAvailableTokens()).toBe(0);
+
+    // +0.2s (7.6s total): the remainder carried forward, so one token is now ready.
+    vi.advanceTimersByTime(200);
+    expect(limiter.getAvailableTokens()).toBe(1);
+  });
+
   it('should report status correctly', async () => {
     const limiter = createRateLimiter({
       capacity: 5,
