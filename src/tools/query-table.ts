@@ -9,18 +9,18 @@ import { logger } from '../utils/logger.js';
 export const queryTableSchema = z.object({
   tableId: z
     .string()
-    .describe('Table ID from search_statistics or list_tables. Example: "statfin_vaerak_pxt_11re.px"'),
+    .describe('Table ID from search_statistics or list_tables. Example: "11re.px"'),
   selections: z
     .array(
       z.object({
         variable: z
           .string()
-          .describe('Variable code from get_table_metadata. Examples: "Alue" (region), "Vuosi" (year), "Sukupuoli" (gender)'),
+          .describe('Exact variable code from get_table_metadata (table-specific and version-stamped, e.g. "alue_23_20260101" for region, "timeperiod_y" for the time variable). Do not guess or reuse codes from another table.'),
         filter: z
           .enum(['item', 'all', 'top'])
           .optional()
           .default('item')
-          .describe('"item": specific values, "all": all values (caution!), "top": latest N (good for Vuosi/year)'),
+          .describe('"item": specific values, "all": all values (caution!), "top": latest N (good for the time variable)'),
         values: z
           .array(z.string())
           .optional()
@@ -59,6 +59,11 @@ export const queryTableOutputSchema = z.object({
       .describe('Data rows as objects with column names as keys'),
   }).optional().describe('Query results (only present if success=true)'),
   rowCount: z.number().optional().describe('Number of data rows returned'),
+  metadata: z.object({
+    source: z.string().optional().describe('Data source / attribution (e.g. "Statistics Finland")'),
+    updated: z.string().optional().describe('When the dataset was last updated (ISO timestamp)'),
+    label: z.string().optional().describe('Full descriptive label of the dataset'),
+  }).optional().describe('Dataset metadata (source, last updated, label)'),
   queryInfo: z.object({
     estimatedCells: z.number().describe('Estimated number of data cells'),
     executionTimeMs: z.number().describe('Query execution time in milliseconds'),

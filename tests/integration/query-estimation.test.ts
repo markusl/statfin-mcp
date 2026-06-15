@@ -10,7 +10,7 @@ async function main() {
   // Test: Large query should be rejected with correct estimate
   console.log('Testing large query rejection...');
   const result = await queryTable({
-    tableId: 'statfin_vaerak_pxt_11re.px',
+    tableId: '11re.px',
     selections: [], // No filters = all combinations
     language: 'fi',
     limit: 1000,

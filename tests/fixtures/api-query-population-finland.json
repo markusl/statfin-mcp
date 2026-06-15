@@ -3,28 +3,28 @@
   "class": "dataset",
   "label": "Väestö 31.12. muuttujina Alue, Ikä, Sukupuoli, Vuosi ja Tiedot",
   "source": "Tilastokeskus, väestörakenne",
-  "updated": "2025-04-04T05:00:00Z",
+  "updated": "2026-04-01T05:00:00Z",
   "note": [
     "<A HREF='https://stat.fi/tilasto/dokumentaatio/vaerak' TARGET=_blank>Tilaston dokumentaatio</A>",
     "<A HREF=http://guides.stat.fi/historiallisentilastotiedonopas TARGET=_blank>Historiallisen tilastotiedon opas, ks. linkki</A>\r\n \r\n Väestötilastoja vuodesta 1750 lähtien on digitoitu pdf-muotoon Kansalliskirjaston Doria-palveluun:\r\n <A HREF=http://www.doria.fi/handle/10024/67161 TARGET=_blank>  Väestörakenne ja Väestönmuutokset -julkaisuja Doriassa</A>\r\n <A HREF=http://www.doria.fi/handle/10024/67160 TARGET=_blank>  Väestölaskenta-julkaisuja Doriassa</A>\r\n \r\n ---"
   ],
   "role": {
     "time": [
-      "Vuosi"
+      "timeperiod_y"
     ],
     "geo": [
-      "Alue"
+      "alue_23_20260101"
     ],
     "metric": [
-      "Tiedot"
+      "contentscode"
     ]
   },
   "id": [
-    "Alue",
-    "Ikä",
-    "Sukupuoli",
-    "Vuosi",
-    "Tiedot"
+    "alue_23_20260101",
+    "ikaryhma_10_20180101",
+    "sukupuoli_9_20180101",
+    "timeperiod_y",
+    "contentscode"
   ],
   "size": [
     1,
@@ -34,10 +34,10 @@
     1
   ],
   "dimension": {
-    "Alue": {
+    "alue_23_20260101": {
       "label": "Alue",
       "note": [
-        "Tilastossa käytetään 1.1.2025 aluejakoa koko aikasarjassa. Alueliitoskuntien tiedot yhdistetty. Osakuntaliitoksia ei ole huomioitu liitosta edeltävinä vuosina."
+        "Tilastossa käytetään 1.1.2026 aluejakoa koko aikasarjassa. Alueliitoskuntien tiedot yhdistetty. Osakuntaliitoksia ei ole huomioitu liitosta edeltävinä vuosina."
       ],
       "category": {
         "index": {
@@ -56,13 +56,13 @@
         "describedby": [
           {
             "extension": {
-              "Alue": "SCALE-TYPE=nominal"
+              "alue_23_20260101": "SCALE-TYPE=nominal"
             }
           }
         ]
       }
     },
-    "Ikä": {
+    "ikaryhma_10_20180101": {
       "label": "Ikä",
       "note": [
         "Ikä tarkoittaa henkilön ikää kokonaisina vuosina vuoden viimeisenä päivänä."
@@ -84,13 +84,13 @@
         "describedby": [
           {
             "extension": {
-              "Ikä": "SCALE-TYPE=ordinal"
+              "ikaryhma_10_20180101": "SCALE-TYPE=ordinal"
             }
           }
         ]
       }
     },
-    "Sukupuoli": {
+    "sukupuoli_9_20180101": {
       "label": "Sukupuoli",
       "category": {
         "index": {
@@ -109,24 +109,24 @@
         "describedby": [
           {
             "extension": {
-              "Sukupuoli": "SCALE-TYPE=nominal"
+              "sukupuoli_9_20180101": "SCALE-TYPE=nominal"
             }
           }
         ]
       }
     },
-    "Vuosi": {
+    "timeperiod_y": {
       "label": "Vuosi",
       "category": {
         "index": {
-          "2022": 0,
-          "2023": 1,
-          "2024": 2
+          "2023": 0,
+          "2024": 1,
+          "2025": 2
         },
         "label": {
-          "2022": "2022",
           "2023": "2023",
-          "2024": "2024"
+          "2024": "2024",
+          "2025": "2025"
         }
       },
       "extension": {
@@ -134,22 +134,23 @@
         "show": "value"
       }
     },
-    "Tiedot": {
+    "contentscode": {
       "label": "Tiedot",
       "category": {
         "index": {
-          "vaesto": 0
+          "vaerak-vaesto": 0
         },
         "label": {
-          "vaesto": "Väestö 31.12."
+          "vaerak-vaesto": "Väestö 31.12."
         },
         "note": {
-          "vaesto": [
+          "vaerak-vaesto": [
             "Väkiluku tilastoajanjakson lopussa."
           ]
         },
         "unit": {
-          "vaesto": {
+          "vaerak-vaesto": {
+            "base": "lukumäärä",
             "decimals": 0
           }
         }
@@ -162,26 +163,26 @@
   },
   "extension": {
     "px": {
-      "tableid": "statfin_vaerak_pxt_11re",
+      "tableid": "11re",
       "decimals": 0,
       "official-statistics": true,
       "aggregallowed": true,
       "language": "fi",
       "contents": "Väestö 31.12.",
-      "description": "11re -- Väestö iän (1-v.) ja sukupuolen mukaan alueittain, 1972-2024",
+      "description": "11re -- Väestö iän (1-v.) ja sukupuolen mukaan alueittain, 1972-2025",
       "descriptiondefault": false,
       "heading": [
-        "Sukupuoli",
-        "Vuosi",
-        "Tiedot"
+        "sukupuoli_9_20180101",
+        "timeperiod_y",
+        "contentscode"
       ],
       "stub": [
-        "Alue",
-        "Ikä"
+        "alue_23_20260101",
+        "ikaryhma_10_20180101"
       ],
-      "matrix": "001_11re_2024",
-      "subject-code": "VAERAK",
-      "subject-area": "vaerak"
+      "matrix": "11re",
+      "subject-code": "vaerak",
+      "subject-area": "Väestörakenne"
     },
     "contact": [
       {
@@ -190,8 +191,8 @@
     ]
   },
   "value": [
-    5563970,
     5603851,
-    5635971
+    5635971,
+    5652881
   ]
 }

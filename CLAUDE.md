@@ -49,14 +49,16 @@ tests/
 
 **Caching**: Timestamp-validated. Query results cached until table's `updated` timestamp changes.
 
-**Query Selection**:
+**Query Selection** (variable codes are table-specific and version-stamped — always fetch them via `get_table_metadata`; the codes below are from table `11re.px`):
 ```typescript
-{ variable: "Alue", filter: "item", values: ["KU091"] }  // Specific values
-{ variable: "Vuosi", filter: "top", top: 5 }             // Latest N values
-{ variable: "Sukupuoli", filter: "all" }                 // All values (caution!)
+{ variable: "alue_23_20260101", filter: "item", values: ["KU091"] }   // Specific values
+{ variable: "timeperiod_y", filter: "top", top: 5 }                   // Latest N values
+{ variable: "sukupuoli_9_20180101", filter: "all" }                   // All values (caution!)
 ```
 
-**Common Codes**:
+> **Note**: Since the 8 June 2026 PxWeb migration, table IDs are short (`11re.px`, not `statfin_vaerak_pxt_11re.px`) and variable codes are version-stamped per table. The long form and old codes return HTTP 400. The client normalizes legacy long-form IDs for backward compatibility.
+
+**Common Codes** (these are *value* codes — unchanged by the migration — distinct from the now-table-specific *variable* codes above):
 - `SSS` = Whole country
 - `MK01-MK19` = Regions (maakunta)
 - `KU091` = Helsinki, `KU092` = Vantaa, `KU049` = Espoo

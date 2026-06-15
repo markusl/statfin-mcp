@@ -181,17 +181,17 @@ export async function searchStatistics(input: SearchStatisticsInput) {
    └─> Cache: store results
    └─> Return: table IDs with relevance scores
 
-3. get_table_metadata({ tableId: "statfin_vaerak_pxt_11re.px" })
+3. get_table_metadata({ tableId: "11re.px" })
    └─> Rate limiter: acquire token
    └─> Cache: check metadata cache (with timestamp validation)
-   └─> PxWeb API: GET /fi/StatFin/vaerak/statfin_vaerak_pxt_11re.px
-   └─> Return: variables (Alue, Vuosi, Sukupuoli, Ikä, Tiedot)
+   └─> PxWeb API: GET /fi/StatFin/11re.px
+   └─> Return: variables (alue_23_20260101, ikaryhma_10_20180101, sukupuoli_9_20180101, timeperiod_y, contentscode)
 
 4. query_table({
-     tableId: "statfin_vaerak_pxt_11re.px",
+     tableId: "11re.px",
      selections: [
-       { variable: "Alue", filter: "item", values: ["KU091"] },
-       { variable: "Vuosi", filter: "top", top: 1 }
+       { variable: "alue_23_20260101", filter: "item", values: ["KU091"] },
+       { variable: "timeperiod_y", filter: "top", top: 1 }
      ]
    })
    └─> Estimate query size (prevent 5M+ cell queries)

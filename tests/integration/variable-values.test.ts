@@ -11,11 +11,19 @@ import { queryTable } from '../../src/tools/query-table.js';
 async function main() {
   console.log('\n=== Additional Tests ===\n');
 
+  // Variable codes are table-specific and version-stamped since the June 2026
+  // migration; resolve them from live metadata rather than hardcoding.
+  const meta = await getTableMetadata({ tableId: '11re.px', language: 'fi' });
+  const REGION = meta.variables.find(v => v.code.startsWith('alue'))!.code;
+  const YEAR = meta.variables.find(v => v.isTime)!.code;
+  const SEX = meta.variables.find(v => v.code.startsWith('sukupuoli'))!.code;
+  const AGE = meta.variables.find(v => v.code.startsWith('ikaryhma'))!.code;
+
   // Test 1: Check if MK codes exist in region variable
   console.log('1. Checking region code patterns...');
   const values = await getVariableValues({
-    tableId: 'statfin_vaerak_pxt_11re.px',
-    variable: 'Alue',
+    tableId: '11re.px',
+    variable: REGION,
     language: 'fi'
   });
 
@@ -34,8 +42,8 @@ async function main() {
   // Test 2: Search for Helsinki
   console.log('\n2. Search for Helsinki in region values...');
   const helsinkiSearch = await getVariableValues({
-    tableId: 'statfin_vaerak_pxt_11re.px',
-    variable: 'Alue',
+    tableId: '11re.px',
+    variable: REGION,
     search: 'Helsinki',
     language: 'fi'
   });
@@ -47,12 +55,12 @@ async function main() {
   // Test 3: Query Helsinki population by year
   console.log('\n3. Query Helsinki population trend...');
   const helsinkiPop = await queryTable({
-    tableId: 'statfin_vaerak_pxt_11re.px',
+    tableId: '11re.px',
     selections: [
-      { variable: 'Alue', filter: 'item', values: ['KU091'] },
-      { variable: 'Vuosi', filter: 'top', top: 10 },
-      { variable: 'Sukupuoli', filter: 'item', values: ['SSS'] }, // Total
-      { variable: 'Ikä', filter: 'item', values: ['SSS'] }, // All ages combined - need to check if this exists
+      { variable: REGION, filter: 'item', values: ['KU091'] },
+      { variable: YEAR, filter: 'top', top: 10 },
+      { variable: SEX, filter: 'item', values: ['SSS'] }, // Total
+      { variable: AGE, filter: 'item', values: ['SSS'] }, // All ages combined - need to check if this exists
     ],
     language: 'fi',
     limit: 100,
@@ -83,7 +91,7 @@ async function main() {
   // Test 5: Test English language
   console.log('\n5. Testing English language...');
   const englishMeta = await getTableMetadata({
-    tableId: 'statfin_vaerak_pxt_11re.px',
+    tableId: '11re.px',
     language: 'en'
   });
   console.log(`   Title: ${englishMeta.title}`);
@@ -92,7 +100,7 @@ async function main() {
   // Test 6: Test large query rejection
   console.log('\n6. Testing large query rejection...');
   const largeQuery = await queryTable({
-    tableId: 'statfin_vaerak_pxt_11re.px',
+    tableId: '11re.px',
     selections: [], // No filters = all combinations
     language: 'fi',
     limit: 10,
@@ -105,7 +113,7 @@ async function main() {
   // Test 7: Test Swedish language
   console.log('\n7. Testing Swedish language...');
   const swedishMeta = await getTableMetadata({
-    tableId: 'statfin_vaerak_pxt_11re.px',
+    tableId: '11re.px',
     language: 'sv'
   });
   console.log(`   Title: ${swedishMeta.title}`);
@@ -113,8 +121,8 @@ async function main() {
   // Test 8: Check age variable codes
   console.log('\n8. Checking age variable codes...');
   const ages = await getVariableValues({
-    tableId: 'statfin_vaerak_pxt_11re.px',
-    variable: 'Ikä',
+    tableId: '11re.px',
+    variable: AGE,
     language: 'fi'
   });
   console.log(`   Total age categories: ${ages.total}`);

@@ -8,7 +8,7 @@ import { logger } from '../utils/logger.js';
 export const getTableMetadataSchema = z.object({
   tableId: z
     .string()
-    .describe('Table ID from search_statistics. Example: "statfin_vaerak_pxt_11re.px"'),
+    .describe('Table ID from search_statistics. Example: "11re.px"'),
   language: z
     .enum(['fi', 'en', 'sv'])
     .optional()

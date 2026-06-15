@@ -14,6 +14,22 @@ const TESTS: Array<{ name: string; fn: () => Promise<void> }> = [];
 let passed = 0;
 let failed = 0;
 
+/**
+ * Resolve the (table-specific, version-stamped since June 2026) variable codes
+ * for the population table 11re.px by structural predicate, so tests don't
+ * hardcode codes that change at each migration.
+ */
+async function resolvePopulationCodes() {
+  const meta = await getTableMetadata({ tableId: '11re.px', language: 'fi' });
+  const byPrefix = (p: string) => meta.variables.find(v => v.code.startsWith(p))!.code;
+  return {
+    region: byPrefix('alue'),
+    year: meta.variables.find(v => v.isTime)!.code,
+    sex: byPrefix('sukupuoli'),
+    age: byPrefix('ikaryhma'),
+  };
+}
+
 function test(name: string, fn: () => Promise<void>) {
   TESTS.push({ name, fn });
 }
@@ -73,7 +89,7 @@ test('Search "unemployment" in English', async () => {
 // TEST 6: Metadata - Population table with many variables
 test('Get metadata for population table', async () => {
   const result = await getTableMetadata({
-    tableId: 'statfin_vaerak_pxt_11re.px',
+    tableId: '11re.px',
     language: 'fi',
   });
   if (result.variables.length < 4) throw new Error('Missing variables');
@@ -82,13 +98,14 @@ test('Get metadata for population table', async () => {
 
 // TEST 7: Query - Simple population query
 test('Query whole country population (latest 3 years)', async () => {
+  const c = await resolvePopulationCodes();
   const result = await queryTable({
-    tableId: 'statfin_vaerak_pxt_11re.px',
+    tableId: '11re.px',
     selections: [
-      { variable: 'Alue', filter: 'item', values: ['SSS'] },
-      { variable: 'Vuosi', filter: 'top', top: 3 },
-      { variable: 'Sukupuoli', filter: 'item', values: ['SSS'] },
-      { variable: 'Ikä', filter: 'item', values: ['SSS'] },
+      { variable: c.region, filter: 'item', values: ['SSS'] },
+      { variable: c.year, filter: 'top', top: 3 },
+      { variable: c.sex, filter: 'item', values: ['SSS'] },
+      { variable: c.age, filter: 'item', values: ['SSS'] },
     ],
     language: 'fi',
     limit: 100,
@@ -99,13 +116,14 @@ test('Query whole country population (latest 3 years)', async () => {
 
 // TEST 8: Query - Multiple regions
 test('Query 3 cities population', async () => {
+  const c = await resolvePopulationCodes();
   const result = await queryTable({
-    tableId: 'statfin_vaerak_pxt_11re.px',
+    tableId: '11re.px',
     selections: [
-      { variable: 'Alue', filter: 'item', values: ['KU091', 'KU092', 'KU049'] },
-      { variable: 'Vuosi', filter: 'top', top: 1 },
-      { variable: 'Sukupuoli', filter: 'item', values: ['SSS'] },
-      { variable: 'Ikä', filter: 'item', values: ['SSS'] },
+      { variable: c.region, filter: 'item', values: ['KU091', 'KU092', 'KU049'] },
+      { variable: c.year, filter: 'top', top: 1 },
+      { variable: c.sex, filter: 'item', values: ['SSS'] },
+      { variable: c.age, filter: 'item', values: ['SSS'] },
     ],
     language: 'fi',
     limit: 100,
@@ -117,7 +135,7 @@ test('Query 3 cities population', async () => {
 // TEST 9: Query - Large query rejection
 test('Reject large query (5M+ cells)', async () => {
   const result = await queryTable({
-    tableId: 'statfin_vaerak_pxt_11re.px',
+    tableId: '11re.px',
     selections: [], // No filters
     language: 'fi',
     limit: 100,
@@ -129,7 +147,7 @@ test('Reject large query (5M+ cells)', async () => {
 // TEST 10: Multi-language - Swedish
 test('Swedish language metadata', async () => {
   const result = await getTableMetadata({
-    tableId: 'statfin_vaerak_pxt_11re.px',
+    tableId: '11re.px',
     language: 'sv',
   });
   if (!result.title.includes('Befolkning')) throw new Error('Title not in Swedish');

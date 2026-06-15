@@ -107,12 +107,19 @@ async function main() {
 
   // Test 9: Get Table Metadata - Population table
   // Use a known table ID from the vaerak subject area
-  const populationTableId = 'statfin_vaerak_pxt_11re.px'; // Population by age and sex
+  const populationTableId = '11re.px'; // Population by age and sex
+  // Variable codes are table-specific and version-stamped since the June 2026
+  // migration; resolve them from live metadata rather than hardcoding.
+  let REGION = 'alue_23_20260101';
+  let YEAR = 'timeperiod_y';
   await test('get_table_metadata (population)', async () => {
     const result = await getTableMetadata({ tableId: populationTableId, language: 'fi' });
 
     if (!result.title) throw new Error('Missing title');
     if (result.variables.length === 0) throw new Error('No variables');
+
+    REGION = result.variables.find(v => v.code.startsWith('alue'))?.code ?? REGION;
+    YEAR = result.variables.find(v => v.isTime)?.code ?? YEAR;
 
     console.log(`  Table: ${result.title}`);
     console.log(`  Variables: ${result.variables.map(v => v.code).join(', ')}`);
@@ -127,7 +134,7 @@ async function main() {
 
     const result = await getVariableValues({
       tableId: populationTableId,
-      variable: 'Alue',
+      variable: REGION,
       language: 'fi'
     });
 
@@ -149,7 +156,7 @@ async function main() {
 
     const result = await getVariableValues({
       tableId: populationTableId,
-      variable: 'Alue',
+      variable: REGION,
       search: 'Helsinki',
       language: 'fi'
     });
@@ -169,8 +176,8 @@ async function main() {
     const result = await queryTable({
       tableId: populationTableId,
       selections: [
-        { variable: 'Alue', filter: 'item', values: ['SSS'] },
-        { variable: 'Vuosi', filter: 'top', top: 1 },
+        { variable: REGION, filter: 'item', values: ['SSS'] },
+        { variable: YEAR, filter: 'top', top: 1 },
       ],
       language: 'fi',
       limit: 100,
@@ -192,8 +199,8 @@ async function main() {
     const result = await queryTable({
       tableId: populationTableId,
       selections: [
-        { variable: 'Alue', filter: 'item', values: ['KU091'] }, // Helsinki
-        { variable: 'Vuosi', filter: 'top', top: 5 },
+        { variable: REGION, filter: 'item', values: ['KU091'] }, // Helsinki
+        { variable: YEAR, filter: 'top', top: 5 },
       ],
       language: 'fi',
       limit: 100,
@@ -212,8 +219,8 @@ async function main() {
     const result = await queryTable({
       tableId: populationTableId,
       selections: [
-        { variable: 'Alue', filter: 'item', values: ['KU091', 'KU092', 'KU049'] }, // Helsinki, Vantaa, Espoo
-        { variable: 'Vuosi', filter: 'top', top: 1 },
+        { variable: REGION, filter: 'item', values: ['KU091', 'KU092', 'KU049'] }, // Helsinki, Vantaa, Espoo
+        { variable: YEAR, filter: 'top', top: 1 },
       ],
       language: 'fi',
       limit: 100,

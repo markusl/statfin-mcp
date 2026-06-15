@@ -8,10 +8,10 @@ import { logger } from '../utils/logger.js';
 export const getVariableValuesSchema = z.object({
   tableId: z
     .string()
-    .describe('Table ID. Example: "statfin_vaerak_pxt_11re.px"'),
+    .describe('Table ID. Example: "11re.px"'),
   variable: z
     .string()
-    .describe('Variable code from get_table_metadata. Common: "Alue" (region), "Vuosi" (year), "Ikä" (age)'),
+    .describe('Exact variable code from get_table_metadata (table-specific and version-stamped, e.g. "alue_23_20260101", "timeperiod_y"). The region variable usually starts with "alue"; the time variable is often "timeperiod_y". Do not guess.'),
   search: z
     .string()
     .optional()
@@ -61,32 +61,33 @@ export async function getVariableValues(rawInput: GetVariableValuesInput): Promi
     input.search
   );
 
-  // Identify common code patterns for regions
+  // Identify common code patterns for regions. We detect a region variable by
+  // its value codes (SSS / MK* / KU*), which were unchanged by the June 2026
+  // migration, rather than by the variable code (which is now table-specific
+  // and version-stamped, e.g. "alue_23_20260101").
   let commonCodes: Record<string, string | string[]> | undefined;
 
-  if (input.variable === 'Alue' || input.variable.toLowerCase().includes('area')) {
-    const values = result.values;
+  const values = result.values;
 
-    // Find whole country code (usually SSS or KOKO MAA)
-    const wholeCountry = values.find(
-      (v) => v.code === 'SSS' || v.name.includes('KOKO MAA')
-    );
+  // Find whole country code (usually SSS or KOKO MAA)
+  const wholeCountry = values.find(
+    (v) => v.code === 'SSS' || v.name.includes('KOKO MAA')
+  );
 
-    // Find regions (MK prefix)
-    const regions = values.filter((v) => v.code.startsWith('MK'));
+  // Find regions (MK prefix)
+  const regions = values.filter((v) => v.code.startsWith('MK'));
 
-    // Find municipalities (KU prefix)
-    const municipalities = values.filter((v) => v.code.startsWith('KU'));
+  // Find municipalities (KU prefix)
+  const municipalities = values.filter((v) => v.code.startsWith('KU'));
 
-    if (wholeCountry || regions.length > 0 || municipalities.length > 0) {
-      commonCodes = {
-        wholeCountry: wholeCountry?.code || 'SSS',
-        regionCount: String(regions.length),
-        municipalityCount: String(municipalities.length),
-        exampleRegions: regions.slice(0, 5).map((v) => `${v.code} (${v.name})`),
-        exampleMunicipalities: municipalities.slice(0, 5).map((v) => `${v.code} (${v.name})`),
-      };
-    }
+  if (wholeCountry || regions.length > 0 || municipalities.length > 0) {
+    commonCodes = {
+      wholeCountry: wholeCountry?.code || 'SSS',
+      regionCount: String(regions.length),
+      municipalityCount: String(municipalities.length),
+      exampleRegions: regions.slice(0, 5).map((v) => `${v.code} (${v.name})`),
+      exampleMunicipalities: municipalities.slice(0, 5).map((v) => `${v.code} (${v.name})`),
+    };
   }
 
   return {

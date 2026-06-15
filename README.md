@@ -228,24 +228,30 @@ docker-compose up --build
 
 ## Example Workflows
 
+> **⚠️ Variable codes changed in the 8 June 2026 PxWeb migration.** They are now version-stamped and **table-specific** (e.g. `alue_23_20260101`, `timeperiod_y`), so the variable codes shown in the advanced examples below are *illustrative* — always call `get_table_metadata` to get the exact codes for your table. Table IDs are now short (`11re.px`, not `statfin_vaerak_pxt_11re.px`). **Value** codes (`SSS`, `KU091`, `MK01`…) are unchanged.
+
 ### Basic: Helsinki Population Trend
 
 ```javascript
+// Codes below are the current codes for table 11re.px (verified).
 query_table({
-  tableId: "statfin_vaerak_pxt_11re.px",
+  tableId: "11re.px",
   selections: [
-    { variable: "Alue", filter: "item", values: ["KU091"] },  // Helsinki
-    { variable: "Ikä", filter: "item", values: ["SSS"] },      // All ages
-    { variable: "Sukupuoli", filter: "item", values: ["SSS"] }, // Total
-    { variable: "Vuosi", filter: "top", top: 10 }              // Last 10 years
+    { variable: "alue_23_20260101", filter: "item", values: ["KU091"] },     // Helsinki
+    { variable: "ikaryhma_10_20180101", filter: "item", values: ["SSS"] },    // All ages
+    { variable: "sukupuoli_9_20180101", filter: "item", values: ["SSS"] },    // Total
+    { variable: "timeperiod_y", filter: "top", top: 10 },                     // Last 10 years
+    { variable: "contentscode", filter: "item", values: ["vaerak-vaesto"] }   // Population
   ]
 })
-// Returns: Helsinki population 2015-2024 (628K → 684K)
+// Returns: Helsinki population trend over the last 10 years
 ```
 
 ---
 
 ## Advanced Example Queries
+
+*The `variable` codes in these examples are conceptual (pre-migration names shown for readability). Resolve the real, current codes for each table via `get_table_metadata` before querying — only the short table IDs and the value codes are guaranteed current.*
 
 ### Education: University Student Employment by Field
 
@@ -254,7 +260,7 @@ query_table({
 ```javascript
 // Table: Student employment by education level and field
 query_table({
-  tableId: "statfin_tyokay_pxt_13g2.px",
+  tableId: "13g2.px",
   selections: [
     { variable: "Koulutusaste", filter: "item", values: ["7"] },  // University level
     { variable: "Sukupuoli", filter: "item", values: ["SSS"] },   // All genders
@@ -272,7 +278,7 @@ query_table({
 ```javascript
 // Table: Free-market rental prices by postal code, quarterly
 query_table({
-  tableId: "statfin_asvu_pxt_13eb.px",
+  tableId: "13eb.px",
   selections: [
     { variable: "Postinumero", filter: "item", values: [
       "00100",  // Helsinki center (Kruununhaka)
@@ -294,7 +300,7 @@ query_table({
 ```javascript
 // Table: Migration by month and type
 query_table({
-  tableId: "statfin_muutl_pxt_119z.px",
+  tableId: "119z.px",
   selections: [
     { variable: "Sukupuoli", filter: "item", values: ["SSS"] },
     { variable: "Tapahtumakuukausi", filter: "item", values: ["SSS"] },  // Annual totals
@@ -316,7 +322,7 @@ query_table({
 ```javascript
 // Table: Reported crimes by month (preliminary data)
 query_table({
-  tableId: "statfin_rpk_pxt_13jt.px",
+  tableId: "13jt.px",
   selections: [
     { variable: "Rikosryhmä ja teonkuvauksen tarkenne", filter: "item", values: [
       "101T603",     // All crimes total
@@ -337,7 +343,7 @@ query_table({
 ```javascript
 // Table: Electricity supply and production by source
 query_table({
-  tableId: "statfin_salatuo_pxt_11sr.px",
+  tableId: "11sr.px",
   selections: [
     { variable: "Tiedot", filter: "item", values: [
       "sahkon_tuot",       // Total production
@@ -359,7 +365,7 @@ query_table({
 ```javascript
 // Table: Traffic accidents with injuries by area and road type
 query_table({
-  tableId: "statfin_ton_pxt_12qh.px",
+  tableId: "12qh.px",
   selections: [
     { variable: "Alue", filter: "item", values: [
       "SSS",    // Whole country (for comparison)
@@ -389,7 +395,7 @@ query_table({
 ```javascript
 // Table: Households by size and building type
 query_table({
-  tableId: "statfin_asas_pxt_116a.px",
+  tableId: "116a.px",
   selections: [
     { variable: "Talotyyppi", filter: "item", values: [
       "1",  // Detached houses
@@ -415,7 +421,7 @@ query_table({
 ```javascript
 // Table: New vehicle registrations by fuel type
 query_table({
-  tableId: "statfin_merek_pxt_11ck.px",
+  tableId: "11ck.px",
   selections: [
     { variable: "Ajoneuvoluokka", filter: "item", values: ["01"] },  // Passenger cars
     { variable: "Käyttövoima", filter: "item", values: [
@@ -447,7 +453,7 @@ query_table({
 ### Time-Series with Regional Breakdown
 
 ```
-1. Get national trend (Alue: "SSS")
+1. Get national trend (region variable, value "SSS")
 2. Compare major cities (KU091, KU837, KU853)
 3. Identify regional divergence patterns
 4. Correlate with local economic indicators

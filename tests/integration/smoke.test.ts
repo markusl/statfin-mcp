@@ -45,11 +45,12 @@ async function main() {
   }
   console.log(`   Total combinations: ${metadata.totalCombinations.toLocaleString()}`);
 
-  // Test 4: Get variable values for Alue (if exists)
-  const alueVar = metadata.variables.find(v => v.code === 'Alue');
+  // Test 4: Get variable values for the region variable (if exists). Codes are
+  // table-specific since the June 2026 migration, so detect by "alue" prefix.
+  const alueVar = metadata.variables.find(v => v.code.startsWith('alue'));
   if (alueVar) {
-    console.log(`\n4. Getting values for Alue variable...`);
-    const values = await getVariableValues({ tableId, variable: 'Alue', language: 'fi' });
+    console.log(`\n4. Getting values for region variable (${alueVar.code})...`);
+    const values = await getVariableValues({ tableId, variable: alueVar.code, language: 'fi' });
     console.log(`   Total: ${values.total} regions`);
     console.log(`   First 5: ${values.values.slice(0, 5).map(v => `${v.code}=${v.name}`).join(', ')}`);
     if (values.commonCodes) {
@@ -65,8 +66,8 @@ async function main() {
   const selections: Array<{ variable: string; filter: 'item' | 'top'; values?: string[]; top?: number }> = [];
 
   for (const variable of metadata.variables) {
-    if (variable.code === 'Alue') {
-      selections.push({ variable: 'Alue', filter: 'item', values: ['SSS'] }); // Whole country
+    if (variable.code.startsWith('alue')) {
+      selections.push({ variable: variable.code, filter: 'item', values: ['SSS'] }); // Whole country
     } else if (variable.isTime) {
       selections.push({ variable: variable.code, filter: 'top', top: 3 }); // Last 3 years
     } else if (variable.values.length > 0) {

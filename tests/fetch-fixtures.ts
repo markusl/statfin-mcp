@@ -62,7 +62,7 @@ async function main() {
   await delay(8000);
 
   // 3. Table metadata - population by age and sex
-  const populationMetadata = await fetchJson('/fi/StatFin/vaerak/statfin_vaerak_pxt_11re.px');
+  const populationMetadata = await fetchJson('/fi/StatFin/11re.px');
   saveFixture('api-metadata-population', populationMetadata);
   await delay(8000);
 
@@ -76,13 +76,24 @@ async function main() {
   saveFixture('api-search-unemployment-en', searchUnemployment);
   await delay(8000);
 
+  // Variable codes are table-specific and version-stamped since the 8 June 2026
+  // migration. For table 11re.px (population) they are:
+  //   alue_23_20260101 (region), ikaryhma_10_20180101 (age),
+  //   sukupuoli_9_20180101 (sex), timeperiod_y (year), contentscode (content).
+  const POP = {
+    alue: 'alue_23_20260101',
+    ika: 'ikaryhma_10_20180101',
+    sukupuoli: 'sukupuoli_9_20180101',
+    vuosi: 'timeperiod_y',
+  };
+
   // 6. Query response - Finland population 2022-2024
-  const queryPopulation = await postJson('/fi/StatFin/vaerak/statfin_vaerak_pxt_11re.px', {
+  const queryPopulation = await postJson('/fi/StatFin/11re.px', {
     query: [
-      { code: 'Alue', selection: { filter: 'item', values: ['SSS'] } },
-      { code: 'Ikä', selection: { filter: 'item', values: ['SSS'] } },
-      { code: 'Sukupuoli', selection: { filter: 'item', values: ['SSS'] } },
-      { code: 'Vuosi', selection: { filter: 'top', values: ['3'] } },
+      { code: POP.alue, selection: { filter: 'item', values: ['SSS'] } },
+      { code: POP.ika, selection: { filter: 'item', values: ['SSS'] } },
+      { code: POP.sukupuoli, selection: { filter: 'item', values: ['SSS'] } },
+      { code: POP.vuosi, selection: { filter: 'top', values: ['3'] } },
     ],
     response: { format: 'json-stat2' },
   });
@@ -90,12 +101,12 @@ async function main() {
   await delay(8000);
 
   // 7. Query response - Helsinki population trend
-  const queryHelsinki = await postJson('/fi/StatFin/vaerak/statfin_vaerak_pxt_11re.px', {
+  const queryHelsinki = await postJson('/fi/StatFin/11re.px', {
     query: [
-      { code: 'Alue', selection: { filter: 'item', values: ['KU091'] } },
-      { code: 'Ikä', selection: { filter: 'item', values: ['SSS'] } },
-      { code: 'Sukupuoli', selection: { filter: 'item', values: ['SSS'] } },
-      { code: 'Vuosi', selection: { filter: 'top', values: ['5'] } },
+      { code: POP.alue, selection: { filter: 'item', values: ['KU091'] } },
+      { code: POP.ika, selection: { filter: 'item', values: ['SSS'] } },
+      { code: POP.sukupuoli, selection: { filter: 'item', values: ['SSS'] } },
+      { code: POP.vuosi, selection: { filter: 'top', values: ['5'] } },
     ],
     response: { format: 'json-stat2' },
   });
@@ -103,22 +114,22 @@ async function main() {
   await delay(8000);
 
   // 8. Employment table metadata
-  const employmentMetadata = await fetchJson('/fi/StatFin/tyti/statfin_tyti_pxt_135z.px');
+  const employmentMetadata = await fetchJson('/fi/StatFin/135z.px');
   saveFixture('api-metadata-employment', employmentMetadata);
   await delay(8000);
 
   // 9. English metadata for population table
-  const populationMetadataEn = await fetchJson('/en/StatFin/vaerak/statfin_vaerak_pxt_11re.px');
+  const populationMetadataEn = await fetchJson('/en/StatFin/11re.px');
   saveFixture('api-metadata-population-en', populationMetadataEn);
   await delay(8000);
 
   // 10. Query with multiple regions
-  const queryMultiRegion = await postJson('/fi/StatFin/vaerak/statfin_vaerak_pxt_11re.px', {
+  const queryMultiRegion = await postJson('/fi/StatFin/11re.px', {
     query: [
-      { code: 'Alue', selection: { filter: 'item', values: ['KU091', 'KU092', 'KU049'] } },
-      { code: 'Ikä', selection: { filter: 'item', values: ['SSS'] } },
-      { code: 'Sukupuoli', selection: { filter: 'item', values: ['SSS'] } },
-      { code: 'Vuosi', selection: { filter: 'top', values: ['1'] } },
+      { code: POP.alue, selection: { filter: 'item', values: ['KU091', 'KU092', 'KU049'] } },
+      { code: POP.ika, selection: { filter: 'item', values: ['SSS'] } },
+      { code: POP.sukupuoli, selection: { filter: 'item', values: ['SSS'] } },
+      { code: POP.vuosi, selection: { filter: 'top', values: ['1'] } },
     ],
     response: { format: 'json-stat2' },
   });

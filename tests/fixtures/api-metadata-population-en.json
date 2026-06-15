@@ -1,8 +1,8 @@
 {
-  "title": "Population 31.12. by Area, Age, Sex, Year and Information",
+  "title": "Population 31.12.",
   "variables": [
     {
-      "code": "Alue",
+      "code": "alue_23_20260101",
       "text": "Area",
       "values": [
         "SSS",
@@ -627,10 +627,10 @@
         "Äänekoski"
       ],
       "elimination": true,
-      "map": "Alue 2025"
+      "map": "Alue 2026"
     },
     {
-      "code": "Ikä",
+      "code": "ikaryhma_10_20180101",
       "text": "Age",
       "values": [
         "SSS",
@@ -843,7 +843,7 @@
       "elimination": true
     },
     {
-      "code": "Sukupuoli",
+      "code": "sukupuoli_9_20180101",
       "text": "Sex",
       "values": [
         "SSS",
@@ -858,7 +858,7 @@
       "elimination": true
     },
     {
-      "code": "Vuosi",
+      "code": "timeperiod_y",
       "text": "Year",
       "values": [
         "1972",
@@ -913,7 +913,8 @@
         "2021",
         "2022",
         "2023",
-        "2024"
+        "2024",
+        "2025"
       ],
       "valueTexts": [
         "1972",
@@ -968,15 +969,16 @@
         "2021",
         "2022",
         "2023",
-        "2024"
+        "2024",
+        "2025"
       ],
       "time": true
     },
     {
-      "code": "Tiedot",
+      "code": "contentscode",
       "text": "Information",
       "values": [
-        "vaesto"
+        "vaerak-vaesto"
       ],
       "valueTexts": [
         "Population 31 Dec"

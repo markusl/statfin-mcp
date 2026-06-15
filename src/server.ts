@@ -158,14 +158,14 @@ Use list_subject_areas first to find the area ID, or use search_statistics for d
       description: `Get the structure of a table: what variables it has and what values are available.
 
 REQUIRED before querying - shows you:
-- Variable names (Alue=Region, Vuosi=Year, Sukupuoli=Gender, etc.)
+- Variable codes (table-specific and version-stamped, e.g. "alue_23_20260101" for region, "timeperiod_y" for the time variable). Always read these here - never assume or reuse codes from another table.
 - Value codes (KU091=Helsinki, SSS=Total, 2024=year 2024)
 - Which variables are required vs optional
 - Total possible data combinations
 
-Example response shows: Alue has 309 regions, Vuosi has 53 years, etc.
+Example: a region variable may have 300+ values, a year variable 50+.
 
-After understanding the structure, use query_table with specific selections.`,
+After understanding the structure, use query_table with the exact codes from this output.`,
       inputSchema: getTableMetadataSchema.shape,
       outputSchema: getTableMetadataOutputSchema.shape,
       annotations: {
@@ -222,18 +222,22 @@ Selection types:
 - filter: "top" + top: 5 → latest 5 values (good for time variables)
 - filter: "all" → all values (use carefully, can be large!)
 
-Example - Helsinki population for last 5 years:
+Example - Helsinki population for last 5 years (the variable codes below are from
+table 11re.px; YOUR table's codes WILL differ - always read them from
+get_table_metadata first, never reuse these):
 {
-  "tableId": "statfin_vaerak_pxt_11re.px",
+  "tableId": "11re.px",
   "selections": [
-    {"variable": "Alue", "filter": "item", "values": ["KU091"]},
-    {"variable": "Vuosi", "filter": "top", "top": 5},
-    {"variable": "Sukupuoli", "filter": "item", "values": ["SSS"]},
-    {"variable": "Ikä", "filter": "item", "values": ["SSS"]}
+    {"variable": "alue_23_20260101", "filter": "item", "values": ["KU091"]},
+    {"variable": "timeperiod_y", "filter": "top", "top": 5},
+    {"variable": "sukupuoli_9_20180101", "filter": "item", "values": ["SSS"]},
+    {"variable": "ikaryhma_10_20180101", "filter": "item", "values": ["SSS"]},
+    {"variable": "contentscode", "filter": "item", "values": ["vaerak-vaesto"]}
   ]
 }
 
-IMPORTANT: Use VALUE CODES (KU091, SSS, 2024), not labels (Helsinki, Total).`,
+IMPORTANT: Variable codes are table-specific; get them from get_table_metadata.
+Use VALUE CODES (KU091, SSS), not labels (Helsinki, Total).`,
       inputSchema: queryTableSchema.shape,
       outputSchema: queryTableOutputSchema.shape,
       annotations: {

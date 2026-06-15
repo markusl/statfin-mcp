@@ -2,7 +2,7 @@
   "title": "Väestö 31.12. muuttujina Alue, Ikä, Sukupuoli, Vuosi ja Tiedot",
   "variables": [
     {
-      "code": "Alue",
+      "code": "alue_23_20260101",
       "text": "Alue",
       "values": [
         "SSS",
@@ -627,10 +627,10 @@
         "Äänekoski"
       ],
       "elimination": true,
-      "map": "Alue 2025"
+      "map": "Alue 2026"
     },
     {
-      "code": "Ikä",
+      "code": "ikaryhma_10_20180101",
       "text": "Ikä",
       "values": [
         "SSS",
@@ -843,7 +843,7 @@
       "elimination": true
     },
     {
-      "code": "Sukupuoli",
+      "code": "sukupuoli_9_20180101",
       "text": "Sukupuoli",
       "values": [
         "SSS",
@@ -858,7 +858,7 @@
       "elimination": true
     },
     {
-      "code": "Vuosi",
+      "code": "timeperiod_y",
       "text": "Vuosi",
       "values": [
         "1972",
@@ -913,7 +913,8 @@
         "2021",
         "2022",
         "2023",
-        "2024"
+        "2024",
+        "2025"
       ],
       "valueTexts": [
         "1972",
@@ -968,15 +969,16 @@
         "2021",
         "2022",
         "2023",
-        "2024"
+        "2024",
+        "2025"
       ],
       "time": true
     },
     {
-      "code": "Tiedot",
+      "code": "contentscode",
       "text": "Tiedot",
       "values": [
-        "vaesto"
+        "vaerak-vaesto"
       ],
       "valueTexts": [
         "Väestö 31.12."

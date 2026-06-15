@@ -41,6 +41,20 @@ export class PxWebClient {
   }
 
   /**
+   * Normalize a table ID to the short form used by the API.
+   *
+   * The 8 June 2026 PxWeb migration shortened table IDs from the long form
+   * (e.g. "statfin_vaerak_pxt_11re.px") to a four-character code
+   * (e.g. "11re.px"); the long form now returns HTTP 400. We accept the old
+   * form for backward compatibility and convert it so legacy clients keep
+   * working. Anything else (already short, or unrecognized) is returned as-is.
+   */
+  private normalizeTableId(tableId: string): string {
+    const match = tableId.match(/^statfin_[a-z0-9]+_pxt_(.+)$/);
+    return match?.[1] ?? tableId;
+  }
+
+  /**
    * Make a rate-limited GET request to the API
    */
   private async get<T>(path: string): Promise<T> {
@@ -185,16 +199,16 @@ export class PxWebClient {
   ): Promise<TableMetadata> {
     const cache = getCacheService();
 
-    // Extract path from tableId (e.g., statfin_vaerak_pxt_11re.px -> vaerak)
-    const match = tableId.match(/statfin_([a-z]+)_/);
-    const subjectArea = match?.[1] || '';
-    const path = `/${language}/StatFin/${subjectArea}/${tableId}`;
+    // The API addresses tables by their short ID and ignores the subject-area
+    // path segment (e.g. /StatFin/11re.px works the same as /StatFin/vaerak/11re.px).
+    const id = this.normalizeTableId(tableId);
+    const path = `/${language}/StatFin/${id}`;
 
     // Check cache (unless requesting all values which might differ)
     if (!includeAllValues) {
-      const cached = cache.getTableMetadata(tableId, language);
+      const cached = cache.getTableMetadata(id, language);
       if (cached) {
-        logger.debug({ tableId, language }, 'Table metadata cache hit');
+        logger.debug({ tableId: id, language }, 'Table metadata cache hit');
         return cached;
       }
     }
@@ -202,13 +216,10 @@ export class PxWebClient {
     // Fetch from API
     const raw = await this.get<PxWebTableMetadata>(path);
 
-    // Get table update time from table list
-    let lastUpdated = '';
-    const tables = cache.getTableList(subjectArea, language);
-    if (tables) {
-      const tableInfo = tables.find((t) => t.id === tableId);
-      lastUpdated = tableInfo?.updated || '';
-    }
+    // Best-effort table update time from a previously cached table list. The
+    // subject area is no longer part of the table ID, so this is a cache miss
+    // unless the relevant list was fetched in this process; falls back to ''.
+    const lastUpdated = cache.getTableUpdateTime(id) || '';
 
     // Transform to our format
     const variables: VariableInfo[] = raw.variables.map((v) => {
@@ -236,8 +247,8 @@ export class PxWebClient {
     );
 
     const metadata: TableMetadata = {
-      tableId,
-      path: `StatFin/${subjectArea}/${tableId}`,
+      tableId: id,
+      path: `StatFin/${id}`,
       title: raw.title,
       lastUpdated,
       variables,
@@ -246,7 +257,7 @@ export class PxWebClient {
 
     // Only cache if not requesting all values (default view)
     if (!includeAllValues) {
-      cache.setTableMetadata(tableId, language, metadata);
+      cache.setTableMetadata(id, language, metadata);
     }
 
     return metadata;
@@ -341,10 +352,10 @@ export class PxWebClient {
     const startTime = Date.now();
     const cache = getCacheService();
 
-    // Extract path from tableId
-    const match = tableId.match(/statfin_([a-z]+)_/);
-    const subjectArea = match?.[1] || '';
-    const apiPath = `/${language}/StatFin/${subjectArea}/${tableId}`;
+    // The API addresses tables by their short ID and ignores the subject-area
+    // path segment. Normalize so legacy long-form IDs keep working.
+    const id = this.normalizeTableId(tableId);
+    const apiPath = `/${language}/StatFin/${id}`;
 
     // Build query body
     const queryBody: PxWebQuery = {
@@ -370,9 +381,9 @@ export class PxWebClient {
       .substring(0, 16);
 
     // Check cache
-    const cachedResult = cache.getQueryResult(tableId, queryHash);
+    const cachedResult = cache.getQueryResult(id, queryHash);
     if (cachedResult) {
-      logger.debug({ tableId, queryHash }, 'Query cache hit');
+      logger.debug({ tableId: id, queryHash }, 'Query cache hit');
       return {
         ...cachedResult,
         queryInfo: {
@@ -384,7 +395,7 @@ export class PxWebClient {
     }
 
     // Get table update time for cache validation
-    const tableUpdated = cache.getTableUpdateTime(tableId) || '';
+    const tableUpdated = cache.getTableUpdateTime(id) || '';
 
     // Execute query
     const response = await this.post<JsonStat2Response>(apiPath, queryBody);
@@ -394,7 +405,7 @@ export class PxWebClient {
 
     // Cache result
     cache.setQueryResult(
-      tableId,
+      id,
       queryHash,
       result,
       tableUpdated,

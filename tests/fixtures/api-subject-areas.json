@@ -20,11 +20,6 @@
     "text": "Ajankäyttö"
   },
   {
-    "id": "aly",
-    "type": "l",
-    "text": "Aloittaneet ja lopettaneet yritykset"
-  },
-  {
     "id": "alyr",
     "type": "l",
     "text": "Alueellinen yritystoimintatilasto"
@@ -43,11 +38,6 @@
     "id": "asen",
     "type": "l",
     "text": "Asumisen energiankulutus"
-  },
-  {
-    "id": "asas",
-    "type": "l",
-    "text": "Asunnot ja asuinolot"
   },
   {
     "id": "asvu",
@@ -125,11 +115,6 @@
     "text": "Innovaatiotoiminta"
   },
   {
-    "id": "jvie",
-    "type": "l",
-    "text": "Joukkoviestintä"
-  },
-  {
     "id": "jmhi",
     "type": "l",
     "text": "Julkisten menojen hintaindeksi"
@@ -180,11 +165,6 @@
     "text": "Kansantalouden rahoitustilinpito"
   },
   {
-    "id": "sekn",
-    "type": "l",
-    "text": "Kansantalouden sektoritilit neljännesvuosittain"
-  },
-  {
     "id": "pt",
     "type": "l",
     "text": "Kansantalouden tarjonta-, käyttö- sekä panos-tuotostaulukot"
@@ -193,11 +173,6 @@
     "id": "ttut",
     "type": "l",
     "text": "Kansantalouden tuottavuusmittarit"
-  },
-  {
-    "id": "vtp",
-    "type": "l",
-    "text": "Kansantalouden vuositilinpito"
   },
   {
     "id": "khki",
@@ -258,11 +233,6 @@
     "id": "vtutk",
     "type": "l",
     "text": "Kotitalouksien varallisuus"
-  },
-  {
-    "id": "kotsa",
-    "type": "l",
-    "text": "Kotitaloustuotannon arvo"
   },
   {
     "id": "khak",
@@ -395,11 +365,6 @@
     "text": "Osakeasuntojen hinnat"
   },
   {
-    "id": "ksp",
-    "type": "l",
-    "text": "Paikallishallinnon palkat"
-  },
-  {
     "id": "pra",
     "type": "l",
     "text": "Palkkarakenne"
@@ -433,16 +398,6 @@
     "id": "pvaa",
     "type": "l",
     "text": "Presidentinvaalit"
-  },
-  {
-    "id": "rakke",
-    "type": "l",
-    "text": "Rakennukset ja kesämökit"
-  },
-  {
-    "id": "ras",
-    "type": "l",
-    "text": "Rakennus- ja asuntotuotanto"
   },
   {
     "id": "raku",
@@ -645,16 +600,6 @@
     "text": "Ulosottovelalliset"
   },
   {
-    "id": "vkp",
-    "type": "l",
-    "text": "Valtion kuukausipalkat"
-  },
-  {
-    "id": "vpa",
-    "type": "l",
-    "text": "Vapaa-ajan osallistuminen"
-  },
-  {
     "id": "oaiop",
     "type": "l",
     "text": "Vapaan sivistystyön koulutus"
@@ -698,16 +643,6 @@
     "id": "vaerak",
     "type": "l",
     "text": "Väestörakenne"
-  },
-  {
-    "id": "yskp",
-    "type": "l",
-    "text": "Yksityisen sektorin kuukausipalkat"
-  },
-  {
-    "id": "ystp",
-    "type": "l",
-    "text": "Yksityisen sektorin tuntipalkat"
   },
   {
     "id": "ylt",

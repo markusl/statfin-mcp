@@ -2,7 +2,7 @@
   "title": "Työvoimatutkimuksen tärkeimmät tunnusluvut, niiden kausitasoitetut aikasarjat sekä kausi- ja satunnaisvaihtelusta tasoitetut trendit muuttujina Kuukausi ja Tiedot",
   "variables": [
     {
-      "code": "Kuukausi",
+      "code": "timeperiod_m",
       "text": "Kuukausi",
       "values": [
         "2010M01",
@@ -195,7 +195,12 @@
         "2025M08",
         "2025M09",
         "2025M10",
-        "2025M11"
+        "2025M11",
+        "2025M12",
+        "2026M01",
+        "2026M02",
+        "2026M03",
+        "2026M04"
       ],
       "valueTexts": [
         "2010M01",
@@ -388,12 +393,17 @@
         "2025M08",
         "2025M09",
         "2025M10",
-        "2025M11"
+        "2025M11",
+        "2025M12",
+        "2026M01",
+        "2026M02",
+        "2026M03",
+        "2026M04"
       ],
       "time": true
     },
     {
-      "code": "Tiedot",
+      "code": "contentscode",
       "text": "Tiedot",
       "values": [
         "Tyollisyysaste_15_64",
@@ -405,13 +415,13 @@
         "Tyollisyysaste_20_69",
         "Tyollaste_20_69_trendi",
         "Tyollaste_20_69_kausi",
-        "Tyolliset",
+        "tyti-Tyolliset",
         "tyolliset_trendi",
         "Tyolliset_kausi",
-        "Tyottomat",
+        "tyti-Tyottomat",
         "tyottomat_trendi",
         "Tyottomat_kausi",
-        "Tyottomyysaste",
+        "tyti-Tyottomyysaste",
         "tyottaste_trendi",
         "Tyottaste_kausi",
         "Tyottomyysaste_15_24",

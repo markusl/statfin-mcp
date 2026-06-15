@@ -18,6 +18,16 @@ const queryFixture = loadFixture('api-query-population-finland');
 const queryThreeCitiesFixture = loadFixture('api-query-three-cities');
 const queryHelsinkiFixture = loadFixture('api-query-helsinki-population');
 
+// Short table IDs (post 8 June 2026 migration). Variable codes are now
+// table-specific and version-stamped, so we derive them from the fixture
+// (by structural predicate) rather than hardcoding e.g. "alue_23_20260101".
+const TABLE_ID = '11re.px';
+const EMPLOYMENT_TABLE_ID = '135z.px';
+const findCode = (fixture: { variables: Array<{ code: string }> }, prefix: string) =>
+  fixture.variables.find((v) => v.code.startsWith(prefix))!.code;
+const REGION_CODE = findCode(metadataFixture, 'alue');
+const TIME_CODE = metadataFixture.variables.find((v: { time?: boolean }) => v.time)!.code;
+
 // Mock fetch globally
 const mockFetch = vi.fn();
 vi.stubGlobal('fetch', mockFetch);
@@ -78,7 +88,8 @@ describe('PxWebClient', () => {
         })
       );
 
-      expect(result).toHaveLength(149);
+      const expectedCount = subjectAreasFixture.filter((x: { type: string }) => x.type === 'l').length;
+      expect(result).toHaveLength(expectedCount);
       expect(result[0]).toHaveProperty('id');
       expect(result[0]).toHaveProperty('name');
     });
@@ -152,9 +163,9 @@ describe('PxWebClient', () => {
         json: async () => metadataFixture,
       });
 
-      const result = await client.getTableMetadata('statfin_vaerak_pxt_11re.px', 'fi');
+      const result = await client.getTableMetadata(TABLE_ID, 'fi');
 
-      expect(result.tableId).toBe('statfin_vaerak_pxt_11re.px');
+      expect(result.tableId).toBe(TABLE_ID);
       expect(result.title).toBe(metadataFixture.title);
       expect(result.variables).toHaveLength(5);
     });
@@ -165,9 +176,9 @@ describe('PxWebClient', () => {
         json: async () => metadataFixture,
       });
 
-      const result = await client.getTableMetadata('statfin_vaerak_pxt_11re.px', 'fi');
+      const result = await client.getTableMetadata(TABLE_ID, 'fi');
 
-      const alueVar = result.variables.find(v => v.code === 'Alue');
+      const alueVar = result.variables.find(v => v.code === REGION_CODE);
       expect(alueVar).toBeDefined();
       expect(alueVar!.valueCount).toBe(309);
       expect(alueVar!.isOptional).toBe(true); // elimination=true
@@ -179,7 +190,7 @@ describe('PxWebClient', () => {
         json: async () => metadataFixture,
       });
 
-      const result = await client.getTableMetadata('statfin_vaerak_pxt_11re.px', 'fi');
+      const result = await client.getTableMetadata(TABLE_ID, 'fi');
 
       // 309 * 102 * 3 * 53 * 1 = 5,011,362
       expect(result.totalCombinations).toBeGreaterThan(5000000);
@@ -191,9 +202,9 @@ describe('PxWebClient', () => {
         json: async () => metadataFixture,
       });
 
-      const result = await client.getTableMetadata('statfin_vaerak_pxt_11re.px', 'fi', false);
+      const result = await client.getTableMetadata(TABLE_ID, 'fi', false);
 
-      const alueVar = result.variables.find(v => v.code === 'Alue');
+      const alueVar = result.variables.find(v => v.code === REGION_CODE);
       expect(alueVar!.values.length).toBeLessThanOrEqual(20);
       expect(alueVar!.hasMore).toBe(true);
     });
@@ -206,9 +217,9 @@ describe('PxWebClient', () => {
         json: async () => metadataFixture,
       });
 
-      const result = await client.getVariableValues('statfin_vaerak_pxt_11re.px', 'Alue', 'fi');
+      const result = await client.getVariableValues(TABLE_ID, REGION_CODE, 'fi');
 
-      expect(result.variable).toBe('Alue');
+      expect(result.variable).toBe('Alue'); // human-readable name (v.text), unchanged
       expect(result.total).toBe(309);
       expect(result.values).toHaveLength(309);
     });
@@ -220,8 +231,8 @@ describe('PxWebClient', () => {
       });
 
       const result = await client.getVariableValues(
-        'statfin_vaerak_pxt_11re.px',
-        'Alue',
+        TABLE_ID,
+        REGION_CODE,
         'fi',
         'Helsinki'
       );
@@ -237,7 +248,7 @@ describe('PxWebClient', () => {
       });
 
       await expect(
-        client.getVariableValues('statfin_vaerak_pxt_11re.px', 'UnknownVar', 'fi')
+        client.getVariableValues(TABLE_ID, 'UnknownVar', 'fi')
       ).rejects.toThrow("Variable 'UnknownVar' not found");
     });
   });
@@ -279,10 +290,10 @@ describe('PxWebClient', () => {
       });
 
       const result = await client.query(
-        'statfin_vaerak_pxt_11re.px',
+        TABLE_ID,
         [
-          { variable: 'Alue', filter: 'item', values: ['SSS'] },
-          { variable: 'Vuosi', filter: 'top', top: 3 },
+          { variable: REGION_CODE, filter: 'item', values: ['SSS'] },
+          { variable: TIME_CODE, filter: 'top', top: 3 },
         ],
         'fi'
       );
@@ -300,8 +311,8 @@ describe('PxWebClient', () => {
       });
 
       const result = await client.query(
-        'statfin_vaerak_pxt_11re.px',
-        [{ variable: 'Alue', filter: 'item', values: ['SSS'] }],
+        TABLE_ID,
+        [{ variable: REGION_CODE, filter: 'item', values: ['SSS'] }],
         'fi'
       );
 
@@ -317,10 +328,10 @@ describe('PxWebClient', () => {
       });
 
       await client.query(
-        'statfin_vaerak_pxt_11re.px',
+        TABLE_ID,
         [
-          { variable: 'Alue', filter: 'item', values: ['SSS', 'KU091'] },
-          { variable: 'Vuosi', filter: 'top', top: 5 },
+          { variable: REGION_CODE, filter: 'item', values: ['SSS', 'KU091'] },
+          { variable: TIME_CODE, filter: 'top', top: 5 },
         ],
         'fi'
       );
@@ -345,7 +356,7 @@ describe('PxWebClient', () => {
       });
 
       await expect(
-        client.query('statfin_vaerak_pxt_11re.px', [], 'fi')
+        client.query(TABLE_ID, [], 'fi')
       ).rejects.toThrow('HTTP 400');
     });
   });
@@ -483,7 +494,7 @@ describe('PxWebClient', () => {
       mockFetch.mockRejectedValueOnce(new Error('Network error during POST'));
 
       await expect(
-        client.query('statfin_vaerak_pxt_11re.px', [], 'fi')
+        client.query(TABLE_ID, [], 'fi')
       ).rejects.toThrow('Network error during POST');
     });
 
@@ -499,7 +510,7 @@ describe('PxWebClient', () => {
       });
 
       await expect(
-        client.query('statfin_vaerak_pxt_11re.px', [], 'fi')
+        client.query(TABLE_ID, [], 'fi')
       ).rejects.toThrow();
     });
   });
@@ -635,10 +646,10 @@ describe('PxWebClient', () => {
         json: async () => metadataEnFixture,
       });
 
-      const result = await client.getTableMetadata('statfin_vaerak_pxt_11re.px', 'en');
+      const result = await client.getTableMetadata(TABLE_ID, 'en');
 
       expect(result.title).toContain('Population');
-      expect(result.variables.find(v => v.code === 'Alue')?.name).toBe('Area');
+      expect(result.variables.find(v => v.code === REGION_CODE)?.name).toBe('Area');
     });
 
     it('should search in English and return results', async () => {
@@ -662,16 +673,17 @@ describe('PxWebClient', () => {
       });
 
       const result = await client.query(
-        'statfin_vaerak_pxt_11re.px',
+        TABLE_ID,
         [
-          { variable: 'Alue', filter: 'item', values: ['KU091', 'KU092', 'KU049'] },
-          { variable: 'Vuosi', filter: 'top', top: 1 },
+          { variable: REGION_CODE, filter: 'item', values: ['KU091', 'KU092', 'KU049'] },
+          { variable: TIME_CODE, filter: 'top', top: 1 },
         ],
         'fi'
       );
 
       expect(result.success).toBe(true);
       expect(result.rowCount).toBe(3); // 3 cities
+      // Column is keyed by the dimension's human label (still "Alue"), not its code.
       expect(result.data?.rows.some(r => r['Alue'] === 'Helsinki')).toBe(true);
       expect(result.data?.rows.some(r => r['Alue'] === 'Espoo')).toBe(true);
       expect(result.data?.rows.some(r => r['Alue'] === 'Vantaa')).toBe(true);
@@ -684,10 +696,10 @@ describe('PxWebClient', () => {
       });
 
       const result = await client.query(
-        'statfin_vaerak_pxt_11re.px',
+        TABLE_ID,
         [
-          { variable: 'Alue', filter: 'item', values: ['KU091'] },
-          { variable: 'Vuosi', filter: 'top', top: 5 },
+          { variable: REGION_CODE, filter: 'item', values: ['KU091'] },
+          { variable: TIME_CODE, filter: 'top', top: 5 },
         ],
         'fi'
       );
@@ -705,7 +717,7 @@ describe('PxWebClient', () => {
         json: async () => metadataEmploymentFixture,
       });
 
-      const result = await client.getTableMetadata('statfin_tyti_pxt_135z.px', 'fi');
+      const result = await client.getTableMetadata(EMPLOYMENT_TABLE_ID, 'fi');
 
       expect(result.title).toBeDefined();
       expect(result.variables.length).toBeGreaterThan(0);
@@ -719,7 +731,7 @@ describe('PxWebClient', () => {
         json: async () => metadataEmploymentFixture,
       });
 
-      const result = await client.getTableMetadata('statfin_tyti_pxt_135z.px', 'fi');
+      const result = await client.getTableMetadata(EMPLOYMENT_TABLE_ID, 'fi');
 
       expect(result.totalCombinations).toBeGreaterThan(0);
       // Verify it's a product of all variable value counts
@@ -806,8 +818,8 @@ describe('cache hit paths', () => {
     } as never);
 
     const result = await client.query(
-      'statfin_vaerak_pxt_11re.px',
-      [{ variable: 'Alue', filter: 'item', values: ['KU091'] }],
+      TABLE_ID,
+      [{ variable: REGION_CODE, filter: 'item', values: ['KU091'] }],
       'fi'
     );
 

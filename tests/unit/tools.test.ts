@@ -6,7 +6,7 @@ import { listSubjectAreas } from '../../src/tools/list-subject-areas.js';
 import { listTables } from '../../src/tools/list-tables.js';
 import { getTableMetadata } from '../../src/tools/get-table-metadata.js';
 import { getVariableValues } from '../../src/tools/get-variable-values.js';
-import { queryTable } from '../../src/tools/query-table.js';
+import { queryTable, queryTableOutputSchema } from '../../src/tools/query-table.js';
 import { getApiStatus } from '../../src/tools/get-api-status.js';
 
 // Load real fixtures
@@ -18,6 +18,17 @@ const tableListFixture = loadFixture('api-table-list-vaerak');
 const metadataFixture = loadFixture('api-metadata-population');
 const searchFixture = loadFixture('api-search-vaesto');
 const queryFixture = loadFixture('api-query-population-finland');
+
+// Short table ID (post 8 June 2026 migration). Variable codes are table-specific
+// and version-stamped, so derive them from the fixture by structural predicate.
+const TABLE_ID = '11re.px';
+const SUBJECT_AREA_COUNT = subjectAreasFixture.filter((x: { type: string }) => x.type === 'l').length;
+const REGION_CODE = metadataFixture.variables.find((v: { code: string }) => v.code.startsWith('alue'))!.code;
+const TIME_CODE = metadataFixture.variables.find((v: { time?: boolean }) => v.time)!.code;
+const AGE_CODE = metadataFixture.variables.find((v: { code: string }) => v.code.startsWith('ikaryhma'))!.code;
+const SEX_CODE = metadataFixture.variables.find((v: { code: string }) => v.code.startsWith('sukupuoli'))!.code;
+const CONTENT_CODE = metadataFixture.variables.find((v: { code: string }) => v.code === 'contentscode')!.code;
+const CONTENT_VALUE = metadataFixture.variables.find((v: { code: string }) => v.code === 'contentscode')!.values[0];
 
 // Mock the PxWebClient with real fixture data
 vi.mock('../../src/services/pxweb-client.js', () => ({
@@ -53,10 +64,10 @@ vi.mock('../../src/services/pxweb-client.js', () => ({
     }),
     getTableMetadata: vi.fn().mockImplementation(async () => {
       return {
-        tableId: 'statfin_vaerak_pxt_11re.px',
+        tableId: TABLE_ID,
         title: metadataFixture.title,
         lastUpdated: '2024-12-15',
-        path: 'StatFin/vaerak/statfin_vaerak_pxt_11re.px',
+        path: `StatFin/${TABLE_ID}`,
         variables: metadataFixture.variables.map((v: { code: string; text: string; values: string[]; valueTexts: string[]; time?: boolean; elimination?: boolean }) => ({
           code: v.code,
           name: v.text,
@@ -163,9 +174,9 @@ describe('MCP Tools with Real Fixtures', () => {
   });
 
   describe('listSubjectAreas', () => {
-    it('should list all 149 subject areas', async () => {
+    it('should list all subject areas', async () => {
       const result = await listSubjectAreas({ language: 'fi' });
-      expect(result.total).toBe(149);
+      expect(result.total).toBe(SUBJECT_AREA_COUNT);
       expect(result.areas[0]).toHaveProperty('id');
       expect(result.areas[0]).toHaveProperty('name');
     });
@@ -184,20 +195,20 @@ describe('MCP Tools with Real Fixtures', () => {
   describe('getTableMetadata', () => {
     it('should return table metadata with variables', async () => {
       const result = await getTableMetadata({
-        tableId: 'statfin_vaerak_pxt_11re.px',
+        tableId: TABLE_ID,
         language: 'fi',
       });
-      expect(result.tableId).toBe('statfin_vaerak_pxt_11re.px');
+      expect(result.tableId).toBe(TABLE_ID);
       expect(result.variables.length).toBe(5); // Alue, Ikä, Sukupuoli, Vuosi, Tiedot
       expect(result.totalCombinations).toBeGreaterThan(1000000); // ~5 million
     });
 
     it('should include variable value counts', async () => {
       const result = await getTableMetadata({
-        tableId: 'statfin_vaerak_pxt_11re.px',
+        tableId: TABLE_ID,
         language: 'fi',
       });
-      const alueVar = result.variables.find(v => v.code === 'Alue');
+      const alueVar = result.variables.find(v => v.code === REGION_CODE);
       expect(alueVar).toBeDefined();
       expect(alueVar!.valueCount).toBe(309); // Real count
     });
@@ -206,8 +217,8 @@ describe('MCP Tools with Real Fixtures', () => {
   describe('getVariableValues', () => {
     it('should return all values for Alue variable', async () => {
       const result = await getVariableValues({
-        tableId: 'statfin_vaerak_pxt_11re.px',
-        variable: 'Alue',
+        tableId: TABLE_ID,
+        variable: REGION_CODE,
         language: 'fi',
       });
       expect(result.variable).toBe('Alue');
@@ -219,13 +230,13 @@ describe('MCP Tools with Real Fixtures', () => {
   describe('queryTable', () => {
     it('should execute query and return data', async () => {
       const result = await queryTable({
-        tableId: 'statfin_vaerak_pxt_11re.px',
+        tableId: TABLE_ID,
         selections: [
-          { variable: 'Alue', filter: 'item', values: ['SSS'] },
-          { variable: 'Ikä', filter: 'item', values: ['SSS'] },
-          { variable: 'Sukupuoli', filter: 'item', values: ['SSS'] },
-          { variable: 'Vuosi', filter: 'top', top: 3 },
-          { variable: 'Tiedot', filter: 'item', values: ['vaesto'] },
+          { variable: REGION_CODE, filter: 'item', values: ['SSS'] },
+          { variable: AGE_CODE, filter: 'item', values: ['SSS'] },
+          { variable: SEX_CODE, filter: 'item', values: ['SSS'] },
+          { variable: TIME_CODE, filter: 'top', top: 3 },
+          { variable: CONTENT_CODE, filter: 'item', values: [CONTENT_VALUE] },
         ],
         language: 'fi',
         limit: 100,
@@ -235,9 +246,33 @@ describe('MCP Tools with Real Fixtures', () => {
       expect(result.data?.columns).toContain('value');
     });
 
+    it('output conforms to its declared outputSchema (no structuredContent drift)', async () => {
+      // The MCP SDK validates returned structuredContent against the advertised
+      // outputSchema; any extra/missing field fails on the client as "Tool
+      // execution failed". This guards against that drift — e.g. the `metadata`
+      // field that was returned but missing from the schema.
+      const result = await queryTable({
+        tableId: TABLE_ID,
+        selections: [
+          { variable: REGION_CODE, filter: 'item', values: ['SSS'] },
+          { variable: AGE_CODE, filter: 'item', values: ['SSS'] },
+          { variable: SEX_CODE, filter: 'item', values: ['SSS'] },
+          { variable: TIME_CODE, filter: 'top', top: 3 },
+          { variable: CONTENT_CODE, filter: 'item', values: [CONTENT_VALUE] },
+        ],
+        language: 'fi',
+        limit: 100,
+      });
+      const parsed = queryTableOutputSchema.strict().safeParse(result);
+      if (!parsed.success) {
+        throw new Error(`query_table output does not match schema: ${parsed.error.message}`);
+      }
+      expect(parsed.success).toBe(true);
+    });
+
     it('should reject queries exceeding cell limit', async () => {
       const result = await queryTable({
-        tableId: 'statfin_vaerak_pxt_11re.px',
+        tableId: TABLE_ID,
         selections: [], // No filters = all values (~5 million)
         language: 'fi',
         limit: 1000,
